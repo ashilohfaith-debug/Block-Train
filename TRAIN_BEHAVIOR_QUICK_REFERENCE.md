@@ -26,39 +26,39 @@ Visual, easy-to-follow guide for the railway corridor rule system.
                     └──────────────┬──────────────────┘
                                    ↓
                 ┌──────────────────────────────────────────────┐
-                │              YES                    NO        │
+                │              YES                    NO       │
                 ↓                                      ↓
-    ┌─────────────────────────────┐    ┌──────────────────────┐
-    │ Collision Risk > 50%?        │    │ Calculate zone      │
-    │ (Rule CD-001)                │    │ speed limits        │
-    └──────────┬───────────────────┘    │ (Rule SM-003)       │
-               ↓                        └──────────────────────┘
+    ┌──────────────────────────────┐   ┌──────────────────────┐
+    │ Collision Risk > 50%?        │   │ Calculate zone       │
+    │ (Rule CD-001)                │   │ speed limits         │
+    └──────────┬───────────────────┘   │ (Rule SM-003)        │
+               ↓                       └──────────────────────┘
     ┌──────────────────────────┐                ↓
     │ Apply Graduated          │    ┌─────────────────────────┐
-    │ Response (Rule SP-001)    │    │  SCAN FOR REAR TRAIN   │
-    │ • >600px: 100% speed     │    │  (Rule CD-002: 800px)  │
-    │ • 300px: 70% speed       │    │  trainBehind = ?       │
+    │ Response (Rule SP-001)   │    │  SCAN FOR REAR TRAIN    │
+    │ • >600px: 100% speed     │    │  (Rule CD-002: 800px)   │
+    │ • 300px: 70% speed       │    │  trainBehind = ?        │
     │ • 100px: 50% speed       │    └────────────┬────────────┘
     │ • 0px: 30% speed         │                 ↓
     └──────────┬───────────────┘    ┌─────────────────────────┐
-               ↓                     │ Faster train behind?    │
+               ↓                    │ Faster train behind?    │
     ┌──────────────────────────┐    │ (Rule SP-004)           │
     │ Risk > 70% AND           │    └────────────┬────────────┘
     │ Distance < 200px?        │                 ↓
     │ (Try lane change)        │    ┌────────────────────────────┐
-    └──────────┬───────────────┘    │ Check spacing:            │
-               ↓                     │ minSpacing =              │
-    ┌──────────────────────────┐    │ 300 + (speed × 3)        │
-    │ Safe lane available?     │    │ (Rule SP-004)            │
-    │ (Rule TL-001)            │    └────────────┬─────────────┘
+    └──────────┬───────────────┘    │ Check spacing:             │
+               ↓                    │ minSpacing =               │
+    ┌──────────────────────────┐    │ 300 + (speed × 3)          │
+    │ Safe lane available?     │    │ (Rule SP-004)              │
+    │ (Rule TL-001)            │    └────────────┬───────────────┘
     └──────────┬───────────────┘                 ↓
-        YES ↙  ↖ NO                ┌────────────────────────────┐
-           ↓    ↓                  │ Spacing OK?               │
-    Change Lane  Emergency Brake   │ if (actual < minimum)     │
+        YES ↙  ↖ NO               ┌──────────────────────────┐
+           ↓    ↓                  │ Spacing OK?              │
+    Change Lane  Emergency Brake   │ if (actual < minimum)    │
     (Rule TL-002)  (Rule EM-001)   │   → Slow down (×0.85)    │
            ↓         ↓             └────────────┬─────────────┘
            └────┬────┘                         ↓
-                ↓                   ┌──────────────────────────┐
+                ↓                  ┌──────────────────────────┐
     ┌─────────────────────────┐    │ STATION ARRIVAL CHECK    │
     │ CHECK STATION ARRIVAL   │    │ (Rule SA-001:            │
     │ (Rule SA-001)           │    │  <400px distance)        │
@@ -70,11 +70,11 @@ Visual, easy-to-follow guide for the railway corridor rule system.
     │ (Rule SA-002, SA-003)        │  │                          │
     │ platform = ?                 │  │ Apply speed control:     │
     └──────────┬───────────────────┘  │ • Acceleration (SM-002)  │
-               ↓                       │ • Deceleration (SM-004)  │
+               ↓                      │ • Deceleration (SM-004)  │
     ┌──────────────────────────────┐  │ • Zone limits (SM-003)   │
     │ Platform available?          │  └──────────┬───────────────┘
     └──────────┬───────────────────┘             ↓
-        YES ↙  ↖ NO                   ┌──────────────────────┐
+        YES ↙  ↖ NO                  ┌──────────────────────┐
            ↓    ↓                     │ ADD TO QUEUE         │
         Dock   Wait in queue          │ (Rule WQ-001)        │
         Train  (Rule WQ-001)          │ Calculate position   │
@@ -112,7 +112,7 @@ Visual, easy-to-follow guide for the railway corridor rule system.
                     ┌─────────────────────────┐
                     │ Check departure time    │
                     │ stoppingTime elapsed?   │
-                    └───────────┬────────┬───┘
+                    └───────────┬────────┬────┘
                             YES ↙        ↖ NO
                               ↓          │
                          ┌──────────┐    │
@@ -170,13 +170,13 @@ Visual, easy-to-follow guide for the railway corridor rule system.
                     └────────┬─────────┘ │
                              ↓           │
                     ┌──────────────────────────┐
-                    │ CALCULATE TARGET SPEED  │
-                    │ = MIN of all limits     │
-                    │ (effective speed cap)   │
-                    └────────┬────────────────┘
+                    │ CALCULATE TARGET SPEED   │
+                    │ = MIN of all limits      │
+                    │ (effective speed cap)    │
+                    └────────┬─────────────────┘
                              ↓
                     ┌──────────────────────────┐
-                    │ CURRENT SPEED vs TARGET │
+                    │ CURRENT SPEED vs TARGET  │
                     └─────────┬────────┬───────┘
                          LO ↙         ↖ HI
                            ↓          ↓
@@ -204,37 +204,37 @@ Visual, easy-to-follow guide for the railway corridor rule system.
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║                    COLLISION RISK RESPONSE MATRIX                          ║
 ╠════════════════════════════════════════════════════════════════════════════╣
-║                                                                              ║
+║                                                                            ║
 ║  DISTANCE    │  RISK %  │  RESPONSE            │  RULE   │  VISUAL         ║
-║  ─────────────┼──────────┼─────────────────────┼─────────┼────────────────  ║
-║  > 600px      │    0-10%  │  Continue normal    │ CD-001  │  🟢 GREEN       ║
-║               │           │  operations         │         │                 ║
-║  ─────────────┼──────────┼─────────────────────┼─────────┼────────────────  ║
+║  ─────────────┼──────────┼─────────────────────┼─────────┼───────────────  ║
+║  > 600px      │    0-10%  │  Continue normal    │ CD-001  │  🟢 GREEN      ║
+║               │           │  operations         │         │                ║
+║  ─────────────┼──────────┼─────────────────────┼─────────┼───────────────  ║
 ║  300-600px    │   10-40%  │  Reduce to 70%     │ SP-001  │  🟡 YELLOW      ║
-║               │           │  speed              │ Level 1 │  Caution        ║
-║               │           │  Increase detection │         │                 ║
-║  ─────────────┼──────────┼─────────────────────┼─────────┼────────────────  ║
+║               │           │  speed              │ Level 1 │  Caution       ║
+║               │           │  Increase detection │         │                ║
+║  ─────────────┼──────────┼─────────────────────┼─────────┼───────────────  ║
 ║  100-300px    │   40-70%  │  Reduce to 50%     │ SP-001  │  🟠 ORANGE      ║
-║               │           │  speed              │ Level 2 │  Alert          ║
-║               │           │  Sound warning      │         │  (Blink)        ║
-║  ─────────────┼──────────┼─────────────────────┼─────────┼────────────────  ║
+║               │           │  speed              │ Level 2 │  Alert         ║
+║               │           │  Sound warning      │         │  (Blink)       ║
+║  ─────────────┼──────────┼─────────────────────┼─────────┼──────────────── ║
 ║  50-100px     │   70-90%  │  Reduce to 30%     │ SP-001  │  🔴 RED         ║
-║               │           │  speed              │ Level 3 │  Urgent         ║
-║               │           │  Try lane change    │ TL-002  │  (Flash)        ║
-║  ─────────────┼──────────┼─────────────────────┼─────────┼────────────────  ║
-║  0-50px       │   90-100% │  EMERGENCY BRAKE   │EM-001   │  ⚫ CRITICAL    ║
+║               │           │  speed              │ Level 3 │  Urgent        ║
+║               │           │  Try lane change    │ TL-002  │  (Flash)       ║
+║  ─────────────┼──────────┼─────────────────────┼─────────┼───────────────  ║
+║  0-50px       │   90-100% │  EMERGENCY BRAKE   │EM-001   │  ⚫ CRITICAL   ║
 ║               │           │  speed = 10%       │ TL-002  │  (Pulsing Red)  ║
 ║               │           │  Force lane change │         │                 ║
 ║               │           │  If still critical:│         │                 ║
 ║               │           │  Emergency backup  │EM-002   │                 ║
-║  ─────────────┴──────────┴─────────────────────┴─────────┴────────────────  ║
-║                                                                              ║
-║  DECISION LOGIC:                                                            ║
-║  ─────────────────────────────────────────────────────────────────────────  ║
+║  ─────────────┴──────────┴─────────────────────┴─────────┴──────────────── ║
+║                                                                            ║
+║  DECISION LOGIC:                                                           ║
+║  ───────────────────────────────────────────────────────────────────────── ║
 ║  IF (riskLevel > 50% AND safeToChangeLane) THEN attemptLaneChange()        ║
 ║  ELSE IF (riskLevel > 70%) THEN emergencyBrake()                           ║
 ║  ELSE IF (riskLevel > 40%) THEN applyGraduatedResponse(distance)           ║
-║                                                                              ║
+║                                                                            ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -333,11 +333,11 @@ Visual, easy-to-follow guide for the railway corridor rule system.
             ┌─────┐ CONTINUE
             │     │  IN LANE
             ↓     └──────────
-      ┌──────────────────────┐
-      │ Collision Risk?      │
-      │ (Rule TL-002)        │
-      │ trainAhead OR        │
-      │ trainBehind?         │
+      ┌───────────────────────┐
+      │ Collision Risk?       │
+      │ (Rule TL-002)         │
+      │ trainAhead OR         │
+      │ trainBehind?          │
       └────────┬──────────────┘
                ↓
         YES? (Forced)   NO? (Voluntary)
@@ -348,12 +348,12 @@ Visual, easy-to-follow guide for the railway corridor rule system.
       │(TL-002)    │  │(TL-001)         │
       └────┬───────┘  └────────┬────────┘
            ↓                   ↓
-      ┌────────────────────────────────┐
+      ┌─────────────────────────────────┐
       │ Find Available Lane             │
       │ (Rule TL-004)                   │
       │ Check no trains in target lane  │
       │ within 400px                    │
-      └────────┬─────────────────────────┘
+      └────────┬────────────────────────┘
                ↓
           AVAILABLE?
            ↙      ↖
@@ -512,7 +512,7 @@ T100 Alert State: GREEN
               ↓
    ┌──────────────────────────────────────────┐
    │ LEVEL 1: EMERGENCY BRAKE (Immediate)     │
-   │ ────────────────────────────────────────  │
+   │ ──────────────────────────────────────── │
    │ train.speed = speed × 0.10               │
    │ alertState = 'CRITICAL'                  │
    │ emergencyActive = true                   │
@@ -521,8 +521,8 @@ T100 Alert State: GREEN
                   ↓
    ┌──────────────────────────────────────────┐
    │ LEVEL 2: ATTEMPT LANE CHANGE (T+200ms)   │
-   │ ────────────────────────────────────────  │
-   │ if (safeToChangeLane) then:               │
+   │ ──────────────────────────────────────── │
+   │ if (safeToChangeLane) then:              │
    │   changeLane(targetLane)                 │
    │   speed += 20  (small accel to escape)   │
    │   → Try to create space                  │
@@ -532,24 +532,24 @@ T100 Alert State: GREEN
          ↙          ↖
        YES           NO
         ↓            ↓
-    ┌────────────────────────────────────┐
-    │ LEVEL 3: DEADLOCK PREVENTION (T+2s)│
+    ┌─────────────────────────────────────┐
+    │ LEVEL 3: DEADLOCK PREVENTION (T+2s) │
     │ ────────────────────────────────────│
     │ if (timeInDeadlock > 5s) then:      │
     │   reverse train slightly            │
     │   train.speed = -10                 │
     │   Log: DEADLOCK RECOVERY            │
     │   → Create separation for recovery  │
-    └────────────┬─────────────────────────┘
+    └────────────┬────────────────────────┘
                  ↓
     ┌──────────────────────────────────────┐
     │ LEVEL 4: RECOVERY (T+3s)             │
-    │ ────────────────────────────────────  │
+    │ ──────────────────────────────────── │
     │ if (spacing > 600px AND safe) then:  │
     │   emergencyActive = false            │
     │   Resume normal speed control        │
     │   → Back to standard rules           │
-    └──────────────┬──────────────────────┘
+    └──────────────┬───────────────────────┘
                    ↓
             NORMAL OPERATIONS
 ```
@@ -573,30 +573,30 @@ TRACK LAYOUT WITH SPEED ZONES:
 1600px              Switchyard Begins
 ├────────────────┤  Sprawl offset: 300% for large stations
                  |═══════════════════════════════════════════════════|
-                 │  Switchyard Zone (2400px for Chennai Central)  │
-                 │  Speed: 60% (curved tracks, interlocking)      │
-                 │  Lane changes only in safe sub-zones           │
-                 └────────────────────┬──────────────────────────
+                 │  Switchyard Zone (2400px for Chennai Central)     │
+                 │  Speed: 60% (curved tracks, interlocking)         │
+                 │  Lane changes only in safe sub-zones              │
+                 └────────────────────┬───────────────────────────────
 
 2600px              Crossover Zone
                  |═════════════════════════════════════════════════════|
-                 │  Physical Interlocking (Maraimalai Nagar)         │
-                 │  Speed: 70% (diagonal crossing)                    │
-                 │  Mandatory lane shift for exit trains             │
-                 └────────────────────┬───────────────────────────────
+                 │  Physical Interlocking (Maraimalai Nagar)           │
+                 │  Speed: 70% (diagonal crossing)                     │
+                 │  Mandatory lane shift for exit trains               │
+                 └────────────────────┬─────────────────────────────────
 
 3200px              Exit and approach to Tambaram
                  |═════════════════════════════════════════════════════|
                  │  Inter-station Normal (1600px)                      │
                  │  Speed: 100%                                        │
-                 └────────────────────┬────────────────────────────────
+                 └────────────────────┬─────────────────────────────────
 
 4400px              Tambaram Station
                  |═════════════════════════════════════════════════════|
-                 │  Station Approach Zone (400px before)           │
-                 │  Speed: 40%                                     │
-                 │  Switchyard: 60%                                │
-                 └────────────────────┬─────────────────────────────
+                 │  Station Approach Zone (400px before)               │
+                 │  Speed: 40%                                         │
+                 │  Switchyard: 60%                                    │
+                 └────────────────────┬─────────────────────────────────
 
 ...continues for 15 stations...
 
