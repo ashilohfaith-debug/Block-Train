@@ -286,22 +286,22 @@ export default function RailwayDigitalTwin() {
 
   const TrackLine = ({ x1, y1, x2, y2, opacity = 1 }: any) => (
     <g opacity={opacity}>
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#10b981" strokeWidth="6" strokeDasharray="2 6" opacity="0.6" />
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#10b981" strokeWidth="1.5" />
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#1f2937" strokeWidth="6" strokeDasharray="2 6" opacity="0.6" />
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#1f2937" strokeWidth="1.5" />
     </g>
   );
 
   const TrackCurve = ({ d, opacity = 1 }: any) => (
     <g opacity={opacity}>
-      <path d={d} stroke="#10b981" strokeWidth="6" strokeDasharray="2 6" fill="transparent" opacity="0.6" />
-      <path d={d} stroke="#10b981" strokeWidth="1.5" fill="transparent" />
+      <path d={d} stroke="#1f2937" strokeWidth="6" strokeDasharray="2 6" fill="transparent" opacity="0.6" />
+      <path d={d} stroke="#1f2937" strokeWidth="1.5" fill="transparent" />
     </g>
   );
 
   if (!mounted) return null;
 
   return (
-    <div className="w-full h-screen bg-[#060b13] overflow-hidden relative font-sans">
+    <div className="w-full h-screen bg-[#d6e1c9] overflow-hidden relative font-sans">
       
 
 
@@ -318,7 +318,7 @@ export default function RailwayDigitalTwin() {
           <div className="relative" style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}>
             
             {/* Elegant Blueprint Grid */}
-            <div className="absolute inset-0 pointer-events-none opacity-10" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '40px 40px', width: CANVAS_WIDTH }} />
+            <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)', backgroundSize: '40px 40px', width: CANVAS_WIDTH }} />
             
             <svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT} className="block drop-shadow-sm">
               {STATIONS.map((station, i) => {
@@ -369,18 +369,18 @@ export default function RailwayDigitalTwin() {
                     )}
 
                     {/* Premium Glassmorphic Station Box */}
-                    <rect x={sX - 250} y={station.platforms[0].y - 45} width={500} height={(station.p * TRACK_GAP) + 70} fill="rgba(15, 23, 42, 0.6)" stroke="rgba(56, 189, 248, 0.2)" strokeWidth="1" rx="8" />
+                    <rect x={sX - 250} y={station.platforms[0].y - 45} width={500} height={(station.p * TRACK_GAP) + 70} fill="rgba(255, 255, 255, 0.65)" stroke="#9ca3af" strokeWidth="1" rx="8" />
                     
                     {/* High-Tech Corner Accents */}
-                    <path d={`M ${sX - 250} ${station.platforms[0].y - 30} L ${sX - 250} ${station.platforms[0].y - 45} L ${sX - 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#38bdf8" strokeWidth="2" opacity="0.8" />
-                    <path d={`M ${sX + 250} ${station.platforms[0].y - 30} L ${sX + 250} ${station.platforms[0].y - 45} L ${sX + 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#38bdf8" strokeWidth="2" opacity="0.8" />
-                    <path d={`M ${sX - 250} ${station.platforms[station.p-1].y + 10} L ${sX - 250} ${station.platforms[station.p-1].y + 25} L ${sX - 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#38bdf8" strokeWidth="2" opacity="0.8" />
-                    <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#38bdf8" strokeWidth="2" opacity="0.8" />
+                    <path d={`M ${sX - 250} ${station.platforms[0].y - 30} L ${sX - 250} ${station.platforms[0].y - 45} L ${sX - 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
+                    <path d={`M ${sX + 250} ${station.platforms[0].y - 30} L ${sX + 250} ${station.platforms[0].y - 45} L ${sX + 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
+                    <path d={`M ${sX - 250} ${station.platforms[station.p-1].y + 10} L ${sX - 250} ${station.platforms[station.p-1].y + 25} L ${sX - 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
+                    <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
                     
                     {/* Station Name Header Bar */}
-                    <rect x={sX - 100} y={station.platforms[0].y - 65} width={200} height={24} fill="rgba(2, 6, 23, 0.9)" stroke="#1e293b" strokeWidth="1" rx="12" />
-                    <text x={sX} y={station.platforms[0].y - 49} fill="#e2e8f0" fontSize="10" textAnchor="middle" fontWeight="700" className="font-mono tracking-widest">
-                      <tspan fill="#38bdf8">{station.id}</tspan> <tspan fill="#475569">|</tspan> {station.name.toUpperCase()}
+                    <rect x={sX - 100} y={station.platforms[0].y - 65} width={200} height={24} fill="#ffffff" stroke="#9ca3af" strokeWidth="1" rx="12" />
+                    <text x={sX} y={station.platforms[0].y - 49} fill="#4b5563" fontSize="10" textAnchor="middle" fontWeight="700" className="font-mono tracking-widest">
+                      <tspan fill="#111827">{station.id}</tspan> <tspan fill="#d1d5db">|</tspan> {station.name.toUpperCase()}
                     </text>
 
                     {/* Tracks & Platforms */}
@@ -413,8 +413,8 @@ export default function RailwayDigitalTwin() {
                                   y={py + 7} 
                                   width={pWidth} 
                                   height={10} 
-                                  fill="rgba(30, 41, 59, 0.8)" 
-                                  stroke="#475569" 
+                                  fill="#f3f4f6" 
+                                  stroke="#9ca3af" 
                                   strokeWidth="1"
                                   rx="3"
                                 />
@@ -424,11 +424,11 @@ export default function RailwayDigitalTwin() {
                                   y={py + 9} 
                                   width={pWidth - 4} 
                                   height={6} 
-                                  fill="rgba(71, 85, 105, 0.4)" 
+                                  fill="rgba(156, 163, 175, 0.4)" 
                                   rx="1"
                                 />
                                 {/* Platform Numbers */}
-                                <text x={pStartX + pWidth/2} y={py + 15} fill="#94a3b8" fontSize="7" textAnchor="middle" fontWeight="700" className="font-mono">
+                                <text x={pStartX + pWidth/2} y={py + 15} fill="#4b5563" fontSize="7" textAnchor="middle" fontWeight="700" className="font-mono">
                                   PF-{pIndex + 1}
                                 </text>
                               </g>
@@ -456,7 +456,7 @@ export default function RailwayDigitalTwin() {
                   <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)` }}>
                     <polygon points="-8,-4 8,0 -8,4 -4,0" fill={color} style={{ filter: `drop-shadow(0px 0px 4px ${color})` }} />
                     {/* Counter-rotate the text so it always stays perfectly upright and readable */}
-                    <text x="0" y="-12" fill="#cbd5e1" fontSize="9" textAnchor="middle" fontWeight="600" style={{ transform: `rotate(${-angle}deg)` }} className="font-mono">
+                    <text x="0" y="-12" fill="#6b7280" fontSize="9" textAnchor="middle" fontWeight="600" style={{ transform: `rotate(${-angle}deg)` }} className="font-mono">
                       {train.id}
                     </text>
                   </g>
