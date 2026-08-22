@@ -65,13 +65,33 @@ const generateTrains = () => {
   return trains;
 };
 
-const getLaneMultiplier = (laneId: number, numLanes: number) => {
-  if (numLanes === 3) return laneId;
-  if (numLanes === 2) {
-    if (laneId <= 0) return -0.5;
-    return -0.5 + laneId;
+const getStationMainY = (station: any, effectiveLane: number) => {
+  const pYs = [];
+  const startY = CENTER_Y + station.yOffset - ((station.p - 1) * TRACK_GAP) / 2;
+  for (let i = 0; i < station.p; i++) pYs.push(startY + i * TRACK_GAP);
+  
+  const numLanes = station.p <= 4 ? 2 : 3;
+  let idxTop, idxMid, idxBot;
+  if (numLanes === 3) {
+    const third = Math.floor(station.p / 3);
+    idxTop = Math.floor(third / 2);
+    idxMid = third + Math.floor(third / 2);
+    idxBot = third * 2 + Math.floor((station.p - third * 2) / 2);
+  } else {
+    const half = Math.floor(station.p / 2);
+    idxTop = Math.floor(half / 2);
+    idxMid = idxTop; 
+    idxBot = half + Math.floor((station.p - half) / 2);
   }
-  return laneId;
+  
+  const yTop = pYs[idxTop];
+  const yMid = pYs[idxMid];
+  const yBot = pYs[idxBot];
+  
+  if (effectiveLane <= -1) return yTop;
+  if (effectiveLane >= 1) return yBot;
+  if (effectiveLane < 0) return yMid + (yTop - yMid) * Math.abs(effectiveLane);
+  return yMid + (yBot - yMid) * effectiveLane;
 };
 
 // Pre-calculate highly organic, randomized platform architectures for every station
@@ -96,8 +116,8 @@ const STATIONS = RAW_STATIONS.map(st => {
       if (i < halfCount) laneId = -1;
       else laneId = 1;
     }
-    const laneMultiplier = getLaneMultiplier(laneId, numLanes);
-    const mainLineY = CENTER_Y + st.yOffset + (laneMultiplier * TRACK_GAP);
+    
+    const mainLineY = getStationMainY(st, laneId);
     const isMainline = Math.abs(pYs[i] - mainLineY) < 1;
     
     pData.push({ i, laneId, mainLineY, isMainline, y: pYs[i] });
@@ -222,8 +242,7 @@ export default function RailwayDigitalTwin() {
       const yardStart = sX + station.yardStartOffset;
       const yardEnd = sX + station.yardEndOffset;
       
-      const laneMultiplier = getLaneMultiplier(effectiveLane, numLanes);
-      const mainY = CENTER_Y + station.yOffset + (laneMultiplier * TRACK_GAP);
+      const mainY = getStationMainY(station, effectiveLane);
 
       if (x >= yardStart && x <= yardEnd) {
         if (x >= sZoneStart && x <= sZoneEnd) return targetY;
@@ -240,26 +259,22 @@ export default function RailwayDigitalTwin() {
 
       if (i < STATIONS.length - 1) {
         const nextStation = STATIONS[i + 1];
-        const nextNumLanes = nextStation.p <= 4 ? 2 : 3;
         const nextSX = sX + STATION_SPACING;
         const nextYardStart = nextSX + nextStation.yardStartOffset;
         
         if (x > yardEnd && x < nextYardStart) {
-          const nextLaneMultiplier = getLaneMultiplier(effectiveLane, nextNumLanes);
-          const nextMainY = CENTER_Y + nextStation.yOffset + (nextLaneMultiplier * TRACK_GAP);
+          const nextMainY = getStationMainY(nextStation, effectiveLane);
           const t = (x - yardEnd) / (nextYardStart - yardEnd);
           return mainY + (nextMainY - mainY) * ((1 - Math.cos(Math.PI * t)) / 2);
         }
       }
     }
 
-    const firstNumLanes = STATIONS[0].p <= 4 ? 2 : 3;
     if (x <= 600 + STATIONS[0].yardStartOffset) {
-      return CENTER_Y + STATIONS[0].yOffset + (getLaneMultiplier(effectiveLane, firstNumLanes) * TRACK_GAP);
+      return getStationMainY(STATIONS[0], effectiveLane);
     }
     const lastStation = STATIONS[STATIONS.length - 1];
-    const lastNumLanes = lastStation.p <= 4 ? 2 : 3;
-    return CENTER_Y + lastStation.yOffset + (getLaneMultiplier(effectiveLane, lastNumLanes) * TRACK_GAP);
+    return getStationMainY(lastStation, effectiveLane);
   };
 
   const drawThroat = (startX: number, startY: number, endX: number, endY: number) => {
@@ -288,28 +303,7 @@ export default function RailwayDigitalTwin() {
   return (
     <div className="w-full h-screen bg-[#060b13] overflow-hidden relative font-sans">
       
-      {/* PROFESSIONAL HUD OVERLAYS */}
-      <div className="absolute top-6 left-6 z-50 pointer-events-none">
-        <div className="bg-slate-900/60 backdrop-blur-md border border-slate-700/50 p-5 rounded-xl shadow-2xl flex flex-col gap-1">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-            <h1 className="text-sm font-bold text-white tracking-widest uppercase">Live Network Telemetry</h1>
-          </div>
-          <p className="text-xs text-slate-400 font-medium">Chengalpattu ➔ Chennai Central Corridor</p>
-          <div className="mt-4 pt-4 border-t border-slate-700/50 flex gap-6 text-xs font-mono">
-            <span className="flex items-center gap-2"><span className="text-blue-500 text-sm">➤</span> EXPRESS</span>
-            <span className="flex items-center gap-2"><span className="text-yellow-500 text-sm">➤</span> PASSENGER</span>
-            <span className="flex items-center gap-2"><span className="text-orange-500 text-sm">➤</span> FREIGHT</span>
-          </div>
-        </div>
-      </div>
 
-      <div className="absolute bottom-6 right-6 z-50 pointer-events-none">
-        <div className="bg-slate-900/60 backdrop-blur-md border border-slate-700/50 px-4 py-2 rounded-lg shadow-xl text-right">
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest mb-1">System Time</p>
-          <p className="text-lg font-bold font-mono text-slate-200">{time}</p>
-        </div>
-      </div>
 
       {/* INTERACTIVE MAP */}
       <TransformWrapper
@@ -333,18 +327,18 @@ export default function RailwayDigitalTwin() {
                 const yardEnd = sX + station.yardEndOffset;
                 
                 const currLanes = station.p <= 4 ? 2 : 3;
-                const mTop = getLaneMultiplier(-1, currLanes);
-                const mMid = getLaneMultiplier(0, currLanes);
-                const mBot = getLaneMultiplier(1, currLanes);
+                const mTop = getStationMainY(station, -1);
+                const mMid = getStationMainY(station, 0);
+                const mBot = getStationMainY(station, 1);
 
                 return (
                   <g key={station.id}>
                     {/* Mainlines running straight through yard */}
-                    <TrackLine x1={yardStart} y1={CENTER_Y + station.yOffset + mTop * TRACK_GAP} x2={yardEnd} y2={CENTER_Y + station.yOffset + mTop * TRACK_GAP} />
+                    <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} />
                     {currLanes === 3 && (
-                      <TrackLine x1={yardStart} y1={CENTER_Y + station.yOffset + mMid * TRACK_GAP} x2={yardEnd} y2={CENTER_Y + station.yOffset + mMid * TRACK_GAP} />
+                      <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
                     )}
-                    <TrackLine x1={yardStart} y1={CENTER_Y + station.yOffset + mBot * TRACK_GAP} x2={yardEnd} y2={CENTER_Y + station.yOffset + mBot * TRACK_GAP} />
+                    <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} />
 
                     {/* Inter-station S-Curves */}
                     {i < STATIONS.length - 1 && (() => {
@@ -353,15 +347,15 @@ export default function RailwayDigitalTwin() {
                       const nextYardStart = nextSX + nextStation.yardStartOffset;
                       
                       const nextLanes = nextStation.p <= 4 ? 2 : 3;
-                      const nTop = getLaneMultiplier(-1, nextLanes);
-                      const nMid = getLaneMultiplier(0, nextLanes);
-                      const nBot = getLaneMultiplier(1, nextLanes);
+                      const nTop = getStationMainY(nextStation, -1);
+                      const nMid = getStationMainY(nextStation, 0);
+                      const nBot = getStationMainY(nextStation, 1);
                       
                       return (
                         <>
-                          <TrackCurve d={drawThroat(yardEnd, CENTER_Y + station.yOffset + mTop * TRACK_GAP, nextYardStart, CENTER_Y + nextStation.yOffset + nTop * TRACK_GAP)} />
-                          <TrackCurve d={drawThroat(yardEnd, CENTER_Y + station.yOffset + mMid * TRACK_GAP, nextYardStart, CENTER_Y + nextStation.yOffset + nMid * TRACK_GAP)} />
-                          <TrackCurve d={drawThroat(yardEnd, CENTER_Y + station.yOffset + mBot * TRACK_GAP, nextYardStart, CENTER_Y + nextStation.yOffset + nBot * TRACK_GAP)} />
+                          <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} />
+                          <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
+                          <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
                         </>
                       );
                     })()}
@@ -369,15 +363,24 @@ export default function RailwayDigitalTwin() {
                     {/* Explicit Crossovers specifically at MMNK */}
                     {station.id === 'MMNK' && station.p <= 4 && (
                       <>
-                        <TrackCurve d={drawThroat(sX - 450, CENTER_Y + station.yOffset - TRACK_GAP/2, sX - 300, CENTER_Y + station.yOffset + TRACK_GAP/2)} />
-                        <TrackCurve d={drawThroat(sX - 450, CENTER_Y + station.yOffset + TRACK_GAP/2, sX - 300, CENTER_Y + station.yOffset - TRACK_GAP/2)} />
+                        <TrackCurve d={drawThroat(sX - 450, mTop, sX - 300, mBot)} />
+                        <TrackCurve d={drawThroat(sX - 450, mBot, sX - 300, mTop)} />
                       </>
                     )}
 
-                    {/* Highly Polished Station Zone Box */}
-                    <rect x={sX - 250} y={station.platforms[0].y - 40} width={500} height={(station.p * TRACK_GAP) + 60} fill="rgba(15, 23, 42, 0.4)" stroke="#1e293b" strokeWidth="1" rx="8" />
-                    <text x={sX} y={station.platforms[0].y - 55} fill="#64748b" fontSize="11" textAnchor="middle" fontWeight="600" className="uppercase font-sans">
-                      <tspan fill="#3b82f6">[{station.id}]</tspan> {station.name}
+                    {/* Premium Glassmorphic Station Box */}
+                    <rect x={sX - 250} y={station.platforms[0].y - 45} width={500} height={(station.p * TRACK_GAP) + 70} fill="rgba(15, 23, 42, 0.6)" stroke="rgba(56, 189, 248, 0.2)" strokeWidth="1" rx="8" />
+                    
+                    {/* High-Tech Corner Accents */}
+                    <path d={`M ${sX - 250} ${station.platforms[0].y - 30} L ${sX - 250} ${station.platforms[0].y - 45} L ${sX - 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#38bdf8" strokeWidth="2" opacity="0.8" />
+                    <path d={`M ${sX + 250} ${station.platforms[0].y - 30} L ${sX + 250} ${station.platforms[0].y - 45} L ${sX + 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#38bdf8" strokeWidth="2" opacity="0.8" />
+                    <path d={`M ${sX - 250} ${station.platforms[station.p-1].y + 10} L ${sX - 250} ${station.platforms[station.p-1].y + 25} L ${sX - 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#38bdf8" strokeWidth="2" opacity="0.8" />
+                    <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#38bdf8" strokeWidth="2" opacity="0.8" />
+                    
+                    {/* Station Name Header Bar */}
+                    <rect x={sX - 100} y={station.platforms[0].y - 65} width={200} height={24} fill="rgba(2, 6, 23, 0.9)" stroke="#1e293b" strokeWidth="1" rx="12" />
+                    <text x={sX} y={station.platforms[0].y - 49} fill="#e2e8f0" fontSize="10" textAnchor="middle" fontWeight="700" className="font-mono tracking-widest">
+                      <tspan fill="#38bdf8">{station.id}</tspan> <tspan fill="#475569">|</tspan> {station.name.toUpperCase()}
                     </text>
 
                     {/* Tracks & Platforms */}
@@ -399,16 +402,38 @@ export default function RailwayDigitalTwin() {
                             </>
                           )}
 
-                          {pIndex < station.p - 1 && (
-                            <rect 
-                              x={sZoneStart + 20} 
-                              y={py + 10} 
-                              width={Math.max(20, sZoneEnd - sZoneStart - 40)} 
-                              height={4} 
-                              fill="#334155" 
-                              rx="2"
-                            />
-                          )}
+                          {pIndex < station.p - 1 && (() => {
+                            const pWidth = Math.max(40, sZoneEnd - sZoneStart - 40);
+                            const pStartX = sZoneStart + 20;
+                            return (
+                              <g>
+                                {/* Platform Base */}
+                                <rect 
+                                  x={pStartX} 
+                                  y={py + 7} 
+                                  width={pWidth} 
+                                  height={10} 
+                                  fill="rgba(30, 41, 59, 0.8)" 
+                                  stroke="#475569" 
+                                  strokeWidth="1"
+                                  rx="3"
+                                />
+                                {/* Platform Hatching Pattern Simulated */}
+                                <rect 
+                                  x={pStartX + 2} 
+                                  y={py + 9} 
+                                  width={pWidth - 4} 
+                                  height={6} 
+                                  fill="rgba(71, 85, 105, 0.4)" 
+                                  rx="1"
+                                />
+                                {/* Platform Numbers */}
+                                <text x={pStartX + pWidth/2} y={py + 15} fill="#94a3b8" fontSize="7" textAnchor="middle" fontWeight="700" className="font-mono">
+                                  PF-{pIndex + 1}
+                                </text>
+                              </g>
+                            )
+                          })()}
                         </g>
                       );
                     })}
