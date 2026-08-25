@@ -460,7 +460,9 @@ export default function RailwayDigitalTwin() {
         minScale={0.1}
         maxScale={4}
         limitToBounds={false}
-        wheel={{ step: 0.1 }}
+        wheel={{ activationKeys: ["Control"] }} // Ctrl+Wheel to zoom
+        panOnScroll={true} // Trackpad / Scroll wheel to pan!
+        panOnScrollSpeed={1.5}
         panning={{ velocityDisabled: true }}
       >
         <TransformComponent wrapperStyle={{ width: "100%", height: "100%", cursor: "grab" }}>
