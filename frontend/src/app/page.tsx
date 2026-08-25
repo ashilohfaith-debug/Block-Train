@@ -174,10 +174,15 @@ const CANVAS_WIDTH = STATIONS.length * STATION_SPACING + 400;
 const CANVAS_HEIGHT = 1600;
 
 const drawThroat = (startX: number, startY: number, endX: number, endY: number) => {
-  const dx = Math.abs(endX - startX) / 2;
-  const cp1x = startX + dx;
-  const cp2x = endX - dx;
-  return `M ${startX} ${startY} C ${cp1x} ${startY}, ${cp2x} ${endY}, ${endX} ${endY}`;
+  let path = `M ${startX} ${startY}`;
+  const steps = 24; // High resolution sampling
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    const x = startX + (endX - startX) * t;
+    const y = startY + (endY - startY) * ((1 - Math.cos(Math.PI * t)) / 2);
+    path += ` L ${x.toFixed(1)} ${y.toFixed(1)}`;
+  }
+  return path;
 };
 
 const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1 }: any) => (
@@ -194,7 +199,8 @@ const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1 }: any) => (
 ));
 
 const TrackCurve = React.memo(({ d, opacity = 1 }: any) => {
-  const match = d.match(/M ([\d.-]+) ([\d.-]+) C [^,]+, [^,]+, ([\d.-]+) ([\d.-]+)/);
+  // Matches "M x y ... L x y" to extract start and end coordinates for frogs
+  const match = d.match(/^M ([\d.-]+) ([\d.-]+).*L ([\d.-]+) ([\d.-]+)$/);
   
   return (
     <g opacity={opacity}>
