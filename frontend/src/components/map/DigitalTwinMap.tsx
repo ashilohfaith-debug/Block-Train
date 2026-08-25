@@ -48,8 +48,10 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
                 <stop offset="100%" stopColor="#991b1b" />
               </linearGradient>
               <linearGradient id="metal-passenger" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#f87171" />
-                <stop offset="50%" stopColor="#dc2626" />
+                <stop offset="0%" stopColor="#7f1d1d" />
+                <stop offset="25%" stopColor="#dc2626" />
+                <stop offset="50%" stopColor="#ef4444" />
+                <stop offset="75%" stopColor="#dc2626" />
                 <stop offset="100%" stopColor="#7f1d1d" />
               </linearGradient>
               <linearGradient id="metal-freight" x1="0%" y1="0%" x2="0%" y2="100%">

@@ -80,11 +80,10 @@ export const LiveTrains = ({ trains }: { trains: Train[] }) => {
         const dy = nextY - y;
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-        const isExpress = train.type === 'express';
-        const isFreight = train.type === 'freight';
-        const grad = isExpress ? 'url(#metal-express)' : (isFreight ? 'url(#metal-freight)' : 'url(#metal-passenger)');
+        const grad = 'url(#metal-passenger)';
+        const isFreight = false;
         
-        const numCoaches = isFreight ? 4 : 3;
+        const numCoaches = 4;
         const coachLen = 18;
         const locoLen = 22;
         const gap = 3;
