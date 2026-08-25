@@ -18,18 +18,14 @@ export const StaticInfrastructure = React.memo(() => {
         const yardEnd = sX + station.yardEndOffset;
         
         const mTop = getStationMainY(station, -1);
+        const mMid = getStationMainY(station, 0);
         const mBot = getStationMainY(station, 1);
-        const currLanes = station.p <= 4 ? 2 : 3;
-        let mMid = 0;
-        if (currLanes === 3) mMid = getStationMainY(station, 0);
 
         return (
           <g key={station.id}>
             {/* Mainlines running straight through yard */}
             <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} />
-            {currLanes === 3 && (
-              <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
-            )}
+            <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
             <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} />
 
             {/* Inter-station S-Curves */}
@@ -38,25 +34,12 @@ export const StaticInfrastructure = React.memo(() => {
               const nextYardStart = sX + STATION_SPACING + nextStation.yardStartOffset;
               const nTop = getStationMainY(nextStation, -1);
               const nBot = getStationMainY(nextStation, 1);
-              const nextLanes = nextStation.p <= 4 ? 2 : 3;
-              let nMid = 0;
-              if (nextLanes === 3) nMid = getStationMainY(nextStation, 0);
+              const nMid = getStationMainY(nextStation, 0);
 
               return (
                 <>
                   <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} />
-                  {currLanes === 3 && nextLanes === 3 && (
-                    <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
-                  )}
-                  {currLanes === 3 && nextLanes === 2 && (
-                    <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nTop)} opacity={0.5} />
-                  )}
-                  {currLanes === 2 && nextLanes === 3 && (
-                    <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nMid)} opacity={0.5} />
-                  )}
-                  {currLanes === 2 && nextLanes === 2 && (
-                    <TrackCurve d={drawThroat(yardEnd, (mTop + mBot) / 2, nextYardStart, (nTop + nBot) / 2)} />
-                  )}
+                  <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
                   <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
                 </>
               );

@@ -29,21 +29,14 @@ export const STATIONS: Station[] = VISIBLE_STATIONS.map(st => {
   const startY = CENTER_Y + st.yOffset - ((st.p - 1) * TRACK_GAP) / 2;
   for (let i = 0; i < st.p; i++) pYs.push(startY + i * TRACK_GAP);
 
-  const numLanes = st.p <= 4 ? 2 : 3;
   const thirdCount = Math.floor(st.p / 3);
-  const halfCount = Math.floor(st.p / 2);
 
   const pData = [];
   for (let i = 0; i < st.p; i++) {
     let laneId;
-    if (numLanes === 3) {
-      if (i < thirdCount) laneId = -1;
-      else if (i < thirdCount * 2) laneId = 0;
-      else laneId = 1;
-    } else {
-      if (i < halfCount) laneId = -1;
-      else laneId = 1;
-    }
+    if (i < thirdCount) laneId = -1;
+    else if (i < thirdCount * 2) laneId = 0;
+    else laneId = 1;
     
     const mainLineY = getStationMainY(st, laneId);
     const isMainline = Math.abs(pYs[i] - mainLineY) < 1;
