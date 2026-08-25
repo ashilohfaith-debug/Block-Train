@@ -1,7 +1,7 @@
 import React from 'react';
 import { Train } from '../../lib/types';
 import { getStationMainY } from '../../lib/utils/trackGeometry';
-import { STATION_SPACING } from '../../lib/constants';
+import { STATION_SPACING, pseudoRandom } from '../../lib/constants';
 import { STATIONS } from '../../lib/stations';
 import { Locomotive } from './Locomotive';
 import { Coach } from './Coach';
@@ -10,7 +10,7 @@ import { Headlight } from './Headlight';
 import { TelemetryTag } from './TelemetryTag';
 
 const getTrainY = (train: Train, x: number) => {
-  const effectiveLane = train.baseLane; // We enforce strict no-switching, so baseLane is all we need.
+  const mainLane = train.baseLane; 
 
   for (let i = 0; i < STATIONS.length; i++) {
     const station = STATIONS[i];
@@ -18,16 +18,45 @@ const getTrainY = (train: Train, x: number) => {
     const yardStart = sX + station.yardStartOffset;
     const yardEnd = sX + station.yardEndOffset;
 
+    // Inside station yard boundaries
     if (x >= yardStart && x <= yardEnd) {
-      return getStationMainY(station, effectiveLane);
+      // Deterministically pick a platform lane based on train ID and station ID
+      const r = pseudoRandom(`${train.id}-${station.id}-switch`);
+      const expectedMainY = getStationMainY(station, mainLane);
+      
+      const validPlatforms = station.platforms.filter(p => Math.abs(p.mainLineY - expectedMainY) < 1);
+      const p = validPlatforms.length > 0 
+        ? validPlatforms[Math.floor(r * validPlatforms.length)] 
+        : station.platforms[0];
+
+      const divergeStart = sX + p.divergeStartOffset;
+      const convergeEnd = sX + p.convergeEndOffset;
+      const sZoneStart = sX + p.sZoneStartOffset;
+      const sZoneEnd = sX + p.sZoneEndOffset;
+
+      if (!p.isMainline) {
+        if (x >= divergeStart && x < sZoneStart) {
+          const t = (x - divergeStart) / (sZoneStart - divergeStart);
+          return p.mainLineY + (p.y - p.mainLineY) * ((1 - Math.cos(Math.PI * t)) / 2);
+        }
+        if (x >= sZoneStart && x <= sZoneEnd) {
+          return p.y;
+        }
+        if (x > sZoneEnd && x <= convergeEnd) {
+          const t = (x - sZoneEnd) / (convergeEnd - sZoneEnd);
+          return p.y + (p.mainLineY - p.y) * ((1 - Math.cos(Math.PI * t)) / 2);
+        }
+      }
+      return expectedMainY;
     }
     
+    // Between stations S-curve
     if (i < STATIONS.length - 1) {
       const nextStation = STATIONS[i+1];
       const nextYardStart = sX + STATION_SPACING + nextStation.yardStartOffset;
       if (x > yardEnd && x < nextYardStart) {
-        const startY = getStationMainY(station, effectiveLane);
-        const endY = getStationMainY(nextStation, effectiveLane);
+        const startY = getStationMainY(station, mainLane);
+        const endY = getStationMainY(nextStation, mainLane);
         const t = (x - yardEnd) / (nextYardStart - yardEnd);
         return startY + (endY - startY) * ((1 - Math.cos(Math.PI * t)) / 2);
       }
@@ -35,9 +64,9 @@ const getTrainY = (train: Train, x: number) => {
   }
 
   if (x < 600 + STATIONS[0].yardStartOffset) {
-    return getStationMainY(STATIONS[0], effectiveLane);
+    return getStationMainY(STATIONS[0], mainLane);
   }
-  return getStationMainY(STATIONS[STATIONS.length - 1], effectiveLane);
+  return getStationMainY(STATIONS[STATIONS.length - 1], mainLane);
 };
 
 export const LiveTrains = ({ trains }: { trains: Train[] }) => {
