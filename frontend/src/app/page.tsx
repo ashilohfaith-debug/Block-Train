@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
 const STATION_SPACING = 2400;
@@ -373,7 +373,6 @@ export default function RailwayDigitalTwin() {
   const [trains, setTrains] = useState<any[]>([]);
   const [mounted, setMounted] = useState(false);
   const [time, setTime] = useState("");
-  const crowdsRef = useRef<Record<string, number>>({});
 
   useEffect(() => {
     setMounted(true);
@@ -385,18 +384,6 @@ export default function RailwayDigitalTwin() {
 
     const interval = setInterval(() => {
       const now = Date.now();
-      
-      // Gradually increase passenger crowds at all platforms
-      STATIONS.forEach((station) => {
-        station.platforms.forEach((plat, pIndex) => {
-          const key = `${station.id}-${pIndex}`;
-          if (typeof crowdsRef.current[key] === 'undefined') {
-            crowdsRef.current[key] = Math.random() * 50; // Initial randomized crowds
-          }
-          crowdsRef.current[key] = Math.min(100, crowdsRef.current[key] + 0.05); // Grow slowly
-        });
-      });
-
       setTrains((curr) => curr.map((t) => {
         // If train is stopped, wait until the stop time expires
         if (t.stopUntil && now < t.stopUntil) {
@@ -421,15 +408,6 @@ export default function RailwayDigitalTwin() {
                 (t.direction === -1 && t.x > sX && newX <= sX)) {
               newX = sX;
               newStopUntil = now + 10000; // Stop for exactly 10 seconds (10,000 ms)
-              
-              // Clear passenger crowds if a passenger train stops here!
-              if (t.type !== 'freight') {
-                const trainY = getTrainY(t, sX);
-                const pIndex = STATIONS[i].platforms.findIndex(p => Math.abs(p.y - trainY) < 5);
-                if (pIndex !== -1) {
-                  crowdsRef.current[`${STATIONS[i].id}-${pIndex}`] = 0; // Board all passengers!
-                }
-              }
               break;
             }
           }
@@ -586,64 +564,6 @@ export default function RailwayDigitalTwin() {
                 </linearGradient>
               </defs>
               <StaticInfrastructure />
-
-              {/* Passenger Crowd Heatmaps */}
-              {STATIONS.map((station, i) => {
-                const sX = 600 + i * STATION_SPACING;
-                return station.platforms.map((plat, pIndex) => {
-                  if (pIndex >= station.p - 1) return null; 
-                  
-                  const key = `${station.id}-${pIndex}`;
-                  const crowd = crowdsRef.current[key] || 0;
-                  if (crowd <= 0) return null;
-
-                  const sZoneStart = sX + plat.sZoneStartOffset;
-                  const sZoneEnd = sX + plat.sZoneEndOffset;
-                  const pWidth = Math.max(40, sZoneEnd - sZoneStart - 40);
-                  const pStartX = sZoneStart + 20;
-
-                  return (
-                    <rect 
-                      key={`crowd-${key}`}
-                      x={pStartX + 5} 
-                      y={plat.y + 12} 
-                      width={pWidth - 10} 
-                      height={TRACK_GAP - 24} 
-                      fill="#60a5fa" 
-                      opacity={(crowd / 100) * 0.7}
-                      rx="2"
-                    />
-                  );
-                });
-              })}
-
-              {/* Dynamic Track Signals (Semaphores) */}
-              {STATIONS.map((station, i) => {
-                const sX = 600 + i * STATION_SPACING;
-                return station.platforms.map((plat, pIndex) => {
-                  const sZoneStart = sX + plat.sZoneStartOffset;
-                  const sZoneEnd = sX + plat.sZoneEndOffset;
-                  
-                  const isOccupied = trains.some(t => {
-                     const y = getTrainY(t, t.x);
-                     return Math.abs(y - plat.y) < 5 && t.x >= sZoneStart - 150 && t.x <= sZoneEnd + 150;
-                  });
-
-                  const color = isOccupied ? "#ef4444" : "#22c55e"; 
-
-                  return (
-                    <g key={`sig-${station.id}-${pIndex}`}>
-                      <rect x={sZoneStart - 42} y={plat.y - 18} width="4" height="12" fill="#1f2937" rx="1" />
-                      <circle cx={sZoneStart - 40} cy={plat.y - 12} r="2.5" fill={color} />
-                      <circle cx={sZoneStart - 40} cy={plat.y - 12} r="6" fill={color} opacity="0.3" />
-                      
-                      <rect x={sZoneEnd + 38} y={plat.y + 6} width="4" height="12" fill="#1f2937" rx="1" />
-                      <circle cx={sZoneEnd + 40} cy={plat.y + 12} r="2.5" fill={color} />
-                      <circle cx={sZoneEnd + 40} cy={plat.y + 12} r="6" fill={color} opacity="0.3" />
-                    </g>
-                  );
-                });
-              })}
 
               {/* Live Trains */}
               {trains.map((train) => {
