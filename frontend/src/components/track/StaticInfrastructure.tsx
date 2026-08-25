@@ -54,6 +54,15 @@ export const StaticInfrastructure = React.memo(() => {
                   {currLanes === 2 && nextLanes === 3 && (
                     <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nMid)} opacity={0.5} />
                   )}
+                  {station.id === 'MMNK' && nextStation.id === 'GI' && (
+                    <>
+                      {/* Explicit Connecting Crossover Track between MMNK and GI requested by user */}
+                      <TrackCurve d={drawThroat(yardEnd + 600, mTop, nextYardStart - 600, nBot)} opacity={0.7} stroke="#3b82f6" />
+                      <TrackCurve d={drawThroat(yardEnd + 600, mBot, nextYardStart - 600, nTop)} opacity={0.7} stroke="#3b82f6" />
+                      {/* A center connecting straight track */}
+                      <TrackCurve d={drawThroat(yardEnd, (mTop + mBot) / 2, nextYardStart, (nTop + nBot) / 2)} opacity={0.5} />
+                    </>
+                  )}
                   <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
                 </>
               );
