@@ -39,7 +39,7 @@ const VISIBLE_STATIONS = TESTING_MODE
   : RAW_STATIONS;
 
 const NUM_TRAINS = TESTING_MODE ? 3 : 30;
-const SPEED_MULTIPLIER = TESTING_MODE ? 0.3 : 1.0;
+const SPEED_MULTIPLIER = TESTING_MODE ? 1.5 : 1.0;
 // ------------------------------------
 
 const generateTrains = () => {
