@@ -193,14 +193,26 @@ const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1 }: any) => (
   </g>
 ));
 
-const TrackCurve = React.memo(({ d, opacity = 1 }: any) => (
-  <g opacity={opacity}>
-    <path d={d} stroke="#111827" strokeWidth="12" fill="transparent" opacity="0.6" style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.5))' }} />
-    <path d={d} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" fill="transparent" />
-    <path d={d} stroke="#9ca3af" strokeWidth="4" fill="transparent" />
-    <path d={d} stroke="#070B12" strokeWidth="2" fill="transparent" />
-  </g>
-));
+const TrackCurve = React.memo(({ d, opacity = 1 }: any) => {
+  const match = d.match(/M ([\d.-]+) ([\d.-]+) C [^,]+, [^,]+, ([\d.-]+) ([\d.-]+)/);
+  
+  return (
+    <g opacity={opacity}>
+      <path d={d} stroke="#111827" strokeWidth="12" fill="transparent" opacity="0.6" style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.5))' }} />
+      <path d={d} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" fill="transparent" />
+      <path d={d} stroke="#9ca3af" strokeWidth="4" fill="transparent" />
+      <path d={d} stroke="#070B12" strokeWidth="2" fill="transparent" />
+      
+      {/* Switch Point / Interlocking Frogs */}
+      {match && (
+        <>
+          <circle cx={match[1]} cy={match[2]} r="2.5" fill="#facc15" stroke="#070B12" strokeWidth="1" opacity="0.8" />
+          <circle cx={match[3]} cy={match[4]} r="2.5" fill="#facc15" stroke="#070B12" strokeWidth="1" opacity="0.8" />
+        </>
+      )}
+    </g>
+  );
+});
 
 const StaticInfrastructure = React.memo(() => {
   return (
@@ -477,6 +489,21 @@ export default function RailwayDigitalTwin() {
                   <stop offset="0%" stopColor="#facc15" stopOpacity="0.8" />
                   <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
                 </linearGradient>
+                <linearGradient id="metal-express" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#60a5fa" />
+                  <stop offset="50%" stopColor="#2563eb" />
+                  <stop offset="100%" stopColor="#1e3a8a" />
+                </linearGradient>
+                <linearGradient id="metal-freight" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#fb923c" />
+                  <stop offset="50%" stopColor="#ea580c" />
+                  <stop offset="100%" stopColor="#7c2d12" />
+                </linearGradient>
+                <linearGradient id="metal-passenger" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#fde047" />
+                  <stop offset="50%" stopColor="#ca8a04" />
+                  <stop offset="100%" stopColor="#713f12" />
+                </linearGradient>
               </defs>
               <StaticInfrastructure />
 
@@ -492,40 +519,66 @@ export default function RailwayDigitalTwin() {
 
                 const isExpress = train.type === 'express';
                 const isFreight = train.type === 'freight';
-                const color = isExpress ? '#3b82f6' : (isFreight ? '#f97316' : '#eab308');
-                const length = isFreight ? 60 : 45;
-                const bodyWidth = 14;
+                const grad = isExpress ? 'url(#metal-express)' : (isFreight ? 'url(#metal-freight)' : 'url(#metal-passenger)');
+                
+                const numCoaches = isFreight ? 4 : 3;
+                const coachLen = 14;
+                const locoLen = 16;
+                const gap = 2;
+                const totalLen = locoLen + numCoaches * (coachLen + gap);
+                const bodyWidth = 12;
+
+                // Brake glow logic (faked by checking distance to nearest station center)
+                // stations are at x = 600, 3000, 5400...
+                const distToStation = Math.abs(((train.x - 600) % STATION_SPACING + STATION_SPACING) % STATION_SPACING);
+                const isBraking = distToStation > STATION_SPACING - 300 || distToStation < 300;
 
                 return (
                   <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)`, willChange: 'transform' }} className="cursor-pointer group">
                     {/* Headlight beam */}
                     {!isFreight && (
-                      <polygon points={`10,-6 40,-12 40,12 10,6`} fill="url(#headlight-gradient)" opacity="0.4" />
+                      <polygon points={`${totalLen/2},-6 ${totalLen/2 + 40},-12 ${totalLen/2 + 40},12 ${totalLen/2},6`} fill="url(#headlight-gradient)" opacity="0.4" />
                     )}
                     
-                    {/* Ultra-Fast Fake Drop Shadow */}
-                    <rect x={-length/2 + 2} y={-bodyWidth/2 + 3} width={length} height={bodyWidth} fill="#000000" opacity="0.4" rx="3" />
+                    {/* Glowing Brake Friction (Undercarriage glow) */}
+                    {isBraking && (
+                      <rect x={-totalLen/2} y={-bodyWidth/2 - 2} width={totalLen} height={bodyWidth + 4} fill="#ef4444" opacity="0.3" style={{ filter: 'blur(3px)' }} />
+                    )}
 
-                    {/* Train Body Background */}
-                    <rect x={-length/2} y={-bodyWidth/2} width={length} height={bodyWidth} fill={color} rx="3" />
-                    
-                    {/* Locomotive Details */}
-                    <rect x={(length/2) - 8} y={-bodyWidth/2 + 1} width="6" height={bodyWidth - 2} fill="#1f2937" rx="1" /> {/* Windshield */}
-                    <rect x={(length/2) - 2} y={-2} width="2" height="4" fill="#facc15" /> {/* Headlight LED */}
-                    
-                    {/* Coach Details (AC Units/Hatches) */}
-                    {!isFreight && (
-                      <>
-                        <line x1={-length/2 + 4} y1="0" x2={(length/2) - 12} y2="0" stroke="#1f2937" strokeWidth="2" strokeDasharray="6 2" opacity="0.5" />
-                      </>
-                    )}
-                    {isFreight && (
-                      <>
-                        {/* Freight container lines */}
-                        <line x1={-length/2 + 2} y1={-bodyWidth/2 + 2} x2={(length/2) - 12} y2={-bodyWidth/2 + 2} stroke="#9a3412" strokeWidth="1" />
-                        <line x1={-length/2 + 2} y1={bodyWidth/2 - 2} x2={(length/2) - 12} y2={bodyWidth/2 - 2} stroke="#9a3412" strokeWidth="1" />
-                      </>
-                    )}
+                    {/* Ultra-Fast Fake Drop Shadow */}
+                    <rect x={-totalLen/2 + 2} y={-bodyWidth/2 + 3} width={totalLen} height={bodyWidth} fill="#000000" opacity="0.5" rx="2" />
+
+                    {/* Articulated Consist */}
+                    <g>
+                      {/* Locomotive */}
+                      <rect x={totalLen/2 - locoLen} y={-bodyWidth/2} width={locoLen} height={bodyWidth} fill={grad} rx="3" />
+                      <rect x={totalLen/2 - 8} y={-bodyWidth/2 + 1} width="6" height={bodyWidth - 2} fill="#070B12" rx="1" /> {/* Windshield */}
+                      <rect x={totalLen/2 - 2} y={-2} width="2" height="4" fill="#facc15" /> {/* Headlight LED */}
+                      
+                      {/* Bellows (Couplers) + Coaches */}
+                      {Array.from({ length: numCoaches }).map((_, cIdx) => {
+                        const cX = totalLen/2 - locoLen - gap - (cIdx + 1) * coachLen - (cIdx * gap);
+                        return (
+                          <g key={`coach-${cIdx}`}>
+                            {/* Coupler */}
+                            <rect x={cX + coachLen} y={-2} width={gap} height={4} fill="#374151" />
+                            {/* Coach Body */}
+                            <rect x={cX} y={-bodyWidth/2} width={coachLen} height={bodyWidth} fill={grad} rx="2" />
+                            
+                            {/* Roof Details */}
+                            {!isFreight && (
+                              <rect x={cX + 2} y={-1} width={coachLen - 4} height={2} fill="#1f2937" opacity="0.5" />
+                            )}
+                            {isFreight && (
+                              <>
+                                <line x1={cX + 2} y1={-bodyWidth/2 + 2} x2={cX + coachLen - 2} y2={-bodyWidth/2 + 2} stroke="#070B12" strokeWidth="1" opacity="0.3" />
+                                <line x1={cX + 2} y1={bodyWidth/2 - 2} x2={cX + coachLen - 2} y2={bodyWidth/2 - 2} stroke="#070B12" strokeWidth="1" opacity="0.3" />
+                              </>
+                            )}
+                          </g>
+                        );
+                      })}
+                    </g>
 
                     {/* Counter-rotate the text so it always stays perfectly upright and readable */}
                     <g style={{ transform: `rotate(${-angle}deg)` }} className="opacity-0 group-hover:opacity-100 transition-opacity">
