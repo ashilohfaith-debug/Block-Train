@@ -280,8 +280,8 @@ const StaticInfrastructure = React.memo(() => {
             <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
             
             {/* Station Name Header Bar */}
-            <rect x={sX - 100} y={station.platforms[0].y - 65} width={200} height={24} fill="#111827" stroke="#374151" strokeWidth="1" rx="12" />
-            <text x={sX} y={station.platforms[0].y - 49} fill="#9ca3af" fontSize="10" textAnchor="middle" fontWeight="700" className="font-mono tracking-widest">
+            <rect x={sX - 180} y={station.platforms[0].y - 85} width={360} height={40} fill="#111827" stroke="#374151" strokeWidth="1" rx="20" />
+            <text x={sX} y={station.platforms[0].y - 59} fill="#9ca3af" fontSize="18" textAnchor="middle" fontWeight="800" className="font-mono tracking-widest">
               <tspan fill="#facc15">{station.id}</tspan> <tspan fill="#4b5563">|</tspan> {station.name.toUpperCase()}
             </text>
 
