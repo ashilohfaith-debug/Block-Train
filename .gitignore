@@ -1,6 +1,11 @@
 # Prerequisites
 *.d
 
+# Local secrets and environment configuration
+.env
+.env.*
+!.env.example
+
 # Object files
 *.o
 *.ko
