@@ -540,9 +540,7 @@ export default function RailwayDigitalTwin() {
                 return (
                   <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)`, willChange: 'transform' }} className="cursor-pointer group">
                     {/* Headlight beam */}
-                    {!isFreight && (
-                      <polygon points={`${totalLen/2},-6 ${totalLen/2 + 40},-12 ${totalLen/2 + 40},12 ${totalLen/2},6`} fill="url(#headlight-gradient)" opacity="0.4" />
-                    )}
+                    <polygon points={`${totalLen/2},-6 ${totalLen/2 + 40},-12 ${totalLen/2 + 40},12 ${totalLen/2},6`} fill="url(#headlight-gradient)" opacity="0.4" />
                     
                     {/* Glowing Brake Friction (Undercarriage glow) */}
                     {isBraking && (
