@@ -8,8 +8,8 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
 export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
   return (
     <TransformWrapper
-      initialScale={0.05}
-      minScale={0.03}
+      initialScale={0.3}
+      minScale={0.15}
       maxScale={4}
       limitToBounds={true}
       wheel={{ step: 0.1 }}
