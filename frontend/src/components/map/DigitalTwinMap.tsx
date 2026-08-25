@@ -43,9 +43,9 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
                 <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="metal-express" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#60a5fa" />
-                <stop offset="50%" stopColor="#2563eb" />
-                <stop offset="100%" stopColor="#1e3a8a" />
+                <stop offset="0%" stopColor="#fca5a5" />
+                <stop offset="50%" stopColor="#ef4444" />
+                <stop offset="100%" stopColor="#991b1b" />
               </linearGradient>
               <linearGradient id="metal-passenger" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#f87171" />
@@ -53,9 +53,9 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
                 <stop offset="100%" stopColor="#7f1d1d" />
               </linearGradient>
               <linearGradient id="metal-freight" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#9ca3af" />
-                <stop offset="50%" stopColor="#4b5563" />
-                <stop offset="100%" stopColor="#1f2937" />
+                <stop offset="0%" stopColor="#fecaca" />
+                <stop offset="50%" stopColor="#b91c1c" />
+                <stop offset="100%" stopColor="#450a0a" />
               </linearGradient>
             </defs>
             

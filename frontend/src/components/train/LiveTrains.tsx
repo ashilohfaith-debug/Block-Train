@@ -85,11 +85,11 @@ export const LiveTrains = ({ trains }: { trains: Train[] }) => {
         const grad = isExpress ? 'url(#metal-express)' : (isFreight ? 'url(#metal-freight)' : 'url(#metal-passenger)');
         
         const numCoaches = isFreight ? 4 : 3;
-        const coachLen = 14;
-        const locoLen = 16;
-        const gap = 2;
+        const coachLen = 18;
+        const locoLen = 22;
+        const gap = 3;
         const totalLen = locoLen + numCoaches * (coachLen + gap);
-        const bodyWidth = 12;
+        const bodyWidth = 16;
 
         const distToStation = Math.abs(((train.x - 600) % STATION_SPACING + STATION_SPACING) % STATION_SPACING);
         const isBraking = (distToStation > STATION_SPACING - 300 || distToStation < 300) && !train.stopUntil;
