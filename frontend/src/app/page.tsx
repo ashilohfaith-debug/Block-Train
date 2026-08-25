@@ -173,6 +173,165 @@ const STATIONS = VISIBLE_STATIONS.map(st => {
 const CANVAS_WIDTH = STATIONS.length * STATION_SPACING + 400;
 const CANVAS_HEIGHT = 1600;
 
+const drawThroat = (startX: number, startY: number, endX: number, endY: number) => {
+  const dx = Math.abs(endX - startX) / 2;
+  const cp1x = startX + dx;
+  const cp2x = endX - dx;
+  return `M ${startX} ${startY} C ${cp1x} ${startY}, ${cp2x} ${endY}, ${endX} ${endY}`;
+};
+
+const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1 }: any) => (
+  <g opacity={opacity}>
+    {/* Ballast / Track Bed */}
+    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#111827" strokeWidth="12" opacity="0.6" style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.5))' }} />
+    {/* Concrete Sleepers */}
+    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" />
+    {/* Outer Rails (Silver) */}
+    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#9ca3af" strokeWidth="4" />
+    {/* Inner Hollow (Dark background color) */}
+    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#070B12" strokeWidth="2" />
+  </g>
+));
+
+const TrackCurve = React.memo(({ d, opacity = 1 }: any) => (
+  <g opacity={opacity}>
+    <path d={d} stroke="#111827" strokeWidth="12" fill="transparent" opacity="0.6" style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.5))' }} />
+    <path d={d} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" fill="transparent" />
+    <path d={d} stroke="#9ca3af" strokeWidth="4" fill="transparent" />
+    <path d={d} stroke="#070B12" strokeWidth="2" fill="transparent" />
+  </g>
+));
+
+const StaticInfrastructure = React.memo(() => {
+  return (
+    <>
+      {STATIONS.map((station, i) => {
+        const sX = 600 + i * STATION_SPACING;
+        const yardStart = sX + station.yardStartOffset;
+        const yardEnd = sX + station.yardEndOffset;
+        
+        const currLanes = station.p <= 4 ? 2 : 3;
+        const mTop = getStationMainY(station, -1);
+        const mMid = getStationMainY(station, 0);
+        const mBot = getStationMainY(station, 1);
+
+        return (
+          <g key={station.id}>
+            {/* Mainlines running straight through yard */}
+            <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} />
+            {currLanes === 3 && (
+              <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
+            )}
+            <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} />
+
+            {/* Inter-station S-Curves */}
+            {i < STATIONS.length - 1 && (() => {
+              const nextStation = STATIONS[i+1];
+              const nextSX = sX + STATION_SPACING;
+              const nextYardStart = nextSX + nextStation.yardStartOffset;
+              
+              const nextLanes = nextStation.p <= 4 ? 2 : 3;
+              const nTop = getStationMainY(nextStation, -1);
+              const nMid = getStationMainY(nextStation, 0);
+              const nBot = getStationMainY(nextStation, 1);
+              
+              return (
+                <>
+                  <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} />
+                  <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
+                  <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
+                </>
+              );
+            })()}
+
+            {/* Explicit Crossovers specifically at MMNK */}
+            {station.id === 'MMNK' && station.p <= 4 && (
+              <>
+                <TrackCurve d={drawThroat(sX - 450, mTop, sX - 300, mBot)} />
+                <TrackCurve d={drawThroat(sX - 450, mBot, sX - 300, mTop)} />
+              </>
+            )}
+
+            {/* Premium Glassmorphic Station Box */}
+            <rect x={sX - 250} y={station.platforms[0].y - 45} width={500} height={(station.p * TRACK_GAP) + 70} fill="rgba(255, 255, 255, 0.05)" stroke="#374151" strokeWidth="1" rx="8" />
+            
+            {/* High-Tech Corner Accents */}
+            <path d={`M ${sX - 250} ${station.platforms[0].y - 30} L ${sX - 250} ${station.platforms[0].y - 45} L ${sX - 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
+            <path d={`M ${sX + 250} ${station.platforms[0].y - 30} L ${sX + 250} ${station.platforms[0].y - 45} L ${sX + 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
+            <path d={`M ${sX - 250} ${station.platforms[station.p-1].y + 10} L ${sX - 250} ${station.platforms[station.p-1].y + 25} L ${sX - 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
+            <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
+            
+            {/* Station Name Header Bar */}
+            <rect x={sX - 100} y={station.platforms[0].y - 65} width={200} height={24} fill="#111827" stroke="#374151" strokeWidth="1" rx="12" />
+            <text x={sX} y={station.platforms[0].y - 49} fill="#9ca3af" fontSize="10" textAnchor="middle" fontWeight="700" className="font-mono tracking-widest">
+              <tspan fill="#facc15">{station.id}</tspan> <tspan fill="#4b5563">|</tspan> {station.name.toUpperCase()}
+            </text>
+
+            {/* Tracks & Platforms */}
+            {station.platforms.map((plat, pIndex) => {
+              const py = plat.y;
+              const mainLineY = plat.mainLineY;
+              const divergeStart = sX + plat.divergeStartOffset;
+              const sZoneStart = sX + plat.sZoneStartOffset;
+              const sZoneEnd = sX + plat.sZoneEndOffset;
+              const convergeEnd = sX + plat.convergeEndOffset;
+
+              return (
+                <g key={`${station.id}-p${pIndex}`}>
+                  {!plat.isMainline && (
+                    <>
+                      <TrackCurve d={drawThroat(divergeStart, mainLineY, sZoneStart, py)} />
+                      <TrackLine x1={sZoneStart} y1={py} x2={sZoneEnd} y2={py} />
+                      <TrackCurve d={drawThroat(sZoneEnd, py, convergeEnd, mainLineY)} />
+                    </>
+                  )}
+
+                  {pIndex < station.p - 1 && (() => {
+                    const pWidth = Math.max(40, sZoneEnd - sZoneStart - 40);
+                    const pStartX = sZoneStart + 20;
+                    return (
+                      <g>
+                        {/* Platform Base */}
+                        <rect 
+                          x={pStartX} 
+                          y={py + 8} 
+                          width={pWidth} 
+                          height={TRACK_GAP - 16} 
+                          fill="#1f2937" 
+                          stroke="#374151" 
+                          strokeWidth="1"
+                          rx="2"
+                        />
+                        {/* Yellow Safety Edge Lines */}
+                        <line x1={pStartX} y1={py + 9} x2={pStartX + pWidth} y2={py + 9} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" />
+                        <line x1={pStartX} y1={py + 8 + (TRACK_GAP - 16) - 1} x2={pStartX + pWidth} y2={py + 8 + (TRACK_GAP - 16) - 1} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" />
+                        
+                        {/* Platform Hatching Pattern Simulated */}
+                        <rect 
+                          x={pStartX + 4} 
+                          y={py + 12} 
+                          width={pWidth - 8} 
+                          height={TRACK_GAP - 24} 
+                          fill="rgba(55, 65, 81, 0.4)" 
+                          rx="1"
+                        />
+                        {/* Platform Numbers */}
+                        <text x={pStartX + pWidth/2} y={py + (TRACK_GAP / 2) + 2} fill="#9ca3af" fontSize="9" textAnchor="middle" fontWeight="700" className="font-mono">
+                          PF-{pIndex + 1}
+                        </text>
+                      </g>
+                    )
+                  })()}
+                </g>
+              );
+            })}
+          </g>
+        );
+      })}
+    </>
+  );
+});
+
 export default function RailwayDigitalTwin() {
   const [trains, setTrains] = useState<any[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -286,34 +445,7 @@ export default function RailwayDigitalTwin() {
     return getStationMainY(lastStation, effectiveLane);
   };
 
-  const drawThroat = (startX: number, startY: number, endX: number, endY: number) => {
-    const dx = Math.abs(endX - startX) / 2;
-    const cp1x = startX + dx;
-    const cp2x = endX - dx;
-    return `M ${startX} ${startY} C ${cp1x} ${startY}, ${cp2x} ${endY}, ${endX} ${endY}`;
-  };
 
-  const TrackLine = ({ x1, y1, x2, y2, opacity = 1 }: any) => (
-    <g opacity={opacity}>
-      {/* Ballast / Track Bed */}
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#111827" strokeWidth="12" opacity="0.6" style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.5))' }} />
-      {/* Concrete Sleepers */}
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" />
-      {/* Outer Rails (Silver) */}
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#9ca3af" strokeWidth="4" />
-      {/* Inner Hollow (Dark background color) */}
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#070B12" strokeWidth="2" />
-    </g>
-  );
-
-  const TrackCurve = ({ d, opacity = 1 }: any) => (
-    <g opacity={opacity}>
-      <path d={d} stroke="#111827" strokeWidth="12" fill="transparent" opacity="0.6" style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.5))' }} />
-      <path d={d} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" fill="transparent" />
-      <path d={d} stroke="#9ca3af" strokeWidth="4" fill="transparent" />
-      <path d={d} stroke="#070B12" strokeWidth="2" fill="transparent" />
-    </g>
-  );
 
   if (!mounted) return null;
 
@@ -344,129 +476,7 @@ export default function RailwayDigitalTwin() {
                   <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
                 </linearGradient>
               </defs>
-              {STATIONS.map((station, i) => {
-                const sX = 600 + i * STATION_SPACING;
-                const yardStart = sX + station.yardStartOffset;
-                const yardEnd = sX + station.yardEndOffset;
-                
-                const currLanes = station.p <= 4 ? 2 : 3;
-                const mTop = getStationMainY(station, -1);
-                const mMid = getStationMainY(station, 0);
-                const mBot = getStationMainY(station, 1);
-
-                return (
-                  <g key={station.id}>
-                    {/* Mainlines running straight through yard */}
-                    <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} />
-                    {currLanes === 3 && (
-                      <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
-                    )}
-                    <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} />
-
-                    {/* Inter-station S-Curves */}
-                    {i < STATIONS.length - 1 && (() => {
-                      const nextStation = STATIONS[i+1];
-                      const nextSX = sX + STATION_SPACING;
-                      const nextYardStart = nextSX + nextStation.yardStartOffset;
-                      
-                      const nextLanes = nextStation.p <= 4 ? 2 : 3;
-                      const nTop = getStationMainY(nextStation, -1);
-                      const nMid = getStationMainY(nextStation, 0);
-                      const nBot = getStationMainY(nextStation, 1);
-                      
-                      return (
-                        <>
-                          <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} />
-                          <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
-                          <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
-                        </>
-                      );
-                    })()}
-
-                    {/* Explicit Crossovers specifically at MMNK */}
-                    {station.id === 'MMNK' && station.p <= 4 && (
-                      <>
-                        <TrackCurve d={drawThroat(sX - 450, mTop, sX - 300, mBot)} />
-                        <TrackCurve d={drawThroat(sX - 450, mBot, sX - 300, mTop)} />
-                      </>
-                    )}
-
-                    {/* Premium Glassmorphic Station Box */}
-                    <rect x={sX - 250} y={station.platforms[0].y - 45} width={500} height={(station.p * TRACK_GAP) + 70} fill="rgba(255, 255, 255, 0.65)" stroke="#9ca3af" strokeWidth="1" rx="8" />
-                    
-                    {/* High-Tech Corner Accents */}
-                    <path d={`M ${sX - 250} ${station.platforms[0].y - 30} L ${sX - 250} ${station.platforms[0].y - 45} L ${sX - 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
-                    <path d={`M ${sX + 250} ${station.platforms[0].y - 30} L ${sX + 250} ${station.platforms[0].y - 45} L ${sX + 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
-                    <path d={`M ${sX - 250} ${station.platforms[station.p-1].y + 10} L ${sX - 250} ${station.platforms[station.p-1].y + 25} L ${sX - 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
-                    <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
-                    
-                    {/* Station Name Header Bar */}
-                    <rect x={sX - 100} y={station.platforms[0].y - 65} width={200} height={24} fill="#ffffff" stroke="#9ca3af" strokeWidth="1" rx="12" />
-                    <text x={sX} y={station.platforms[0].y - 49} fill="#4b5563" fontSize="10" textAnchor="middle" fontWeight="700" className="font-mono tracking-widest">
-                      <tspan fill="#111827">{station.id}</tspan> <tspan fill="#d1d5db">|</tspan> {station.name.toUpperCase()}
-                    </text>
-
-                    {/* Tracks & Platforms */}
-                    {station.platforms.map((plat, pIndex) => {
-                      const py = plat.y;
-                      const mainLineY = plat.mainLineY;
-                      const divergeStart = sX + plat.divergeStartOffset;
-                      const sZoneStart = sX + plat.sZoneStartOffset;
-                      const sZoneEnd = sX + plat.sZoneEndOffset;
-                      const convergeEnd = sX + plat.convergeEndOffset;
-
-                      return (
-                        <g key={`${station.id}-p${pIndex}`}>
-                          {!plat.isMainline && (
-                            <>
-                              <TrackCurve d={drawThroat(divergeStart, mainLineY, sZoneStart, py)} />
-                              <TrackLine x1={sZoneStart} y1={py} x2={sZoneEnd} y2={py} />
-                              <TrackCurve d={drawThroat(sZoneEnd, py, convergeEnd, mainLineY)} />
-                            </>
-                          )}
-
-                          {pIndex < station.p - 1 && (() => {
-                            const pWidth = Math.max(40, sZoneEnd - sZoneStart - 40);
-                            const pStartX = sZoneStart + 20;
-                            return (
-                              <g>
-                                {/* Platform Base */}
-                                <rect 
-                                  x={pStartX} 
-                                  y={py + 8} 
-                                  width={pWidth} 
-                                  height={TRACK_GAP - 16} 
-                                  fill="#1f2937" 
-                                  stroke="#374151" 
-                                  strokeWidth="1"
-                                  rx="2"
-                                />
-                                {/* Yellow Safety Edge Lines */}
-                                <line x1={pStartX} y1={py + 9} x2={pStartX + pWidth} y2={py + 9} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" />
-                                <line x1={pStartX} y1={py + 8 + (TRACK_GAP - 16) - 1} x2={pStartX + pWidth} y2={py + 8 + (TRACK_GAP - 16) - 1} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" />
-                                
-                                {/* Platform Hatching Pattern Simulated */}
-                                <rect 
-                                  x={pStartX + 4} 
-                                  y={py + 12} 
-                                  width={pWidth - 8} 
-                                  height={TRACK_GAP - 24} 
-                                  fill="rgba(55, 65, 81, 0.4)" 
-                                  rx="1"
-                                />
-                                {/* Platform Numbers */}
-                                <text x={pStartX + pWidth/2} y={py + (TRACK_GAP / 2) + 2} fill="#9ca3af" fontSize="9" textAnchor="middle" fontWeight="700" className="font-mono">
-                                  PF-{pIndex + 1}
-                                </text>
-                              </g>
-                            )
-                          })()}
-                        </g>
-                      );
-                    })}
-                  </g>
-                );
-              })}
+              <StaticInfrastructure />
 
               {/* Live Trains */}
               {trains.map((train) => {
@@ -485,14 +495,17 @@ export default function RailwayDigitalTwin() {
                 const bodyWidth = 14;
 
                 return (
-                  <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)` }} className="cursor-pointer group">
+                  <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)`, willChange: 'transform' }} className="cursor-pointer group">
                     {/* Headlight beam */}
                     {!isFreight && (
                       <polygon points={`10,-6 40,-12 40,12 10,6`} fill="url(#headlight-gradient)" opacity="0.4" />
                     )}
                     
+                    {/* Ultra-Fast Fake Drop Shadow */}
+                    <rect x={-length/2 + 2} y={-bodyWidth/2 + 3} width={length} height={bodyWidth} fill="#000000" opacity="0.4" rx="3" />
+
                     {/* Train Body Background */}
-                    <rect x={-length/2} y={-bodyWidth/2} width={length} height={bodyWidth} fill={color} rx="3" style={{ filter: `drop-shadow(0px 2px 4px rgba(0,0,0,0.5))` }} />
+                    <rect x={-length/2} y={-bodyWidth/2} width={length} height={bodyWidth} fill={color} rx="3" />
                     
                     {/* Locomotive Details */}
                     <rect x={(length/2) - 8} y={-bodyWidth/2 + 1} width="6" height={bodyWidth - 2} fill="#1f2937" rx="1" /> {/* Windshield */}
