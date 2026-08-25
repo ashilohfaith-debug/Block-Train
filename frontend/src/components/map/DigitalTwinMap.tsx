@@ -6,11 +6,18 @@ import { Train } from '../../lib/types';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
 
 export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
+  // Focus perfectly on the first major station (Chengalpattu) on load
+  const startX = -600;
+  const startY = -400;
+
   return (
     <TransformWrapper
-      initialScale={0.8}
+      key="map-wrapper-v3" 
+      initialScale={1.5}   
+      initialPositionX={startX}
+      initialPositionY={startY}
       minScale={0.15}
-      maxScale={4}
+      maxScale={5}
       limitToBounds={true}
       wheel={{ step: 0.1 }}
       panning={{ velocityDisabled: true }}
