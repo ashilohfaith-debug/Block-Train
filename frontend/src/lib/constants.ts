@@ -3,7 +3,7 @@ export const CENTER_Y = 800;
 export const TRACK_GAP = 64;
 
 // --- SCALING ENGINE CONFIGURATION ---
-export const TESTING_MODE = true;
+export const TESTING_MODE = false;
 export const NUM_TRAINS = TESTING_MODE ? 3 : 30;
 
 // The base speed multiplier. It will be controlled by a state in UI, 
