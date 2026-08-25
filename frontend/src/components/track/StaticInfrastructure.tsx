@@ -54,14 +54,8 @@ export const StaticInfrastructure = React.memo(() => {
                   {currLanes === 2 && nextLanes === 3 && (
                     <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nMid)} opacity={0.5} />
                   )}
-                  {station.id === 'MMNK' && nextStation.id === 'GI' && (
-                    <>
-                      {/* Perfect geometric crossover starting precisely at the yard exit frogs */}
-                      <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nBot)} opacity={0.5} />
-                      <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nTop)} opacity={0.5} />
-                      {/* Center connecting straight track if they want a 3rd line */}
-                      <TrackCurve d={drawThroat(yardEnd, (mTop + mBot) / 2, nextYardStart, (nTop + nBot) / 2)} opacity={0.5} />
-                    </>
+                  {currLanes === 2 && nextLanes === 2 && (
+                    <TrackCurve d={drawThroat(yardEnd, (mTop + mBot) / 2, nextYardStart, (nTop + nBot) / 2)} />
                   )}
                   <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
                 </>
