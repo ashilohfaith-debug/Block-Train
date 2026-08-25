@@ -295,22 +295,30 @@ export default function RailwayDigitalTwin() {
 
   const TrackLine = ({ x1, y1, x2, y2, opacity = 1 }: any) => (
     <g opacity={opacity}>
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#1f2937" strokeWidth="6" strokeDasharray="2 6" opacity="0.6" />
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#1f2937" strokeWidth="1.5" />
+      {/* Ballast / Track Bed */}
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#111827" strokeWidth="12" opacity="0.6" style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.5))' }} />
+      {/* Concrete Sleepers */}
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" />
+      {/* Outer Rails (Silver) */}
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#9ca3af" strokeWidth="4" />
+      {/* Inner Hollow (Dark background color) */}
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#070B12" strokeWidth="2" />
     </g>
   );
 
   const TrackCurve = ({ d, opacity = 1 }: any) => (
     <g opacity={opacity}>
-      <path d={d} stroke="#1f2937" strokeWidth="6" strokeDasharray="2 6" fill="transparent" opacity="0.6" />
-      <path d={d} stroke="#1f2937" strokeWidth="1.5" fill="transparent" />
+      <path d={d} stroke="#111827" strokeWidth="12" fill="transparent" opacity="0.6" style={{ filter: 'drop-shadow(0px 2px 2px rgba(0,0,0,0.5))' }} />
+      <path d={d} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" fill="transparent" />
+      <path d={d} stroke="#9ca3af" strokeWidth="4" fill="transparent" />
+      <path d={d} stroke="#070B12" strokeWidth="2" fill="transparent" />
     </g>
   );
 
   if (!mounted) return null;
 
   return (
-    <div className="w-full h-screen bg-[#d6e1c9] overflow-hidden relative font-sans">
+    <div className="w-full h-screen bg-[#070B12] overflow-hidden relative font-sans">
       
 
 
@@ -330,6 +338,12 @@ export default function RailwayDigitalTwin() {
             <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)', backgroundSize: '40px 40px', width: CANVAS_WIDTH }} />
             
             <svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT} className="block drop-shadow-sm">
+              <defs>
+                <linearGradient id="headlight-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#facc15" stopOpacity="0.8" />
+                  <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
+                </linearGradient>
+              </defs>
               {STATIONS.map((station, i) => {
                 const sX = 600 + i * STATION_SPACING;
                 const yardStart = sX + station.yardStartOffset;
@@ -419,25 +433,29 @@ export default function RailwayDigitalTwin() {
                                 {/* Platform Base */}
                                 <rect 
                                   x={pStartX} 
-                                  y={py + 7} 
+                                  y={py + 8} 
                                   width={pWidth} 
-                                  height={10} 
-                                  fill="#f3f4f6" 
-                                  stroke="#9ca3af" 
+                                  height={TRACK_GAP - 16} 
+                                  fill="#1f2937" 
+                                  stroke="#374151" 
                                   strokeWidth="1"
-                                  rx="3"
+                                  rx="2"
                                 />
+                                {/* Yellow Safety Edge Lines */}
+                                <line x1={pStartX} y1={py + 9} x2={pStartX + pWidth} y2={py + 9} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" />
+                                <line x1={pStartX} y1={py + 8 + (TRACK_GAP - 16) - 1} x2={pStartX + pWidth} y2={py + 8 + (TRACK_GAP - 16) - 1} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" />
+                                
                                 {/* Platform Hatching Pattern Simulated */}
                                 <rect 
-                                  x={pStartX + 2} 
-                                  y={py + 9} 
-                                  width={pWidth - 4} 
-                                  height={6} 
-                                  fill="rgba(156, 163, 175, 0.4)" 
+                                  x={pStartX + 4} 
+                                  y={py + 12} 
+                                  width={pWidth - 8} 
+                                  height={TRACK_GAP - 24} 
+                                  fill="rgba(55, 65, 81, 0.4)" 
                                   rx="1"
                                 />
                                 {/* Platform Numbers */}
-                                <text x={pStartX + pWidth/2} y={py + 15} fill="#4b5563" fontSize="7" textAnchor="middle" fontWeight="700" className="font-mono">
+                                <text x={pStartX + pWidth/2} y={py + (TRACK_GAP / 2) + 2} fill="#9ca3af" fontSize="9" textAnchor="middle" fontWeight="700" className="font-mono">
                                   PF-{pIndex + 1}
                                 </text>
                               </g>
@@ -460,14 +478,47 @@ export default function RailwayDigitalTwin() {
                 const dy = nextY - y;
                 const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-                const color = train.type === 'express' ? '#3b82f6' : (train.type === 'passenger' ? '#eab308' : '#f97316');
+                const isExpress = train.type === 'express';
+                const isFreight = train.type === 'freight';
+                const color = isExpress ? '#3b82f6' : (isFreight ? '#f97316' : '#eab308');
+                const length = isFreight ? 60 : 45;
+                const bodyWidth = 14;
+
                 return (
-                  <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)` }}>
-                    <polygon points="-8,-4 8,0 -8,4 -4,0" fill={color} style={{ filter: `drop-shadow(0px 0px 4px ${color})` }} />
+                  <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)` }} className="cursor-pointer group">
+                    {/* Headlight beam */}
+                    {!isFreight && (
+                      <polygon points={`10,-6 40,-12 40,12 10,6`} fill="url(#headlight-gradient)" opacity="0.4" />
+                    )}
+                    
+                    {/* Train Body Background */}
+                    <rect x={-length/2} y={-bodyWidth/2} width={length} height={bodyWidth} fill={color} rx="3" style={{ filter: `drop-shadow(0px 2px 4px rgba(0,0,0,0.5))` }} />
+                    
+                    {/* Locomotive Details */}
+                    <rect x={(length/2) - 8} y={-bodyWidth/2 + 1} width="6" height={bodyWidth - 2} fill="#1f2937" rx="1" /> {/* Windshield */}
+                    <rect x={(length/2) - 2} y={-2} width="2" height="4" fill="#facc15" /> {/* Headlight LED */}
+                    
+                    {/* Coach Details (AC Units/Hatches) */}
+                    {!isFreight && (
+                      <>
+                        <line x1={-length/2 + 4} y1="0" x2={(length/2) - 12} y2="0" stroke="#1f2937" strokeWidth="2" strokeDasharray="6 2" opacity="0.5" />
+                      </>
+                    )}
+                    {isFreight && (
+                      <>
+                        {/* Freight container lines */}
+                        <line x1={-length/2 + 2} y1={-bodyWidth/2 + 2} x2={(length/2) - 12} y2={-bodyWidth/2 + 2} stroke="#9a3412" strokeWidth="1" />
+                        <line x1={-length/2 + 2} y1={bodyWidth/2 - 2} x2={(length/2) - 12} y2={bodyWidth/2 - 2} stroke="#9a3412" strokeWidth="1" />
+                      </>
+                    )}
+
                     {/* Counter-rotate the text so it always stays perfectly upright and readable */}
-                    <text x="0" y="-12" fill="#6b7280" fontSize="9" textAnchor="middle" fontWeight="600" style={{ transform: `rotate(${-angle}deg)` }} className="font-mono">
-                      {train.id}
-                    </text>
+                    <g style={{ transform: `rotate(${-angle}deg)` }} className="opacity-0 group-hover:opacity-100 transition-opacity">
+                      <rect x="-30" y="-35" width="60" height="24" fill="#1f2937" rx="4" stroke="#4b5563" strokeWidth="1" />
+                      <text x="0" y="-23" fill="#e5e7eb" fontSize="10" textAnchor="middle" fontWeight="700" className="font-mono tracking-widest">
+                        {train.id}
+                      </text>
+                    </g>
                   </g>
                 );
               })}
