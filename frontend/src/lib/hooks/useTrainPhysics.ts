@@ -57,7 +57,28 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
 
         // Apply UI speed multiplier dynamically on top of physical speed
         const dynamicSpeed = t.speed * userSpeedMultiplier;
-        let newX = t.x + t.direction * (dynamicSpeed * 0.53);
+        let appliedSpeed = dynamicSpeed * 0.53;
+        
+        // Realistic Physics: Smooth Braking and Acceleration
+        let physicsFactor = 1;
+        for (let i = 0; i < STATIONS.length; i++) {
+          const sX = 600 + i * STATION_SPACING;
+          const dist = (sX - t.x) * t.direction;
+          
+          // Braking (Approaching a station)
+          if (dist > 0 && dist < 500) {
+             physicsFactor = Math.max(0.08, Math.pow(dist / 500, 0.7));
+             break;
+          }
+          // Accelerating (Departing a station)
+          if (dist < 0 && dist > -500) {
+             physicsFactor = Math.max(0.08, Math.pow(Math.abs(dist) / 500, 0.7));
+             break;
+          }
+        }
+        
+        appliedSpeed *= physicsFactor;
+        let newX = t.x + t.direction * appliedSpeed;
         
         if (!newStopUntil) {
           for (let i = 0; i < STATIONS.length; i++) {
