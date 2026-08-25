@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
-const STATION_SPACING = 1600;
-const CENTER_Y = 400;
-const TRACK_GAP = 24;
+const STATION_SPACING = 2400;
+const CENTER_Y = 800;
+const TRACK_GAP = 64;
 
 // Predictable pseudo-random generator to guarantee trains and tracks use the exact same chaos
 const pseudoRandom = (seed: string) => {
@@ -171,7 +171,7 @@ const STATIONS = VISIBLE_STATIONS.map(st => {
 });
 
 const CANVAS_WIDTH = STATIONS.length * STATION_SPACING + 400;
-const CANVAS_HEIGHT = 800;
+const CANVAS_HEIGHT = 1600;
 
 export default function RailwayDigitalTwin() {
   const [trains, setTrains] = useState<any[]>([]);
@@ -316,7 +316,7 @@ export default function RailwayDigitalTwin() {
 
       {/* INTERACTIVE MAP */}
       <TransformWrapper
-        initialScale={0.8}
+        initialScale={0.4}
         minScale={0.1}
         maxScale={4}
         limitToBounds={false}
