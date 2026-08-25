@@ -2,22 +2,52 @@ import React from 'react';
 import { Train } from '../../lib/types';
 import { getStationMainY } from '../../lib/utils/trackGeometry';
 import { STATION_SPACING } from '../../lib/constants';
+import { STATIONS } from '../../lib/stations';
 import { Locomotive } from './Locomotive';
 import { Coach } from './Coach';
 import { BrakeGlow } from './BrakeGlow';
 import { Headlight } from './Headlight';
 import { TelemetryTag } from './TelemetryTag';
 
+const getTrainY = (train: Train, x: number) => {
+  const effectiveLane = train.baseLane; // We enforce strict no-switching, so baseLane is all we need.
+
+  for (let i = 0; i < STATIONS.length; i++) {
+    const station = STATIONS[i];
+    const sX = 600 + i * STATION_SPACING;
+    const yardStart = sX + station.yardStartOffset;
+    const yardEnd = sX + station.yardEndOffset;
+
+    if (x >= yardStart && x <= yardEnd) {
+      return getStationMainY(station, effectiveLane);
+    }
+    
+    if (i < STATIONS.length - 1) {
+      const nextStation = STATIONS[i+1];
+      const nextYardStart = sX + STATION_SPACING + nextStation.yardStartOffset;
+      if (x > yardEnd && x < nextYardStart) {
+        const startY = getStationMainY(station, effectiveLane);
+        const endY = getStationMainY(nextStation, effectiveLane);
+        const t = (x - yardEnd) / (nextYardStart - yardEnd);
+        return startY + (endY - startY) * ((1 - Math.cos(Math.PI * t)) / 2);
+      }
+    }
+  }
+
+  if (x < 600 + STATIONS[0].yardStartOffset) {
+    return getStationMainY(STATIONS[0], effectiveLane);
+  }
+  return getStationMainY(STATIONS[STATIONS.length - 1], effectiveLane);
+};
+
 export const LiveTrains = ({ trains }: { trains: Train[] }) => {
   return (
     <>
       {trains.map((train) => {
-        const dummyStation = { p: 3, yOffset: 0, platforms: [] }; 
-        const effectiveLane = train.baseLane + train.switchDirection;
-        const y = getStationMainY(dummyStation, effectiveLane);
+        const y = getTrainY(train, train.x);
         
         const dx = train.direction * 3; 
-        const nextY = getStationMainY(dummyStation, effectiveLane);
+        const nextY = getTrainY(train, train.x + dx);
         const dy = nextY - y;
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
