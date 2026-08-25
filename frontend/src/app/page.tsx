@@ -515,10 +515,8 @@ export default function RailwayDigitalTwin() {
   if (!mounted) return null;
 
   return (
-    <div className="w-full h-screen bg-[#070B12] overflow-hidden relative font-sans">
+    <div className="w-full h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0f18] to-[#02040a] overflow-hidden relative font-sans text-slate-200">
       
-
-
       {/* INTERACTIVE MAP */}
       <TransformWrapper
         initialScale={0.45}
@@ -531,8 +529,17 @@ export default function RailwayDigitalTwin() {
         <TransformComponent wrapperStyle={{ width: "100%", height: "100%", cursor: "grab" }}>
           <div className="relative" style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}>
             
-            {/* Elegant Blueprint Grid */}
-            <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(rgba(0,0,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)', backgroundSize: '40px 40px', width: CANVAS_WIDTH }} />
+            {/* Premium Technical Grid */}
+            <div 
+              className="absolute inset-0 pointer-events-none" 
+              style={{ 
+                backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px)', 
+                backgroundSize: '100px 100px', 
+                width: CANVAS_WIDTH 
+              }} 
+            />
+            {/* Center Axis Highlight */}
+            <div className="absolute top-[800px] left-0 w-full h-[1px] bg-blue-500/10 pointer-events-none" />
             
             <svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT} className="block drop-shadow-sm">
               <defs>
