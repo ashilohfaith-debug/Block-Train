@@ -31,11 +31,20 @@ const RAW_STATIONS = [
   { id: 'MAS', name: 'Chennai Central', p: 17, yOffset: 200 }
 ];
 
+// --- SCALING ENGINE CONFIGURATION ---
+const TESTING_MODE = true;
 
+const VISIBLE_STATIONS = TESTING_MODE 
+  ? [RAW_STATIONS[0], RAW_STATIONS[6], RAW_STATIONS[14]] 
+  : RAW_STATIONS;
+
+const NUM_TRAINS = TESTING_MODE ? 3 : 30;
+const SPEED_MULTIPLIER = TESTING_MODE ? 0.3 : 1.0;
+// ------------------------------------
 
 const generateTrains = () => {
   const trains = [];
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < NUM_TRAINS; i++) {
     const x = Math.random() * (CANVAS_WIDTH - 800) + 200;
     const r = Math.random();
     let lane, direction, type;
@@ -59,7 +68,7 @@ const generateTrains = () => {
       baseLane: lane,
       switchDirection,
       type,
-      speed: Math.random() * 1.5 + 1.0, 
+      speed: (Math.random() * 1.5 + 1.0) * SPEED_MULTIPLIER, 
     });
   }
   return trains;
@@ -95,7 +104,7 @@ const getStationMainY = (station: any, effectiveLane: number) => {
 };
 
 // Pre-calculate highly organic, randomized platform architectures for every station
-const STATIONS = RAW_STATIONS.map(st => {
+const STATIONS = VISIBLE_STATIONS.map(st => {
   const pYs = [];
   const startY = CENTER_Y + st.yOffset - ((st.p - 1) * TRACK_GAP) / 2;
   for (let i = 0; i < st.p; i++) pYs.push(startY + i * TRACK_GAP);
