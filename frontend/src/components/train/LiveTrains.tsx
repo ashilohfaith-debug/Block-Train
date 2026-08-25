@@ -74,7 +74,7 @@ export const LiveTrains = ({ trains }: { trains: Train[] }) => {
             <rect x={-totalLen/2} y={-bodyWidth/2 + 4} width={totalLen} height={bodyWidth} fill="rgba(0,0,0,0.5)" rx="2" />
             
             <g>
-              <Locomotive length={locoLen} width={bodyWidth} gradient={grad} />
+              <Locomotive x={totalLen/2 - locoLen} length={locoLen} width={bodyWidth} gradient={grad} />
               
               {Array.from({ length: numCoaches }).map((_, cIdx) => {
                 const cX = totalLen/2 - locoLen - gap - (cIdx + 1) * coachLen - (cIdx * gap);
