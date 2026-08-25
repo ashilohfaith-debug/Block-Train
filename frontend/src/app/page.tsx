@@ -456,10 +456,10 @@ export default function RailwayDigitalTwin() {
 
       {/* INTERACTIVE MAP */}
       <TransformWrapper
-        initialScale={0.4}
-        minScale={0.1}
+        initialScale={0.5}
+        minScale={0.5}
         maxScale={4}
-        limitToBounds={false}
+        limitToBounds={true}
         wheel={{ activationKeys: ["Control"] }} // Ctrl+Wheel to zoom
         panOnScroll={true} // Trackpad / Scroll wheel to pan!
         panOnScrollSpeed={1.5}
