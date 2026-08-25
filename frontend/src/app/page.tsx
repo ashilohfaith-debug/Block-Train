@@ -14,7 +14,7 @@ export default function RailwayDigitalTwin() {
   const trains = useTrainPhysics(speedMultiplier);
 
   return (
-    <div className="w-full h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#0a0f18] to-[#02040a] overflow-hidden relative font-sans text-slate-200">
+    <div className="w-full h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#f1f8ed] via-[#e3f2db] to-[#d0eac3] overflow-hidden relative font-sans text-slate-800">
       
       <DigitalTwinMap trains={trains} />
       <DashboardHUD time={time} />

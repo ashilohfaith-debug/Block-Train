@@ -29,9 +29,8 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
           <div 
             className="absolute inset-0 pointer-events-none" 
             style={{ 
-              backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px)', 
-              backgroundSize: '100px 100px', 
-              width: CANVAS_WIDTH 
+              backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px)', 
+              backgroundSize: '100px 100px' 
             }} 
           />
           {/* Center Axis Highlight */}
