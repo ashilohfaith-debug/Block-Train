@@ -365,12 +365,13 @@ export default function RailwayDigitalTwin() {
 
     const interval = setInterval(() => {
       setTrains((curr) => curr.map((t) => {
-        let newX = t.x + t.direction * t.speed;
+        // Adjust speed slightly to compensate for faster tick rate
+        let newX = t.x + t.direction * (t.speed * 0.53);
         if (newX > CANVAS_WIDTH - 200) newX = 200;
         if (newX < 200) newX = CANVAS_WIDTH - 200;
         return { ...t, x: newX };
       }));
-    }, 30); 
+    }, 16); // 60 FPS! 
     
     return () => {
       clearInterval(interval);
@@ -542,9 +543,12 @@ export default function RailwayDigitalTwin() {
                     {/* Headlight beam */}
                     <polygon points={`${totalLen/2},-6 ${totalLen/2 + 40},-12 ${totalLen/2 + 40},12 ${totalLen/2},6`} fill="url(#headlight-gradient)" opacity="0.4" />
                     
-                    {/* Glowing Brake Friction (Undercarriage glow) */}
+                    {/* Glowing Brake Friction (Undercarriage glow without expensive blur) */}
                     {isBraking && (
-                      <rect x={-totalLen/2} y={-bodyWidth/2 - 2} width={totalLen} height={bodyWidth + 4} fill="#ef4444" opacity="0.3" style={{ filter: 'blur(3px)' }} />
+                      <g>
+                        <rect x={-totalLen/2 - 2} y={-bodyWidth/2 - 4} width={totalLen + 4} height={bodyWidth + 8} fill="#ef4444" opacity="0.1" rx="4" />
+                        <rect x={-totalLen/2 - 1} y={-bodyWidth/2 - 2} width={totalLen + 2} height={bodyWidth + 4} fill="#ef4444" opacity="0.2" rx="3" />
+                      </g>
                     )}
 
                     {/* Ultra-Fast Fake Drop Shadow */}
