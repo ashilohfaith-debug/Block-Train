@@ -14,21 +14,21 @@ const pseudoRandom = (seed: string) => {
 };
 
 const RAW_STATIONS = [
-  { id: 'CGL', name: 'Chengalpattu', p: 8, yOffset: 150 },
-  { id: 'SKL', name: 'Singaperumal Koil', p: 5, yOffset: 180 },
-  { id: 'MMNK', name: 'Maraimalai Nagar', p: 3, yOffset: 100 },
-  { id: 'GI', name: 'Guduvancheri', p: 4, yOffset: 40 },
+  { id: 'CGL', name: 'Chengalpattu', p: 8, yOffset: 0 },
+  { id: 'SKL', name: 'Singaperumal Koil', p: 5, yOffset: 0 },
+  { id: 'MMNK', name: 'Maraimalai Nagar', p: 3, yOffset: 0 },
+  { id: 'GI', name: 'Guduvancheri', p: 4, yOffset: 0 },
   { id: 'VDR', name: 'Vandalur', p: 3, yOffset: 0 },
-  { id: 'PRGL', name: 'Perungalathur', p: 3, yOffset: -50 },
-  { id: 'TBM', name: 'Tambaram', p: 9, yOffset: -150 },
-  { id: 'CMP', name: 'Chromepet', p: 4, yOffset: -220 },
-  { id: 'PV', name: 'Pallavaram', p: 5, yOffset: -250 },
-  { id: 'STM', name: 'St. Thomas Mount', p: 5, yOffset: -180 },
-  { id: 'GDY', name: 'Guindy', p: 4, yOffset: -80 },
-  { id: 'MBM', name: 'Mambalam', p: 4, yOffset: -20 },
-  { id: 'NBK', name: 'Nungambakkam', p: 4, yOffset: 40 },
-  { id: 'MS', name: 'Chennai Egmore', p: 11, yOffset: 120 },
-  { id: 'MAS', name: 'Chennai Central', p: 17, yOffset: 200 }
+  { id: 'PRGL', name: 'Perungalathur', p: 3, yOffset: 0 },
+  { id: 'TBM', name: 'Tambaram', p: 9, yOffset: 0 },
+  { id: 'CMP', name: 'Chromepet', p: 4, yOffset: 0 },
+  { id: 'PV', name: 'Pallavaram', p: 5, yOffset: 0 },
+  { id: 'STM', name: 'St. Thomas Mount', p: 5, yOffset: 0 },
+  { id: 'GDY', name: 'Guindy', p: 4, yOffset: 0 },
+  { id: 'MBM', name: 'Mambalam', p: 4, yOffset: 0 },
+  { id: 'NBK', name: 'Nungambakkam', p: 4, yOffset: 0 },
+  { id: 'MS', name: 'Chennai Egmore', p: 11, yOffset: 0 },
+  { id: 'MAS', name: 'Chennai Central', p: 17, yOffset: 0 }
 ];
 
 // --- SCALING ENGINE CONFIGURATION ---
