@@ -12,7 +12,7 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
 
   return (
     <TransformWrapper
-      key="map-wrapper-v4" 
+      key="map-wrapper-v5" 
       initialScale={1.5}   
       initialPositionX={startX}
       initialPositionY={startY}
@@ -20,7 +20,7 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
       maxScale={5}
       limitToBounds={true}
       wheel={{ step: 0.1 }}
-      panning={{ velocityDisabled: true }}
+      panning={{ velocityDisabled: true, wheelPanning: true }}
     >
       <TransformComponent wrapperStyle={{ width: "100%", height: "100%", cursor: "grab" }}>
         <div className="relative" style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}>
