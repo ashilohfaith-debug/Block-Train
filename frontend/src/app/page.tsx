@@ -383,12 +383,39 @@ export default function RailwayDigitalTwin() {
     }, 1000);
 
     const interval = setInterval(() => {
+      const now = Date.now();
       setTrains((curr) => curr.map((t) => {
+        // If train is stopped, wait until the stop time expires
+        if (t.stopUntil && now < t.stopUntil) {
+          return t;
+        }
+
+        let newStopUntil = t.stopUntil;
+        if (t.stopUntil && now >= t.stopUntil) {
+          newStopUntil = undefined; // Clear the stop state
+        }
+
         // Adjust speed slightly to compensate for faster tick rate
         let newX = t.x + t.direction * (t.speed * 0.53);
+        
+        // Detect if the train just arrived at a platform center
+        if (!newStopUntil) {
+          for (let i = 0; i < STATIONS.length; i++) {
+            const sX = 600 + i * STATION_SPACING;
+            
+            // Did it cross sX precisely in this 16ms frame?
+            if ((t.direction === 1 && t.x < sX && newX >= sX) ||
+                (t.direction === -1 && t.x > sX && newX <= sX)) {
+              newX = sX;
+              newStopUntil = now + 10000; // Stop for exactly 10 seconds (10,000 ms)
+              break;
+            }
+          }
+        }
+
         if (newX > CANVAS_WIDTH - 200) newX = 200;
         if (newX < 200) newX = CANVAS_WIDTH - 200;
-        return { ...t, x: newX };
+        return { ...t, x: newX, stopUntil: newStopUntil };
       }));
     }, 16); // 60 FPS! 
     
@@ -555,7 +582,7 @@ export default function RailwayDigitalTwin() {
                 // Brake glow logic (faked by checking distance to nearest station center)
                 // stations are at x = 600, 3000, 5400...
                 const distToStation = Math.abs(((train.x - 600) % STATION_SPACING + STATION_SPACING) % STATION_SPACING);
-                const isBraking = distToStation > STATION_SPACING - 300 || distToStation < 300;
+                const isBraking = (distToStation > STATION_SPACING - 300 || distToStation < 300) && !train.stopUntil;
 
                 return (
                   <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)`, willChange: 'transform' }} className="cursor-pointer group">
