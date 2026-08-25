@@ -12,11 +12,11 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
 
   return (
     <TransformWrapper
-      key="map-wrapper-v3" 
+      key="map-wrapper-v4" 
       initialScale={1.5}   
       initialPositionX={startX}
       initialPositionY={startY}
-      minScale={0.15}
+      minScale={0.4}
       maxScale={5}
       limitToBounds={true}
       wheel={{ step: 0.1 }}
