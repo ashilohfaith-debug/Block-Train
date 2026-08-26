@@ -28,7 +28,7 @@ export const StaticInfrastructure = React.memo(() => {
             <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
             <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} />
 
-            {/* Inter-station S-Curves */}
+            {/* Inter-station S-Curves and Real-World Crossovers */}
             {i < STATIONS.length - 1 && (() => {
               const nextStation = STATIONS[i+1];
               const nextYardStart = sX + STATION_SPACING + nextStation.yardStartOffset;
@@ -36,11 +36,30 @@ export const StaticInfrastructure = React.memo(() => {
               const nBot = getStationMainY(nextStation, 1);
               const nMid = getStationMainY(nextStation, 0);
 
+              // Calculate some midpoints for realistic crossover placements
+              const segmentLen = nextYardStart - yardEnd;
+              const c1 = yardEnd + segmentLen * 0.15;
+              const c2 = yardEnd + segmentLen * 0.25;
+              const c3 = yardEnd + segmentLen * 0.75;
+              const c4 = yardEnd + segmentLen * 0.85;
+
               return (
                 <>
                   <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} />
                   <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
                   <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
+                  
+                  {/* High-Speed Crossovers (Departing) */}
+                  <TrackCurve d={drawThroat(c1, mTop, c2, mMid)} />
+                  <TrackCurve d={drawThroat(c1, mMid, c2, mBot)} />
+                  <TrackCurve d={drawThroat(c1 + 100, mBot, c2 + 100, mMid)} />
+                  <TrackCurve d={drawThroat(c1 + 100, mMid, c2 + 100, mTop)} />
+
+                  {/* High-Speed Crossovers (Approaching Next Station) */}
+                  <TrackCurve d={drawThroat(c3, nTop, c4, nMid)} />
+                  <TrackCurve d={drawThroat(c3, nMid, c4, nBot)} />
+                  <TrackCurve d={drawThroat(c3 + 100, nBot, c4 + 100, nMid)} />
+                  <TrackCurve d={drawThroat(c3 + 100, nMid, c4 + 100, nTop)} />
                 </>
               );
             })()}
