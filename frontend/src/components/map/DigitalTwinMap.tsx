@@ -5,8 +5,8 @@ import { LiveTrains } from '../train/LiveTrains';
 import { Train } from '../../lib/types';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
 
-export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
-  // Focus perfectly on the first major station (Chengalpattu) on load
+export const DigitalTwinMap = React.memo(({ speedMultiplier }: { speedMultiplier: number }) => {
+  // Focus perfectly on the first major station (Tambaram) on load
   const startX = -600;
   const startY = -400;
 
@@ -62,10 +62,10 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
             </defs>
             
             <StaticInfrastructure />
-            <LiveTrains trains={trains} />
+            <LiveTrains speedMultiplier={speedMultiplier} />
           </svg>
         </div>
       </TransformComponent>
     </TransformWrapper>
   );
-};
+});
