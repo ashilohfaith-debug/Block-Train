@@ -64,6 +64,26 @@ const generateTrains = (speedMultiplier: number): Train[] => {
       switchDirection: 0,
       speed: 2.6,
       type: 'express'
+    },
+    {
+      id: 'T7',
+      name: 'Local 40535 (EMU)',
+      x: 600 + 1.2 * STATION_SPACING, // Between Chromepet and Pallavaram
+      direction: -1, // Southbound
+      baseLane: 1,
+      switchDirection: 0,
+      speed: 1.7,
+      type: 'passenger'
+    },
+    {
+      id: 'T8',
+      name: 'Local 40537 (EMU)',
+      x: 600 + 3.5 * STATION_SPACING, // Between St Thomas Mount and Guindy
+      direction: 1, // Northbound
+      baseLane: 1,
+      switchDirection: 0,
+      speed: 1.6,
+      type: 'passenger'
     }
   ];
 
