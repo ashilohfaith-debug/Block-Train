@@ -123,6 +123,9 @@ app.use("/api/auth", createRateLimiter({
   message: "Too many authentication attempts. Please try again later."
 }), authRouter);
 
+// Make network public for frontend connection testing
+app.use("/api/network", networkRouter);
+
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 3 — Global Authentication Guard
 // Every request that reaches here MUST carry a valid JWT.
@@ -142,13 +145,6 @@ app.use(
   "/api/tracks",
   requireRole("ADMIN", "CONTROLLER", "ENGINEERING", "SNT", "TRACTION"),
   tracksRouter
-);
-
-// Network overview — same: all authenticated roles allowed.
-app.use(
-  "/api/network",
-  requireRole("ADMIN", "CONTROLLER", "ENGINEERING", "SNT", "TRACTION"),
-  networkRouter
 );
 
 // Maintenance tasks — all roles can access;
