@@ -36,9 +36,12 @@ export const STATIONS: Station[] = VISIBLE_STATIONS.map(st => {
   for (let i = 0; i < st.p; i++) {
     const p = pData[i];
     
-    // Constant, perfectly straight yard throats
-    const divergeStartOffset = -700;
-    const convergeEndOffset = 700;
+    const rndDiv = pseudoRandom(`${st.id}-${i}-divChaos`);
+    const rndCon = pseudoRandom(`${st.id}-${i}-conChaos`);
+    
+    // Smooth, but slightly variable throat lengths for organic asymmetry
+    const divergeStartOffset = -550 - (rndDiv * 350);
+    const convergeEndOffset = 550 + (rndCon * 350);
     const rnd3 = pseudoRandom(`${st.id}-${i}-s2`);
     
     platforms.push({

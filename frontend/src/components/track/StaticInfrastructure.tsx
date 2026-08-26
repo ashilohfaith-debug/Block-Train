@@ -45,29 +45,36 @@ export const StaticInfrastructure = React.memo(() => {
               );
             })()}
 
-            {/* Natural Crossovers in the straight yard limits (Flawless smooth curves) */}
+            {/* Natural, Non-Uniform Crossovers in the straight yard limits */}
             {(() => {
+              // Pseudo-random seeds based on station ID to ensure determinism but unique layouts
+              const r1 = ((i + 1) * 13) % 10 / 10;
+              const r2 = ((i + 1) * 29) % 10 / 10;
+              const r3 = ((i + 1) * 37) % 10 / 10;
+
               // Departing switches (Right side)
-              const dStart = sX + 300;
-              const dEnd = sX + 550;
+              // Vary placement and length per station
+              const dStart = sX + 270 + (r1 * 120);
+              const dLen = 200 + (r2 * 100);
+              const dEnd = dStart + dLen;
 
               // Approaching switches (Left side)
-              const aStart = sX - 550;
-              const aEnd = sX - 300;
+              const aStart = sX - 300 - (r3 * 150) - dLen;
+              const aEnd = aStart + dLen;
 
               return (
                 <>
-                  {/* Departing */}
-                  <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} />
-                  <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} />
-                  <TrackCurve d={drawThroat(dStart + 150, mBot, dEnd + 150, mMid)} />
-                  <TrackCurve d={drawThroat(dStart + 150, mMid, dEnd + 150, mTop)} />
+                  {/* Departing - Randomly drop some crossovers to create realistic asymmetry */}
+                  {r1 > 0.1 && <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} />}
+                  {r2 > 0.2 && <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} />}
+                  {r3 > 0.1 && <TrackCurve d={drawThroat(dStart + 120, mBot, dEnd + 120, mMid)} />}
+                  {r1 > 0.3 && <TrackCurve d={drawThroat(dStart + 120, mMid, dEnd + 120, mTop)} />}
 
-                  {/* Approaching */}
-                  <TrackCurve d={drawThroat(aStart, mTop, aEnd, mMid)} />
-                  <TrackCurve d={drawThroat(aStart, mMid, aEnd, mBot)} />
-                  <TrackCurve d={drawThroat(aStart + 150, mBot, aEnd + 150, mMid)} />
-                  <TrackCurve d={drawThroat(aStart + 150, mMid, aEnd + 150, mTop)} />
+                  {/* Approaching - Mirrored asymmetry */}
+                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart, mTop, aEnd, mMid)} />}
+                  {r3 > 0.3 && <TrackCurve d={drawThroat(aStart, mMid, aEnd, mBot)} />}
+                  {r1 > 0.2 && <TrackCurve d={drawThroat(aStart + 120, mBot, aEnd + 120, mMid)} />}
+                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart + 120, mMid, aEnd + 120, mTop)} />}
                 </>
               );
             })()}
