@@ -6,6 +6,7 @@ const RAW_STATIONS = [
   { id: 'TBM', name: 'Tambaram', p: 8, yOffset: 250 },
   { id: 'CMP', name: 'Chromepet', p: 4, yOffset: -120 },
   { id: 'PV', name: 'Pallavaram', p: 5, yOffset: -50 },
+  { id: 'STM', name: 'St. Thomas Mount', p: 5, yOffset: -220 },
   { id: 'GDY', name: 'Guindy', p: 4, yOffset: 180 }
 ];
 

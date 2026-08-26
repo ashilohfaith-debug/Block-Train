@@ -8,7 +8,7 @@ const generateTrains = (speedMultiplier: number): Train[] => {
     {
       id: 'T1',
       name: 'Express 12605 (Pallavan)',
-      x: 600 + STATIONS[0].yardStartOffset + 200,
+      x: 600 + STATIONS[0].yardStartOffset + 200, // Tambaram Northbound
       direction: 1,
       baseLane: -1,
       switchDirection: 0,
@@ -18,7 +18,7 @@ const generateTrains = (speedMultiplier: number): Train[] => {
     {
       id: 'T2',
       name: 'Local 40531 (EMU)',
-      x: 600 + 3 * STATION_SPACING + STATIONS[3].yardEndOffset - 200,
+      x: 600 + 4 * STATION_SPACING + STATIONS[4].yardEndOffset - 200, // Guindy Southbound
       direction: -1,
       baseLane: 1,
       switchDirection: 0,
@@ -28,12 +28,42 @@ const generateTrains = (speedMultiplier: number): Train[] => {
     {
       id: 'T3',
       name: 'Freight 44920',
-      x: 600 + 1.5 * STATION_SPACING,
+      x: 600 + 1.5 * STATION_SPACING, // Moving midway between Chromepet and Pallavaram
       direction: 1,
       baseLane: 0,
       switchDirection: 0,
       speed: 1.2,
       type: 'freight'
+    },
+    {
+      id: 'T4',
+      name: 'Express 16101 (Boat Mail)',
+      x: 600 + 3 * STATION_SPACING, // At St. Thomas Mount
+      direction: -1,
+      baseLane: -1,
+      switchDirection: 0,
+      speed: 2.4,
+      type: 'express'
+    },
+    {
+      id: 'T5',
+      name: 'Local 40533 (EMU)',
+      x: 600 + 0.5 * STATION_SPACING, // Between Tambaram and Chromepet
+      direction: 1,
+      baseLane: 1,
+      switchDirection: 0,
+      speed: 1.6,
+      type: 'passenger'
+    },
+    {
+      id: 'T6',
+      name: 'Express 12635 (Vaigai)',
+      x: 600 + 2.5 * STATION_SPACING, // Between Pallavaram and St Thomas Mount
+      direction: 1,
+      baseLane: -1,
+      switchDirection: 0,
+      speed: 2.6,
+      type: 'express'
     }
   ];
 
