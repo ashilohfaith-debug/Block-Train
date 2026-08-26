@@ -121,6 +121,17 @@ export const LiveTrains = ({ trains }: { trains: Train[] }) => {
             </g>
 
             <TelemetryTag id={train.id} angle={angle} />
+            
+            {/* Train Name Label */}
+            <text 
+              x={0} 
+              y={-18} 
+              textAnchor="middle" 
+              className="text-[10px] font-bold fill-slate-800 drop-shadow-md tracking-wider font-mono"
+              style={{ transform: `rotate(${-angle}deg)` }} // keep text upright
+            >
+              {train.name}
+            </text>
           </g>
         );
       })}

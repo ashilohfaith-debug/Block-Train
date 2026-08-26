@@ -3,26 +3,13 @@ import { pseudoRandom, TESTING_MODE, CENTER_Y, TRACK_GAP, STATION_SPACING } from
 import { getStationMainY } from './utils/trackGeometry';
 
 const RAW_STATIONS = [
-  { id: 'CGL', name: 'Chengalpattu', p: 8, yOffset: 120 },
-  { id: 'SKL', name: 'Singaperumal Koil', p: 5, yOffset: 40 },
-  { id: 'MMNK', name: 'Maraimalai Nagar', p: 3, yOffset: -50 },
-  { id: 'GI', name: 'Guduvancheri', p: 4, yOffset: -180 },
-  { id: 'VDR', name: 'Vandalur', p: 3, yOffset: -240 },
-  { id: 'PRGL', name: 'Perungalathur', p: 3, yOffset: -120 },
-  { id: 'TBM', name: 'Tambaram', p: 9, yOffset: 60 },
-  { id: 'CMP', name: 'Chromepet', p: 4, yOffset: 200 },
-  { id: 'PV', name: 'Pallavaram', p: 5, yOffset: 280 },
-  { id: 'STM', name: 'St. Thomas Mount', p: 5, yOffset: 150 },
-  { id: 'GDY', name: 'Guindy', p: 4, yOffset: -40 },
-  { id: 'MBM', name: 'Mambalam', p: 4, yOffset: -160 },
-  { id: 'NBK', name: 'Nungambakkam', p: 4, yOffset: -80 },
-  { id: 'MS', name: 'Chennai Egmore', p: 11, yOffset: 100 },
-  { id: 'MAS', name: 'Chennai Central', p: 17, yOffset: 250 }
+  { id: 'TBM', name: 'Tambaram', p: 8, yOffset: 250 },
+  { id: 'CMP', name: 'Chromepet', p: 4, yOffset: -120 },
+  { id: 'PV', name: 'Pallavaram', p: 5, yOffset: -50 },
+  { id: 'GDY', name: 'Guindy', p: 4, yOffset: 180 }
 ];
 
-const VISIBLE_STATIONS = TESTING_MODE 
-  ? [RAW_STATIONS[0], RAW_STATIONS[6], RAW_STATIONS[14]] 
-  : RAW_STATIONS;
+const VISIBLE_STATIONS = RAW_STATIONS;
 
 export const STATIONS: Station[] = VISIBLE_STATIONS.map(st => {
   const pYs = [];
@@ -54,10 +41,10 @@ export const STATIONS: Station[] = VISIBLE_STATIONS.map(st => {
     const rnd3 = pseudoRandom(`${st.id}-${i}-s2`);
     
     const isBigYard = st.p >= 8;
-    const stretch = isBigYard ? 700 : 230;
+    const stretch = isBigYard ? 1500 : 800; // Extreme stretching for organic weaving
     
-    const divergeStartOffset = -120 - (rndDiv * stretch);
-    const convergeEndOffset = 120 + (rndCon * stretch);
+    const divergeStartOffset = -180 - (rndDiv * stretch);
+    const convergeEndOffset = 180 + (rndCon * stretch);
     
     platforms.push({
       y: p.y,

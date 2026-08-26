@@ -4,34 +4,40 @@ import { STATIONS, CANVAS_WIDTH } from '../stations';
 import { STATION_SPACING, NUM_TRAINS, DEFAULT_SPEED_MULTIPLIER } from '../constants';
 
 const generateTrains = (speedMultiplier: number): Train[] => {
-  const trains: Train[] = [];
-  for (let i = 0; i < NUM_TRAINS; i++) {
-    const x = Math.random() * (CANVAS_WIDTH - 800) + 200;
-    const r = Math.random();
-    let lane: -1 | 0 | 1, direction, type: TrainType;
-    if (r < 0.33) {
-      lane = -1; direction = -1; type = 'express';
-    } else if (r < 0.66) {
-      lane = 0; direction = Math.random() > 0.5 ? 1 : -1; type = 'freight';
-    } else {
-      lane = 1; direction = 1; type = 'passenger';
+  const INITIAL_TRAINS: Train[] = [
+    {
+      id: 'T1',
+      name: 'Express 12605 (Pallavan)',
+      x: 600 + STATIONS[0].yardStartOffset + 200,
+      direction: 1,
+      baseLane: -1,
+      switchDirection: 0,
+      speed: 2.5,
+      type: 'express'
+    },
+    {
+      id: 'T2',
+      name: 'Local 40531 (EMU)',
+      x: 600 + 3 * STATION_SPACING + STATIONS[3].yardEndOffset - 200,
+      direction: -1,
+      baseLane: 1,
+      switchDirection: 0,
+      speed: 1.8,
+      type: 'passenger'
+    },
+    {
+      id: 'T3',
+      name: 'Freight 44920',
+      x: 600 + 1.5 * STATION_SPACING,
+      direction: 1,
+      baseLane: 0,
+      switchDirection: 0,
+      speed: 1.2,
+      type: 'freight'
     }
+  ];
 
-    // STRICT RULE: No track switching ever.
-    const switchDirection = 0;
-
-    trains.push({
-      id: `T${i + 100}`,
-      x,
-      direction,
-      baseLane: lane,
-      switchDirection,
-      type,
-      // Train specific physical speed baseline
-      speed: (Math.random() * 1.5 + 1.0) * speedMultiplier,
-    });
-  }
-  return trains;
+  return INITIAL_TRAINS;
 };
 
 export const useTrainPhysics = (userSpeedMultiplier: number) => {
