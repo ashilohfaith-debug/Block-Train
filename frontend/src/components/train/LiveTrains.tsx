@@ -8,6 +8,7 @@ import { Coach } from './Coach';
 import { BrakeGlow } from './BrakeGlow';
 import { Headlight } from './Headlight';
 import { TelemetryTag } from './TelemetryTag';
+import { useTrainPhysics } from '../../lib/hooks/useTrainPhysics';
 
 const getTrainY = (train: Train, x: number) => {
   const mainLane = train.baseLane; 
@@ -69,7 +70,9 @@ const getTrainY = (train: Train, x: number) => {
   return getStationMainY(STATIONS[STATIONS.length - 1], mainLane);
 };
 
-export const LiveTrains = ({ trains }: { trains: Train[] }) => {
+export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => {
+  const trains = useTrainPhysics(speedMultiplier);
+
   return (
     <>
       {trains.map((train) => {
@@ -121,6 +124,17 @@ export const LiveTrains = ({ trains }: { trains: Train[] }) => {
             </g>
 
             <TelemetryTag id={train.id} angle={angle} />
+            
+            {/* Train Name Label */}
+            <text 
+              x={0} 
+              y={-18} 
+              textAnchor="middle" 
+              className="text-[10px] font-bold fill-slate-800 drop-shadow-md tracking-wider font-mono"
+              style={{ transform: `rotate(${-angle}deg)` }} // keep text upright
+            >
+              {train.name}
+            </text>
           </g>
         );
       })}
