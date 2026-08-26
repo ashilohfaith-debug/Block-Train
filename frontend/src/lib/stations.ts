@@ -3,11 +3,11 @@ import { pseudoRandom, TESTING_MODE, CENTER_Y, TRACK_GAP, STATION_SPACING } from
 import { getStationMainY } from './utils/trackGeometry';
 
 const RAW_STATIONS = [
-  { id: 'TBM', name: 'Tambaram', p: 8, yOffset: 250 },
-  { id: 'CMP', name: 'Chromepet', p: 4, yOffset: -120 },
-  { id: 'PV', name: 'Pallavaram', p: 5, yOffset: -50 },
-  { id: 'STM', name: 'St. Thomas Mount', p: 5, yOffset: -220 },
-  { id: 'GDY', name: 'Guindy', p: 4, yOffset: 180 }
+  { id: 'TBM', name: 'Tambaram', p: 8, yOffset: 60 },
+  { id: 'CMP', name: 'Chromepet', p: 4, yOffset: -30 },
+  { id: 'PV', name: 'Pallavaram', p: 5, yOffset: 10 },
+  { id: 'STM', name: 'St. Thomas Mount', p: 5, yOffset: -40 },
+  { id: 'GDY', name: 'Guindy', p: 4, yOffset: 50 }
 ];
 
 const VISIBLE_STATIONS = RAW_STATIONS;
@@ -36,16 +36,10 @@ export const STATIONS: Station[] = VISIBLE_STATIONS.map(st => {
   for (let i = 0; i < st.p; i++) {
     const p = pData[i];
     
-    const rndDiv = pseudoRandom(`${st.id}-${i}-divChaos`);
-    const rndCon = pseudoRandom(`${st.id}-${i}-conChaos`);
-    const rnd2 = pseudoRandom(`${st.id}-${i}-s1`);
+    // Constant, perfectly straight yard throats
+    const divergeStartOffset = -700;
+    const convergeEndOffset = 700;
     const rnd3 = pseudoRandom(`${st.id}-${i}-s2`);
-    
-    const isBigYard = st.p >= 8;
-    const stretch = isBigYard ? 1500 : 800; // Extreme stretching for organic weaving
-    
-    const divergeStartOffset = -800 - (rndDiv * stretch);
-    const convergeEndOffset = 800 + (rndCon * stretch);
     
     platforms.push({
       y: p.y,
