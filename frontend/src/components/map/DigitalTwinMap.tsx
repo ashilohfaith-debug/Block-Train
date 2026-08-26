@@ -5,8 +5,8 @@ import { LiveTrains } from '../train/LiveTrains';
 import { Train } from '../../lib/types';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
 
-export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
-  // Focus perfectly on the first major station (Chengalpattu) on load
+export const DigitalTwinMap = React.memo(({ speedMultiplier }: { speedMultiplier: number }) => {
+  // Focus perfectly on the first major station (Tambaram) on load
   const startX = -600;
   const startY = -400;
 
@@ -20,7 +20,7 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
       maxScale={5}
       limitToBounds={true}
       wheel={{ step: 0.1 }}
-      panning={{ velocityDisabled: true, wheelPanning: true }}
+      panning={{ velocityDisabled: true }}
     >
       <TransformComponent wrapperStyle={{ width: "100%", height: "100%", cursor: "grab" }}>
         <div className="relative" style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}>
@@ -29,9 +29,8 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
           <div 
             className="absolute inset-0 pointer-events-none" 
             style={{ 
-              backgroundImage: 'linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px)', 
-              backgroundSize: '100px 100px', 
-              width: CANVAS_WIDTH 
+              backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px)', 
+              backgroundSize: '100px 100px' 
             }} 
           />
           {/* Center Axis Highlight */}
@@ -44,27 +43,29 @@ export const DigitalTwinMap = ({ trains }: { trains: Train[] }) => {
                 <stop offset="100%" stopColor="#facc15" stopOpacity="0" />
               </linearGradient>
               <linearGradient id="metal-express" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#60a5fa" />
-                <stop offset="50%" stopColor="#2563eb" />
-                <stop offset="100%" stopColor="#1e3a8a" />
+                <stop offset="0%" stopColor="#fca5a5" />
+                <stop offset="50%" stopColor="#ef4444" />
+                <stop offset="100%" stopColor="#991b1b" />
               </linearGradient>
               <linearGradient id="metal-passenger" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#f87171" />
-                <stop offset="50%" stopColor="#dc2626" />
+                <stop offset="0%" stopColor="#7f1d1d" />
+                <stop offset="25%" stopColor="#dc2626" />
+                <stop offset="50%" stopColor="#ef4444" />
+                <stop offset="75%" stopColor="#dc2626" />
                 <stop offset="100%" stopColor="#7f1d1d" />
               </linearGradient>
               <linearGradient id="metal-freight" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#9ca3af" />
-                <stop offset="50%" stopColor="#4b5563" />
-                <stop offset="100%" stopColor="#1f2937" />
+                <stop offset="0%" stopColor="#fecaca" />
+                <stop offset="50%" stopColor="#b91c1c" />
+                <stop offset="100%" stopColor="#450a0a" />
               </linearGradient>
             </defs>
             
             <StaticInfrastructure />
-            <LiveTrains trains={trains} />
+            <LiveTrains speedMultiplier={speedMultiplier} />
           </svg>
         </div>
       </TransformComponent>
     </TransformWrapper>
   );
-};
+});

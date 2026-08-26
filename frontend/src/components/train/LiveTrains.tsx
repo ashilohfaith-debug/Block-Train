@@ -8,6 +8,7 @@ import { Coach } from './Coach';
 import { BrakeGlow } from './BrakeGlow';
 import { Headlight } from './Headlight';
 import { TelemetryTag } from './TelemetryTag';
+import { useTrainPhysics } from '../../lib/hooks/useTrainPhysics';
 
 const getTrainY = (train: Train, x: number) => {
   const mainLane = train.baseLane; 
@@ -69,7 +70,9 @@ const getTrainY = (train: Train, x: number) => {
   return getStationMainY(STATIONS[STATIONS.length - 1], mainLane);
 };
 
-export const LiveTrains = ({ trains }: { trains: Train[] }) => {
+export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => {
+  const trains = useTrainPhysics(speedMultiplier);
+
   return (
     <>
       {trains.map((train) => {
@@ -80,16 +83,15 @@ export const LiveTrains = ({ trains }: { trains: Train[] }) => {
         const dy = nextY - y;
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-        const isExpress = train.type === 'express';
-        const isFreight = train.type === 'freight';
-        const grad = isExpress ? 'url(#metal-express)' : (isFreight ? 'url(#metal-freight)' : 'url(#metal-passenger)');
+        const grad = 'url(#metal-passenger)';
+        const isFreight = false;
         
-        const numCoaches = isFreight ? 4 : 3;
-        const coachLen = 14;
-        const locoLen = 16;
-        const gap = 2;
+        const numCoaches = 4;
+        const coachLen = 18;
+        const locoLen = 22;
+        const gap = 3;
         const totalLen = locoLen + numCoaches * (coachLen + gap);
-        const bodyWidth = 12;
+        const bodyWidth = 16;
 
         const distToStation = Math.abs(((train.x - 600) % STATION_SPACING + STATION_SPACING) % STATION_SPACING);
         const isBraking = (distToStation > STATION_SPACING - 300 || distToStation < 300) && !train.stopUntil;
@@ -122,6 +124,17 @@ export const LiveTrains = ({ trains }: { trains: Train[] }) => {
             </g>
 
             <TelemetryTag id={train.id} angle={angle} />
+            
+            {/* Train Name Label */}
+            <text 
+              x={0} 
+              y={-18} 
+              textAnchor="middle" 
+              className="text-[10px] font-bold fill-slate-800 drop-shadow-md tracking-wider font-mono"
+              style={{ transform: `rotate(${-angle}deg)` }} // keep text upright
+            >
+              {train.name}
+            </text>
           </g>
         );
       })}

@@ -1,6 +1,14 @@
 # Prerequisites
 *.d
 
+# Local secrets and environment configuration
+.env
+.env.*
+!.env.example
+
+# Installed dependencies
+node_modules/
+
 # Object files
 *.o
 *.ko

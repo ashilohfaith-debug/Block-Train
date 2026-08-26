@@ -18,43 +18,63 @@ export const StaticInfrastructure = React.memo(() => {
         const yardEnd = sX + station.yardEndOffset;
         
         const mTop = getStationMainY(station, -1);
+        const mMid = getStationMainY(station, 0);
         const mBot = getStationMainY(station, 1);
-        const currLanes = station.p <= 4 ? 2 : 3;
-        let mMid = 0;
-        if (currLanes === 3) mMid = getStationMainY(station, 0);
 
         return (
           <g key={station.id}>
             {/* Mainlines running straight through yard */}
             <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} />
-            {currLanes === 3 && (
-              <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
-            )}
+            <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
             <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} />
 
-            {/* Inter-station S-Curves */}
+            {/* Inter-station S-Curves and Real-World Crossovers */}
             {i < STATIONS.length - 1 && (() => {
               const nextStation = STATIONS[i+1];
               const nextYardStart = sX + STATION_SPACING + nextStation.yardStartOffset;
               const nTop = getStationMainY(nextStation, -1);
               const nBot = getStationMainY(nextStation, 1);
-              const nextLanes = nextStation.p <= 4 ? 2 : 3;
-              let nMid = 0;
-              if (nextLanes === 3) nMid = getStationMainY(nextStation, 0);
+              const nMid = getStationMainY(nextStation, 0);
 
               return (
                 <>
                   <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} />
-                  {currLanes === 3 && nextLanes === 3 && (
-                    <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
-                  )}
-                  {currLanes === 3 && nextLanes === 2 && (
-                    <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nTop)} opacity={0.5} />
-                  )}
-                  {currLanes === 2 && nextLanes === 3 && (
-                    <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nMid)} opacity={0.5} />
-                  )}
+                  <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
                   <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
+                </>
+              );
+            })()}
+
+            {/* Natural, Non-Uniform Crossovers in the straight yard limits */}
+            {(() => {
+              // Pseudo-random seeds based on station ID to ensure determinism but unique layouts
+              const r1 = ((i + 1) * 13) % 10 / 10;
+              const r2 = ((i + 1) * 29) % 10 / 10;
+              const r3 = ((i + 1) * 37) % 10 / 10;
+
+              // Departing switches (Right side)
+              // Vary placement and length per station
+              const dStart = sX + 270 + (r1 * 120);
+              const dLen = 200 + (r2 * 100);
+              const dEnd = dStart + dLen;
+
+              // Approaching switches (Left side)
+              const aStart = sX - 300 - (r3 * 150) - dLen;
+              const aEnd = aStart + dLen;
+
+              return (
+                <>
+                  {/* Departing - Randomly drop some crossovers to create realistic asymmetry */}
+                  {r1 > 0.1 && <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} />}
+                  {r2 > 0.2 && <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} />}
+                  {r3 > 0.1 && <TrackCurve d={drawThroat(dStart + 120, mBot, dEnd + 120, mMid)} />}
+                  {r1 > 0.3 && <TrackCurve d={drawThroat(dStart + 120, mMid, dEnd + 120, mTop)} />}
+
+                  {/* Approaching - Mirrored asymmetry */}
+                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart, mTop, aEnd, mMid)} />}
+                  {r3 > 0.3 && <TrackCurve d={drawThroat(aStart, mMid, aEnd, mBot)} />}
+                  {r1 > 0.2 && <TrackCurve d={drawThroat(aStart + 120, mBot, aEnd + 120, mMid)} />}
+                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart + 120, mMid, aEnd + 120, mTop)} />}
                 </>
               );
             })()}
@@ -77,8 +97,8 @@ export const StaticInfrastructure = React.memo(() => {
             <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
             
             {/* Station Name Header Bar */}
-            <rect x={sX - 180} y={station.platforms[0].y - 85} width={360} height={40} fill="#111827" stroke="#374151" strokeWidth="1" rx="20" />
-            <text x={sX} y={station.platforms[0].y - 59} fill="#9ca3af" fontSize="18" textAnchor="middle" fontWeight="800" className="font-mono tracking-widest">
+            <rect x={sX - 250} y={station.platforms[0].y - 100} width={500} height={50} fill="#111827" stroke="#3b82f6" strokeWidth="2" rx="25" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.5))" />
+            <text x={sX} y={station.platforms[0].y - 66} fill="#ffffff" fontSize="24" textAnchor="middle" fontWeight="900" className="font-mono tracking-widest">
               <tspan fill="#facc15">{station.id}</tspan> <tspan fill="#4b5563">|</tspan> {station.name.toUpperCase()}
             </text>
 
