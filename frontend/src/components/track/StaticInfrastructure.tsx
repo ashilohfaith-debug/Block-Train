@@ -36,30 +36,38 @@ export const StaticInfrastructure = React.memo(() => {
               const nBot = getStationMainY(nextStation, 1);
               const nMid = getStationMainY(nextStation, 0);
 
-              // Calculate some midpoints for realistic crossover placements
-              const segmentLen = nextYardStart - yardEnd;
-              const c1 = yardEnd + segmentLen * 0.15;
-              const c2 = yardEnd + segmentLen * 0.25;
-              const c3 = yardEnd + segmentLen * 0.75;
-              const c4 = yardEnd + segmentLen * 0.85;
-
               return (
                 <>
                   <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} />
                   <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
                   <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
-                  
-                  {/* High-Speed Crossovers (Departing) */}
-                  <TrackCurve d={drawThroat(c1, mTop, c2, mMid)} />
-                  <TrackCurve d={drawThroat(c1, mMid, c2, mBot)} />
-                  <TrackCurve d={drawThroat(c1 + 100, mBot, c2 + 100, mMid)} />
-                  <TrackCurve d={drawThroat(c1 + 100, mMid, c2 + 100, mTop)} />
+                </>
+              );
+            })()}
 
-                  {/* High-Speed Crossovers (Approaching Next Station) */}
-                  <TrackCurve d={drawThroat(c3, nTop, c4, nMid)} />
-                  <TrackCurve d={drawThroat(c3, nMid, c4, nBot)} />
-                  <TrackCurve d={drawThroat(c3 + 100, nBot, c4 + 100, nMid)} />
-                  <TrackCurve d={drawThroat(c3 + 100, nMid, c4 + 100, nTop)} />
+            {/* Natural Crossovers in the straight yard limits (Flawless smooth curves) */}
+            {(() => {
+              // Departing switches (Right side)
+              const dStart = sX + 300;
+              const dEnd = sX + 550;
+
+              // Approaching switches (Left side)
+              const aStart = sX - 550;
+              const aEnd = sX - 300;
+
+              return (
+                <>
+                  {/* Departing */}
+                  <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} />
+                  <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} />
+                  <TrackCurve d={drawThroat(dStart + 150, mBot, dEnd + 150, mMid)} />
+                  <TrackCurve d={drawThroat(dStart + 150, mMid, dEnd + 150, mTop)} />
+
+                  {/* Approaching */}
+                  <TrackCurve d={drawThroat(aStart, mTop, aEnd, mMid)} />
+                  <TrackCurve d={drawThroat(aStart, mMid, aEnd, mBot)} />
+                  <TrackCurve d={drawThroat(aStart + 150, mBot, aEnd + 150, mMid)} />
+                  <TrackCurve d={drawThroat(aStart + 150, mMid, aEnd + 150, mTop)} />
                 </>
               );
             })()}

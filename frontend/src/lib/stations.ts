@@ -44,8 +44,8 @@ export const STATIONS: Station[] = VISIBLE_STATIONS.map(st => {
     const isBigYard = st.p >= 8;
     const stretch = isBigYard ? 1500 : 800; // Extreme stretching for organic weaving
     
-    const divergeStartOffset = -180 - (rndDiv * stretch);
-    const convergeEndOffset = 180 + (rndCon * stretch);
+    const divergeStartOffset = -800 - (rndDiv * stretch);
+    const convergeEndOffset = 800 + (rndCon * stretch);
     
     platforms.push({
       y: p.y,
