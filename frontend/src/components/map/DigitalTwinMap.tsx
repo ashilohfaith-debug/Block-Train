@@ -6,7 +6,8 @@ import { useMaintenanceStore } from '../../lib/store';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
 
 export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = false, interactive = false, onTrackClick }: { speedMultiplier?: number, hideTrains?: boolean, interactive?: boolean, onTrackClick?: (id: string) => void }) => {
-  const activeBlocks = useMaintenanceStore((state) => state.activeBlocks.map(b => b.id));
+  const blocks = useMaintenanceStore((state) => state.activeBlocks);
+  const activeBlocks = React.useMemo(() => blocks.map(b => b.id), [blocks]);
   // Focus perfectly on the first major station (Tambaram) on load
   const startX = -600;
   const startY = -400;

@@ -72,7 +72,7 @@ export default function MaintenancePage() {
 
       {/* Map (Trains Hidden, Interactive enabled) */}
       <div className="absolute inset-0 z-10">
-        <DigitalTwinMap hideTrains={true} interactive={true} onTrackClick={(id) => setSelectedTrack(id)} />
+        <DigitalTwinMap hideTrains={true} interactive={true} onTrackClick={setSelectedTrack} />
       </div>
 
       {/* Block Modal */}
