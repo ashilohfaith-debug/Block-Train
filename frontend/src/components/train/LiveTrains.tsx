@@ -83,21 +83,22 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
         const dy = nextY - y;
         const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-        const grad = 'url(#metal-passenger)';
-        const isFreight = false;
+        const isFreight = train.type === 'freight';
+        const grad = isFreight ? 'url(#freight-gradient)' : train.type === 'express' ? 'url(#express-gradient)' : 'url(#train-gradient)';
+        const filterId = isFreight ? 'url(#glow-freight)' : train.type === 'express' ? 'url(#glow-express)' : 'url(#glow-passenger)';
         
-        const numCoaches = 4;
-        const coachLen = 18;
-        const locoLen = 22;
+        const numCoaches = isFreight ? 12 : train.type === 'express' ? 6 : 4;
+        const coachLen = isFreight ? 12 : 18;
+        const locoLen = isFreight ? 14 : 12;
+        const bodyWidth = isFreight ? 8 : 6;
+        
         const gap = 3;
-        const totalLen = locoLen + numCoaches * (coachLen + gap);
-        const bodyWidth = 16;
+        const totalLen = locoLen + (numCoaches * coachLen) + (numCoaches * gap);
 
-        const distToStation = Math.abs(((train.x - 600) % STATION_SPACING + STATION_SPACING) % STATION_SPACING);
-        const isBraking = (distToStation > STATION_SPACING - 300 || distToStation < 300) && !train.stopUntil;
+        const isBraking = Math.abs(train.speed) < 0.2 && train.speed !== 0;
 
         return (
-          <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)`, willChange: 'transform' }} className="cursor-pointer group">
+          <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)`, willChange: 'transform' }} className="cursor-pointer group" filter={filterId}>
             <Headlight totalLen={totalLen} />
             {isBraking && <BrakeGlow totalLen={totalLen} bodyWidth={bodyWidth} />}
             

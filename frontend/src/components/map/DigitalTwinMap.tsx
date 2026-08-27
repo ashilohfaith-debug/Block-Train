@@ -45,20 +45,46 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
               className="will-change-transform drop-shadow-2xl"
               style={{ background: 'transparent' }}
             >
-              {/* Defs for re-usable SVG elements */}
+              {/* Defs for extremely bright neon re-usable SVG elements */}
               <defs>
+                {/* Neon Cyan for Passenger */}
                 <linearGradient id="train-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#3b82f6" />
-                  <stop offset="100%" stopColor="#60a5fa" />
+                  <stop offset="0%" stopColor="#00f2fe" />
+                  <stop offset="100%" stopColor="#4facfe" />
                 </linearGradient>
+                {/* Neon Magenta/Purple for Express */}
                 <linearGradient id="express-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#8b5cf6" />
-                  <stop offset="100%" stopColor="#a78bfa" />
+                  <stop offset="0%" stopColor="#ff0844" />
+                  <stop offset="100%" stopColor="#ea69ff" />
                 </linearGradient>
+                {/* Neon Orange/Yellow for Freight */}
                 <linearGradient id="freight-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#f59e0b" />
-                  <stop offset="100%" stopColor="#fbbf24" />
+                  <stop offset="0%" stopColor="#f9d423" />
+                  <stop offset="100%" stopColor="#ff4e50" />
                 </linearGradient>
+
+                {/* Glow Filters */}
+                <filter id="glow-passenger" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="glow-express" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="glow-freight" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
               
               <StaticInfrastructure />
