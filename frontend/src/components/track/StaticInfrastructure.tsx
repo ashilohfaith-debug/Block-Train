@@ -166,3 +166,5 @@ export const StaticInfrastructure = React.memo(() => {
     </>
   );
 });
+
+StaticInfrastructure.displayName = 'StaticInfrastructure';

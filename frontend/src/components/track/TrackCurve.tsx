@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const TrackCurve = React.memo(({ d, opacity = 1 }: any) => {
+export const TrackCurve = React.memo(({ d, opacity = 1 }: { d: string, opacity?: number }) => {
   // Matches "M x y ... L x y" to extract start and end coordinates for frogs
   const match = d.match(/^M ([\d.-]+) ([\d.-]+).*L ([\d.-]+) ([\d.-]+)$/);
   
@@ -21,3 +21,5 @@ export const TrackCurve = React.memo(({ d, opacity = 1 }: any) => {
     </g>
   );
 });
+
+TrackCurve.displayName = 'TrackCurve';

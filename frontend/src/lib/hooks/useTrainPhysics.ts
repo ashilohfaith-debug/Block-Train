@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Train, TrainType } from '../types';
+import { Train } from '../types';
 import { STATIONS, CANVAS_WIDTH } from '../stations';
-import { STATION_SPACING, NUM_TRAINS, DEFAULT_SPEED_MULTIPLIER } from '../constants';
+import { STATION_SPACING, DEFAULT_SPEED_MULTIPLIER } from '../constants';
 
 const generateTrains = (speedMultiplier: number): Train[] => {
   const INITIAL_TRAINS: Train[] = [
@@ -91,12 +91,7 @@ const generateTrains = (speedMultiplier: number): Train[] => {
 };
 
 export const useTrainPhysics = (userSpeedMultiplier: number) => {
-  const [trains, setTrains] = useState<Train[]>([]);
-
-  // Initialize trains once
-  useEffect(() => {
-    setTrains(generateTrains(DEFAULT_SPEED_MULTIPLIER));
-  }, []);
+  const [trains, setTrains] = useState<Train[]>(() => generateTrains(DEFAULT_SPEED_MULTIPLIER));
 
   useEffect(() => {
     const interval = setInterval(() => {

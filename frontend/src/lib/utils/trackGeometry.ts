@@ -1,7 +1,7 @@
 import { Station } from '../types';
 import { CENTER_Y, TRACK_GAP } from '../constants';
 
-export const getStationMainY = (station: any, effectiveLane: number) => {
+export const getStationMainY = (station: { p: number, yOffset: number }, effectiveLane: number) => {
   const pYs = [];
   const startY = CENTER_Y + station.yOffset - ((station.p - 1) * TRACK_GAP) / 2;
   for (let i = 0; i < station.p; i++) pYs.push(startY + i * TRACK_GAP);

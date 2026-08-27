@@ -2,7 +2,6 @@ import React from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { StaticInfrastructure } from '../track/StaticInfrastructure';
 import { LiveTrains } from '../train/LiveTrains';
-import { Train } from '../../lib/types';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
 
 export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = false }: { speedMultiplier?: number, hideTrains?: boolean }) => {
@@ -103,3 +102,5 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
     </div>
   );
 });
+
+DigitalTwinMap.displayName = 'DigitalTwinMap';
