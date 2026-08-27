@@ -99,7 +99,7 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
 
         return (
           <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)`, willChange: 'transform' }} className="cursor-pointer group" filter={filterId}>
-            <Headlight totalLen={totalLen} />
+            <Headlight totalLen={totalLen} train={train} />
             {isBraking && <BrakeGlow totalLen={totalLen} bodyWidth={bodyWidth} />}
             
             {/* Ultra-Fast Fake Drop Shadow */}
