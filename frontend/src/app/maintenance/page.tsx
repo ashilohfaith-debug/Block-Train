@@ -4,12 +4,20 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { DigitalTwinMap } from '../../components/map/DigitalTwinMap';
 import { useMaintenanceStore } from '../../lib/store';
+import { CustomSelect } from '../../components/ui/CustomSelect';
+import { CustomCalendar } from '../../components/ui/CustomCalendar';
 
 export default function MaintenancePage() {
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
   const addBlock = useMaintenanceStore((state) => state.addBlock);
   const activeBlocks = useMaintenanceStore((state) => state.activeBlocks);
   const removeBlock = useMaintenanceStore((state) => state.removeBlock);
+
+  const times = Array.from({ length: 48 }, (_, i) => {
+    const h = Math.floor(i / 2).toString().padStart(2, '0');
+    const m = i % 2 === 0 ? '00' : '30';
+    return `${h}:${m}`;
+  });
 
   return (
     <div className="h-screen w-full bg-[#09090b] text-zinc-300 font-sans flex flex-col selection:bg-amber-500/30 overflow-hidden relative">
@@ -101,17 +109,17 @@ export default function MaintenancePage() {
 
               <div>
                 <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2">Date</label>
-                <input name="date" type="date" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-300 outline-none focus:border-amber-500 transition-colors" required />
+                <CustomCalendar name="date" />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2">From Time (24H)</label>
-                  <input name="fromTime" type="time" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-300 outline-none focus:border-amber-500 transition-colors" required />
+                  <CustomSelect name="fromTime" placeholder="Start Time" options={times} />
                 </div>
                 <div>
                   <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2">To Time (24H)</label>
-                  <input name="toTime" type="time" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-300 outline-none focus:border-amber-500 transition-colors" required />
+                  <CustomSelect name="toTime" placeholder="End Time" options={times} />
                 </div>
               </div>
 
