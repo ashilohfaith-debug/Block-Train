@@ -19,8 +19,8 @@ export default function MaintenancePage() {
 
       {/* Top Nav (Floating over map) */}
       <div className="absolute top-0 left-0 right-0 z-50 flex w-full justify-between items-center p-8 pointer-events-none">
-        <div className="text-zinc-100 font-medium tracking-tight text-lg pointer-events-auto">
-          Block<span className="text-zinc-500">Train</span>
+        <div className="text-zinc-100 font-bold tracking-tight text-3xl pointer-events-auto">
+          Block<span className="text-zinc-500 font-medium">Train</span>
         </div>
         <Link href="/" className="group flex items-center text-zinc-400 font-mono text-[11px] tracking-widest hover:text-zinc-200 transition-colors pointer-events-auto bg-zinc-900/80 px-4 py-2 rounded-full border border-zinc-800 backdrop-blur-md">
           <span className="mr-2 transition-transform duration-500 group-hover:-translate-x-1">&larr;</span> SYSTEM HUB
