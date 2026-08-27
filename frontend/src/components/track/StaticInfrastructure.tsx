@@ -7,7 +7,7 @@ import { STATIONS } from '../../lib/stations';
 import { STATION_SPACING, TRACK_GAP } from '../../lib/constants';
 import { getStationMainY } from '../../lib/utils/trackGeometry';
 
-export const StaticInfrastructure = React.memo(() => {
+export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: { interactive?: boolean, onTrackClick?: (trackId: string) => void }) => {
   return (
     <>
       <EntryExitTracks />
@@ -24,9 +24,9 @@ export const StaticInfrastructure = React.memo(() => {
         return (
           <g key={station.id}>
             {/* Mainlines running straight through yard */}
-            <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} />
-            <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} />
-            <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} />
+            <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} - Loop Line 1`)} />
+            <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} - Mainline`)} />
+            <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} - Loop Line 2`)} />
 
             {/* Inter-station S-Curves and Real-World Crossovers */}
             {i < STATIONS.length - 1 && (() => {
@@ -36,11 +36,13 @@ export const StaticInfrastructure = React.memo(() => {
               const nBot = getStationMainY(nextStation, 1);
               const nMid = getStationMainY(nextStation, 0);
 
+              const blockName = `${station.name} to ${nextStation.name}`;
+
               return (
                 <>
-                  <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} />
-                  <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} />
-                  <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} />
+                  <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Down Line`)} />
+                  <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Main Line`)} />
+                  <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Up Line`)} />
                 </>
               );
             })()}
@@ -65,16 +67,14 @@ export const StaticInfrastructure = React.memo(() => {
               return (
                 <>
                   {/* Departing - Randomly drop some crossovers to create realistic asymmetry */}
-                  {r1 > 0.1 && <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} />}
-                  {r2 > 0.2 && <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} />}
-                  {r3 > 0.1 && <TrackCurve d={drawThroat(dStart + 120, mBot, dEnd + 120, mMid)} />}
-                  {r1 > 0.3 && <TrackCurve d={drawThroat(dStart + 120, mMid, dEnd + 120, mTop)} />}
-
-                  {/* Approaching - Mirrored asymmetry */}
-                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart, mTop, aEnd, mMid)} />}
-                  {r3 > 0.3 && <TrackCurve d={drawThroat(aStart, mMid, aEnd, mBot)} />}
-                  {r1 > 0.2 && <TrackCurve d={drawThroat(aStart + 120, mBot, aEnd + 120, mMid)} />}
-                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart + 120, mMid, aEnd + 120, mTop)} />}
+                  {r1 > 0.1 && <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Crossover`)} />}
+                  {r2 > 0.2 && <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Main Crossover`)} />}
+                  {r3 > 0.1 && <TrackCurve d={drawThroat(dStart + 120, mBot, dEnd + 120, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Outer Crossover`)} />}
+                  
+                  {/* Approaching */}
+                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart, mMid, aEnd, mTop)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Crossover`)} />}
+                  {r1 > 0.2 && <TrackCurve d={drawThroat(aStart, mBot, aEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Main Crossover`)} />}
+                  {r3 > 0.1 && <TrackCurve d={drawThroat(aStart - 120, mMid, aEnd - 120, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Outer Crossover`)} />}
                 </>
               );
             })()}
