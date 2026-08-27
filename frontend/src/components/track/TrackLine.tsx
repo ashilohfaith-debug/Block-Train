@@ -1,8 +1,7 @@
 ﻿import React, { useState } from 'react';
 
-export const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1, interactive, onClick }: { x1: number, y1: number, x2: number, y2: number, opacity?: number, interactive?: boolean, onClick?: () => void }) => {
+const Segment = ({ x1, y1, x2, y2, opacity, interactive, onClick }: { x1: number, y1: number, x2: number, y2: number, opacity?: number, interactive?: boolean, onClick?: () => void }) => {
   const [isHovered, setIsHovered] = useState(false);
-
   return (
     <g 
       opacity={opacity}
@@ -18,5 +17,34 @@ export const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1, interactive,
       <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#070B12" strokeWidth="2" />
     </g>
   );
+};
+
+export const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1, interactive, onClick }: { x1: number, y1: number, x2: number, y2: number, opacity?: number, interactive?: boolean, onClick?: (segmentId?: number) => void }) => {
+  if (y1 === y2 && Math.abs(x2 - x1) > 200 && interactive) {
+    const segments = [];
+    const chunkLen = 150;
+    const totalLen = Math.abs(x2 - x1);
+    const numChunks = Math.ceil(totalLen / chunkLen);
+    const dir = x2 > x1 ? 1 : -1;
+    const actualChunkLen = totalLen / numChunks;
+    
+    for (let i = 0; i < numChunks; i++) {
+      const segX1 = x1 + (i * actualChunkLen * dir);
+      const segX2 = x1 + ((i + 1) * actualChunkLen * dir);
+      segments.push(
+        <Segment 
+          key={i} 
+          x1={segX1} y1={y1} x2={segX2} y2={y2} 
+          opacity={opacity} 
+          interactive={interactive} 
+          onClick={() => onClick && onClick(i + 1)} 
+        />
+      );
+    }
+    return <>{segments}</>;
+  }
+
+  return <Segment x1={x1} y1={y1} x2={x2} y2={y2} opacity={opacity} interactive={interactive} onClick={() => onClick && onClick(1)} />;
 });
+
 TrackLine.displayName = 'TrackLine';

@@ -10,7 +10,7 @@ import { getStationMainY } from '../../lib/utils/trackGeometry';
 export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: { interactive?: boolean, onTrackClick?: (trackId: string) => void }) => {
   return (
     <>
-      <EntryExitTracks />
+      <EntryExitTracks interactive={interactive} onTrackClick={onTrackClick} />
 
       {STATIONS.map((station, i) => {
         const sX = 600 + i * STATION_SPACING;
@@ -24,9 +24,9 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
         return (
           <g key={station.id}>
             {/* Mainlines running straight through yard */}
-            <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} - Loop Line 1`)} />
-            <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} - Mainline`)} />
-            <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} - Loop Line 2`)} />
+            <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - Loop Line 1 (Sec ${sId})`)} />
+            <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - Mainline (Sec ${sId})`)} />
+            <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - Loop Line 2 (Sec ${sId})`)} />
 
             {/* Inter-station S-Curves and Real-World Crossovers */}
             {i < STATIONS.length - 1 && (() => {
