@@ -7,7 +7,7 @@ import { STATIONS } from '../../lib/stations';
 import { STATION_SPACING, TRACK_GAP } from '../../lib/constants';
 import { getStationMainY } from '../../lib/utils/trackGeometry';
 
-export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: { interactive?: boolean, onTrackClick?: (trackId: string) => void }) => {
+export const StaticInfrastructure = React.memo(({ interactive, onTrackClick, blockedBlocks = [] }: { interactive?: boolean, onTrackClick?: (trackId: string) => void, blockedBlocks?: string[] }) => {
   return (
     <>
       <EntryExitTracks interactive={interactive} onTrackClick={onTrackClick} />
@@ -24,9 +24,9 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
         return (
           <g key={station.id}>
             {/* Mainlines running straight through yard */}
-            <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - Loop Line 1 (Sec ${sId})`)} />
-            <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - Mainline (Sec ${sId})`)} />
-            <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - Loop Line 2 (Sec ${sId})`)} />
+            <TrackLine x1={yardStart} y1={mTop} x2={yardEnd} y2={mTop} interactive={interactive} onClick={(sId?: number) => onTrackClick?.(`${station.name} - Loop Line 1 (Sec ${sId})`)} isBlocked={(sId?: number) => blockedBlocks?.includes(`${station.name} - Loop Line 1 (Sec ${sId})`)} />
+            <TrackLine x1={yardStart} y1={mMid} x2={yardEnd} y2={mMid} interactive={interactive} onClick={(sId?: number) => onTrackClick?.(`${station.name} - Mainline (Sec ${sId})`)} isBlocked={(sId?: number) => blockedBlocks?.includes(`${station.name} - Mainline (Sec ${sId})`)} />
+            <TrackLine x1={yardStart} y1={mBot} x2={yardEnd} y2={mBot} interactive={interactive} onClick={(sId?: number) => onTrackClick?.(`${station.name} - Loop Line 2 (Sec ${sId})`)} isBlocked={(sId?: number) => blockedBlocks?.includes(`${station.name} - Loop Line 2 (Sec ${sId})`)} />
 
             {/* Inter-station S-Curves and Real-World Crossovers */}
             {i < STATIONS.length - 1 && (() => {
@@ -40,9 +40,9 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
 
               return (
                 <>
-                  <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Down Line`)} />
-                  <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Main Line`)} />
-                  <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Up Line`)} />
+                  <TrackCurve d={drawThroat(yardEnd, mTop, nextYardStart, nTop)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Down Line`)} isBlocked={blockedBlocks?.includes(`${blockName} Down Line`)} />
+                  <TrackCurve d={drawThroat(yardEnd, mMid, nextYardStart, nMid)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Main Line`)} isBlocked={blockedBlocks?.includes(`${blockName} Main Line`)} />
+                  <TrackCurve d={drawThroat(yardEnd, mBot, nextYardStart, nBot)} interactive={interactive} onClick={() => onTrackClick?.(`${blockName} Up Line`)} isBlocked={blockedBlocks?.includes(`${blockName} Up Line`)} />
                 </>
               );
             })()}
@@ -67,14 +67,14 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
               return (
                 <>
                   {/* Departing - Randomly drop some crossovers to create realistic asymmetry */}
-                  {r1 > 0.1 && <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Crossover`)} />}
-                  {r2 > 0.2 && <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Main Crossover`)} />}
-                  {r3 > 0.1 && <TrackCurve d={drawThroat(dStart + 120, mBot, dEnd + 120, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Outer Crossover`)} />}
+                  {r1 > 0.1 && <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Crossover`)} />}
+                  {r2 > 0.2 && <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Main Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Main Crossover`)} />}
+                  {r3 > 0.1 && <TrackCurve d={drawThroat(dStart + 120, mBot, dEnd + 120, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Outer Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Outer Crossover`)} />}
                   
                   {/* Approaching */}
-                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart, mMid, aEnd, mTop)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Crossover`)} />}
-                  {r1 > 0.2 && <TrackCurve d={drawThroat(aStart, mBot, aEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Main Crossover`)} />}
-                  {r3 > 0.1 && <TrackCurve d={drawThroat(aStart - 120, mMid, aEnd - 120, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Outer Crossover`)} />}
+                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart, mMid, aEnd, mTop)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Crossover`)} />}
+                  {r1 > 0.2 && <TrackCurve d={drawThroat(aStart, mBot, aEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Main Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Main Crossover`)} />}
+                  {r3 > 0.1 && <TrackCurve d={drawThroat(aStart - 120, mMid, aEnd - 120, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Outer Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Outer Crossover`)} />}
                 </>
               );
             })()}
@@ -115,9 +115,9 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
                 <g key={`${station.id}-p${pIndex}`}>
                   {!plat.isMainline && (
                     <>
-                      <TrackCurve d={drawThroat(divergeStart, mainLineY, sZoneStart, py)} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - PF${pIndex + 1} Diverge`)} />
-                      <TrackLine x1={sZoneStart} y1={py} x2={sZoneEnd} y2={py} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - PF${pIndex + 1} Loop (Sec ${sId})`)} />
-                      <TrackCurve d={drawThroat(sZoneEnd, py, convergeEnd, mainLineY)} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - PF${pIndex + 1} Converge`)} />
+                      <TrackCurve d={drawThroat(divergeStart, mainLineY, sZoneStart, py)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} - PF${pIndex + 1} Diverge`)} isBlocked={blockedBlocks?.includes(`${station.name} - PF${pIndex + 1} Diverge`)} />
+                      <TrackLine x1={sZoneStart} y1={py} x2={sZoneEnd} y2={py} interactive={interactive} onClick={(sId?: number) => onTrackClick?.(`${station.name} - PF${pIndex + 1} Loop (Sec ${sId})`)} isBlocked={(sId?: number) => blockedBlocks?.includes(`${station.name} - PF${pIndex + 1} Loop (Sec ${sId})`) ?? false} />
+                      <TrackCurve d={drawThroat(sZoneEnd, py, convergeEnd, mainLineY)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} - PF${pIndex + 1} Converge`)} isBlocked={blockedBlocks?.includes(`${station.name} - PF${pIndex + 1} Converge`)} />
                     </>
                   )}
 

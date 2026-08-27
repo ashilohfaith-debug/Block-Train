@@ -2,9 +2,11 @@ import React from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { StaticInfrastructure } from '../track/StaticInfrastructure';
 import { LiveTrains } from '../train/LiveTrains';
+import { useMaintenanceStore } from '../../lib/store';
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
 
 export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = false, interactive = false, onTrackClick }: { speedMultiplier?: number, hideTrains?: boolean, interactive?: boolean, onTrackClick?: (id: string) => void }) => {
+  const activeBlocks = useMaintenanceStore((state) => state.activeBlocks.map(b => b.id));
   // Focus perfectly on the first major station (Tambaram) on load
   const startX = -600;
   const startY = -400;
@@ -93,7 +95,7 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
                 </linearGradient>
               </defs>
               
-              <StaticInfrastructure interactive={interactive} onTrackClick={onTrackClick} />
+              <StaticInfrastructure interactive={interactive} onTrackClick={onTrackClick} blockedBlocks={activeBlocks} />
               {!hideTrains && <LiveTrains speedMultiplier={speedMultiplier} />}
             </svg>
           </TransformComponent>

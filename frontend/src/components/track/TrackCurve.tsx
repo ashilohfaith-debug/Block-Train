@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 
-export const TrackCurve = React.memo(({ d, opacity = 1, interactive, onClick }: { d: string, opacity?: number, interactive?: boolean, onClick?: () => void }) => {
+export const TrackCurve = React.memo(({ d, opacity = 1, interactive, onClick, isBlocked }: { d: string, opacity?: number, interactive?: boolean, onClick?: () => void, isBlocked?: boolean }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -12,7 +12,16 @@ export const TrackCurve = React.memo(({ d, opacity = 1, interactive, onClick }: 
       className={interactive ? "cursor-pointer transition-colors duration-200" : ""}
     >
       {interactive && <path d={d} fill="none" stroke="transparent" strokeWidth="24" className="pointer-events-auto" />}
-      <path d={d} fill="none" stroke={isHovered ? "#ef4444" : "#111827"} strokeWidth="12" opacity={isHovered ? "0.8" : "0.6"} className={isHovered ? "animate-pulse" : ""} />
+      
+      {isBlocked ? (
+        <>
+          <path d={d} fill="none" stroke="#facc15" strokeWidth="12" opacity="0.9" filter="drop-shadow(0 0 8px rgba(239,68,68,0.8))" />
+          <path d={d} fill="none" stroke="#000000" strokeWidth="12" strokeDasharray="10 10" />
+        </>
+      ) : (
+        <path d={d} fill="none" stroke={isHovered ? "#ef4444" : "#111827"} strokeWidth="12" opacity={isHovered ? "0.8" : "0.6"} className={isHovered ? "animate-pulse" : ""} />
+      )}
+      
       <path d={d} fill="none" stroke={isHovered ? "#991b1b" : "#374151"} strokeWidth="8" strokeDasharray="3 9" />
       <path d={d} fill="none" stroke={isHovered ? "#fca5a5" : "#9ca3af"} strokeWidth="4" />
       <path d={d} fill="none" stroke="#070B12" strokeWidth="2" />

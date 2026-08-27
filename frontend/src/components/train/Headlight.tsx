@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { STATIONS } from '../../lib/stations';
 import { STATION_SPACING } from '../../lib/constants';
 
@@ -42,7 +42,7 @@ export const Headlight = ({ totalLen, train }: { totalLen: number, train: import
     <g>
       {/* Dynamic Headlight beam */}
       <polygon 
-        points={\\,-3 \,-\ \,\ \,3\} 
+        points={`${frontX},-3 ${frontX + beamLength},-${beamWidth} ${frontX + beamLength},${beamWidth} ${frontX},3`} 
         fill="url(#headlight-gradient)" 
         opacity={opacity} 
         style={{ mixBlendMode: 'screen' }}
