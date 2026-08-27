@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1 }: any) => (
+export const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1 }: { x1: number, y1: number, x2: number, y2: number, opacity?: number }) => (
   <g opacity={opacity}>
     {/* Ballast / Track Bed */}
     <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#111827" strokeWidth="12" opacity="0.6" />
@@ -12,3 +12,5 @@ export const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1 }: any) => (
     <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#070B12" strokeWidth="2" />
   </g>
 ));
+
+TrackLine.displayName = 'TrackLine';
