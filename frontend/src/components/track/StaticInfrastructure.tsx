@@ -88,17 +88,17 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
             )}
 
             {/* Premium Glassmorphic Station Box */}
-            <rect x={sX - 250} y={station.platforms[0].y - 45} width={500} height={(station.p * TRACK_GAP) + 70} fill="rgba(255, 255, 255, 0.05)" stroke="#374151" strokeWidth="1" rx="8" />
+            <rect x={sX - 250} y={station.platforms[0].y - 45} width={500} height={(station.p * TRACK_GAP) + 70} fill="rgba(255, 255, 255, 0.05)" stroke="#374151" strokeWidth="1" rx="8" pointerEvents="none" />
             
             {/* High-Tech Corner Accents */}
-            <path d={`M ${sX - 250} ${station.platforms[0].y - 30} L ${sX - 250} ${station.platforms[0].y - 45} L ${sX - 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
-            <path d={`M ${sX + 250} ${station.platforms[0].y - 30} L ${sX + 250} ${station.platforms[0].y - 45} L ${sX + 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
-            <path d={`M ${sX - 250} ${station.platforms[station.p-1].y + 10} L ${sX - 250} ${station.platforms[station.p-1].y + 25} L ${sX - 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
-            <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" />
+            <path d={`M ${sX - 250} ${station.platforms[0].y - 30} L ${sX - 250} ${station.platforms[0].y - 45} L ${sX - 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" pointerEvents="none" />
+            <path d={`M ${sX + 250} ${station.platforms[0].y - 30} L ${sX + 250} ${station.platforms[0].y - 45} L ${sX + 235} ${station.platforms[0].y - 45}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" pointerEvents="none" />
+            <path d={`M ${sX - 250} ${station.platforms[station.p-1].y + 10} L ${sX - 250} ${station.platforms[station.p-1].y + 25} L ${sX - 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" pointerEvents="none" />
+            <path d={`M ${sX + 250} ${station.platforms[station.p-1].y + 10} L ${sX + 250} ${station.platforms[station.p-1].y + 25} L ${sX + 235} ${station.platforms[station.p-1].y + 25}`} fill="none" stroke="#4b5563" strokeWidth="2" opacity="0.8" pointerEvents="none" />
             
             {/* Station Name Header Bar */}
-            <rect x={sX - 250} y={station.platforms[0].y - 100} width={500} height={50} fill="#111827" stroke="#3b82f6" strokeWidth="2" rx="25" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.5))" />
-            <text x={sX} y={station.platforms[0].y - 66} fill="#ffffff" fontSize="24" textAnchor="middle" fontWeight="900" className="font-mono tracking-widest">
+            <rect x={sX - 250} y={station.platforms[0].y - 100} width={500} height={50} fill="#111827" stroke="#3b82f6" strokeWidth="2" rx="25" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.5))" pointerEvents="none" />
+            <text x={sX} y={station.platforms[0].y - 66} fill="#ffffff" fontSize="24" textAnchor="middle" fontWeight="900" className="font-mono tracking-widest" pointerEvents="none">
               <tspan fill="#facc15">{station.id}</tspan> <tspan fill="#4b5563">|</tspan> {station.name.toUpperCase()}
             </text>
 
@@ -115,9 +115,9 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
                 <g key={`${station.id}-p${pIndex}`}>
                   {!plat.isMainline && (
                     <>
-                      <TrackCurve d={drawThroat(divergeStart, mainLineY, sZoneStart, py)} />
-                      <TrackLine x1={sZoneStart} y1={py} x2={sZoneEnd} y2={py} />
-                      <TrackCurve d={drawThroat(sZoneEnd, py, convergeEnd, mainLineY)} />
+                      <TrackCurve d={drawThroat(divergeStart, mainLineY, sZoneStart, py)} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - PF${pIndex + 1} Diverge`)} />
+                      <TrackLine x1={sZoneStart} y1={py} x2={sZoneEnd} y2={py} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - PF${pIndex + 1} Loop (Sec ${sId})`)} />
+                      <TrackCurve d={drawThroat(sZoneEnd, py, convergeEnd, mainLineY)} interactive={interactive} onClick={(sId) => onTrackClick?.(`${station.name} - PF${pIndex + 1} Converge`)} />
                     </>
                   )}
 
@@ -136,10 +136,11 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
                           stroke="#374151" 
                           strokeWidth="1"
                           rx="2"
+                          pointerEvents="none"
                         />
                         {/* Yellow Safety Edge Lines */}
-                        <line x1={pStartX} y1={py + 9} x2={pStartX + pWidth} y2={py + 9} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" />
-                        <line x1={pStartX} y1={py + 8 + (TRACK_GAP - 16) - 1} x2={pStartX + pWidth} y2={py + 8 + (TRACK_GAP - 16) - 1} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" />
+                        <line x1={pStartX} y1={py + 9} x2={pStartX + pWidth} y2={py + 9} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" pointerEvents="none" />
+                        <line x1={pStartX} y1={py + 8 + (TRACK_GAP - 16) - 1} x2={pStartX + pWidth} y2={py + 8 + (TRACK_GAP - 16) - 1} stroke="#facc15" strokeWidth="1" strokeDasharray="4 4" opacity="0.8" pointerEvents="none" />
                         
                         {/* Platform Hatching Pattern Simulated */}
                         <rect 
@@ -149,9 +150,10 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick }: {
                           height={TRACK_GAP - 24} 
                           fill="rgba(55, 65, 81, 0.4)" 
                           rx="1"
+                          pointerEvents="none"
                         />
                         {/* Platform Numbers */}
-                        <text x={pStartX + pWidth/2} y={py + (TRACK_GAP / 2) + 2} fill="#9ca3af" fontSize="9" textAnchor="middle" fontWeight="700" className="font-mono">
+                        <text x={pStartX + pWidth/2} y={py + (TRACK_GAP / 2) + 2} fill="#9ca3af" fontSize="9" textAnchor="middle" fontWeight="700" className="font-mono" pointerEvents="none">
                           PF-{pIndex + 1}
                         </text>
                       </g>
