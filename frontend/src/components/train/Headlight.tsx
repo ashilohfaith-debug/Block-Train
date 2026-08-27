@@ -34,9 +34,9 @@ export const Headlight = ({ totalLen, train }: { totalLen: number, train: import
   const opacity = 0.3 + (0.6 * intensityFactor);
   
   // Beam length also grows dynamically
-  const beamLength = 30 + (70 * intensityFactor);
+  const beamLength = 15 + (35 * intensityFactor);
   // Beam width grows dynamically
-  const beamWidth = 8 + (12 * intensityFactor);
+  const beamWidth = 4 + (6 * intensityFactor);
 
   return (
     <g>
