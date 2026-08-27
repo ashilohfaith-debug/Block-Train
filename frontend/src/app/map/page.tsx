@@ -6,11 +6,16 @@ import { DashboardHUD } from '../../components/ui/DashboardHUD';
 import { SpeedController } from '../../components/ui/SpeedController';
 import { useClock } from '../../lib/hooks/useClock';
 import { DEFAULT_SPEED_MULTIPLIER } from '../../lib/constants';
+import { useMaintenanceStore } from '../../lib/store';
 
 export default function RailwayDigitalTwin() {
   const [speedMultiplier, setSpeedMultiplier] = useState(DEFAULT_SPEED_MULTIPLIER);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const time = useClock();
+
+  React.useEffect(() => {
+    useMaintenanceStore.getState().fetchBlocks();
+  }, []);
 
   return (
     <div className={`w-full h-screen overflow-hidden relative font-sans transition-colors duration-500 ${isDarkMode ? 'bg-[#0f172a] text-slate-200' : 'bg-[#d6e1c9] text-slate-800'}`}>

@@ -53,6 +53,7 @@ const plansRouter        = require("./routes/plans");
 const optimizationRouter = require("./routes/optimization");
 const incidentsRouter    = require("./routes/incidents");
 const aiRouter           = require("./routes/ai");
+const activeBlocksRouter = require("./routes/active_blocks");
 
 // ── Database pool (needed for /db-health) ────────────────────────────────────
 const pool = require("./db");
@@ -125,6 +126,9 @@ app.use("/api/auth", createRateLimiter({
 
 // Make network public for frontend connection testing
 app.use("/api/network", networkRouter);
+
+// Make active blocks public for testing
+app.use("/api/active_blocks", activeBlocksRouter);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 3 — Global Authentication Guard

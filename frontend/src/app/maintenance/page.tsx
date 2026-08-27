@@ -13,6 +13,10 @@ export default function MaintenancePage() {
   const activeBlocks = useMaintenanceStore((state) => state.activeBlocks);
   const removeBlock = useMaintenanceStore((state) => state.removeBlock);
 
+  React.useEffect(() => {
+    useMaintenanceStore.getState().fetchBlocks();
+  }, []);
+
   const times = Array.from({ length: 48 }, (_, i) => {
     const h = Math.floor(i / 2).toString().padStart(2, '0');
     const m = i % 2 === 0 ? '00' : '30';
