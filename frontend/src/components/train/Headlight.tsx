@@ -6,7 +6,7 @@ export const Headlight = ({ totalLen }: { totalLen: number }) => {
     <g>
       {/* Headlight beam */}
       <polygon 
-        points={`${frontX},-4 ${frontX + 60},-15 ${frontX + 60},15 ${frontX},4`} 
+        points={`${frontX},-3 ${frontX + 40},-10 ${frontX + 40},10 ${frontX},3`} 
         fill="url(#headlight-gradient)" 
         opacity="0.8" 
       />
