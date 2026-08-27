@@ -27,21 +27,7 @@ export default function MaintenancePage() {
         </Link>
       </div>
       
-      {/* HUD Panel */}
-      <div className="absolute top-24 left-8 z-50 max-w-sm w-full pointer-events-none">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/80 text-zinc-400 font-mono text-[11px] tracking-[0.2em] mb-6 backdrop-blur-md">
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-          MODULE: DISPATCH
-        </div>
-        
-        <h1 className="text-3xl font-medium tracking-tight text-white mb-4 drop-shadow-xl">
-          Maintenance & Voice Command
-        </h1>
-        
-        <p className="text-zinc-400 text-sm leading-relaxed font-light mb-8 drop-shadow-lg bg-zinc-900/80 p-4 rounded-xl border border-zinc-800 backdrop-blur-md">
-          Select any track section on the map to issue a maintenance block.
-        </p>
-      </div>
+
 
       {/* Active Blocks Dashboard */}
       <div className="absolute right-8 top-24 bottom-8 w-80 z-40 pointer-events-none flex flex-col gap-4">
