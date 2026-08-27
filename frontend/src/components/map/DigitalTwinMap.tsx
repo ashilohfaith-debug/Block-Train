@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { StaticInfrastructure } from '../track/StaticInfrastructure';
 import { LiveTrains } from '../train/LiveTrains';
@@ -85,6 +85,13 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
                 </filter>
+                
+                {/* Headlight beam gradient */}
+                <linearGradient id="headlight-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+                  <stop offset="50%" stopColor="#fef08a" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#fef08a" stopOpacity="0" />
+                </linearGradient>
               </defs>
               
               <StaticInfrastructure />

@@ -1,10 +1,18 @@
 import React from 'react';
 
-export const Headlight = ({ totalLen }: { totalLen: number }) => (
-  <>
-    {/* Headlight beam */}
-    <polygon points={`${totalLen/2},-6 ${totalLen/2 + 40},-12 ${totalLen/2 + 40},12 ${totalLen/2},6`} fill="url(#headlight-gradient)" opacity="0.4" />
-    {/* Headlight LED */}
-    <rect x={totalLen/2 - 1} y={-2} width={2} height={4} fill="#facc15" />
-  </>
-);
+export const Headlight = ({ totalLen }: { totalLen: number }) => {
+  const frontX = totalLen / 2;
+  return (
+    <g>
+      {/* Headlight beam */}
+      <polygon 
+        points={`${frontX},-4 ${frontX + 60},-15 ${frontX + 60},15 ${frontX},4`} 
+        fill="url(#headlight-gradient)" 
+        opacity="0.8" 
+      />
+      {/* Headlight Bulbs */}
+      <circle cx={frontX - 0.5} cy={-2} r="1" fill="#ffffff" />
+      <circle cx={frontX - 0.5} cy={2} r="1" fill="#ffffff" />
+    </g>
+  );
+};
