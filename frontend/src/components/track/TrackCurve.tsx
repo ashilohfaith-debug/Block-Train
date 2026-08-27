@@ -1,23 +1,31 @@
-import React from 'react';
+﻿import React, { useState } from 'react';
 
-export const TrackCurve = React.memo(({ d, opacity = 1 }: any) => {
-  // Matches "M x y ... L x y" to extract start and end coordinates for frogs
-  const match = d.match(/^M ([\d.-]+) ([\d.-]+).*L ([\d.-]+) ([\d.-]+)$/);
-  
+export const TrackCurve = React.memo(({ d, opacity = 1, interactive, onClick, isBlocked }: { d: string, opacity?: number, interactive?: boolean, onClick?: () => void, isBlocked?: boolean }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <g opacity={opacity}>
-      <path d={d} stroke="#111827" strokeWidth="12" fill="transparent" opacity="0.6" />
-      <path d={d} stroke="#374151" strokeWidth="8" strokeDasharray="3 9" fill="transparent" />
-      <path d={d} stroke="#9ca3af" strokeWidth="4" fill="transparent" />
-      <path d={d} stroke="#070B12" strokeWidth="2" fill="transparent" />
+    <g 
+      opacity={opacity}
+      onMouseEnter={() => interactive && setIsHovered(true)}
+      onMouseLeave={() => interactive && setIsHovered(false)}
+      onClick={() => interactive && onClick && onClick()}
+      className={interactive ? "cursor-pointer transition-colors duration-200" : ""}
+    >
+      {interactive && <path d={d} fill="none" stroke="transparent" strokeWidth="24" className="pointer-events-auto" />}
       
-      {/* Switch Frogs (Yellow mechanical divergence points) */}
-      {match && (
+      {isBlocked ? (
         <>
-          <circle cx={match[1]} cy={match[2]} r="2.5" fill="#facc15" stroke="#070B12" strokeWidth="1.5" />
-          <circle cx={match[3]} cy={match[4]} r="2.5" fill="#facc15" stroke="#070B12" strokeWidth="1.5" />
+          <path d={d} fill="none" stroke="#facc15" strokeWidth="12" opacity="0.9" filter="drop-shadow(0 0 8px rgba(239,68,68,0.8))" />
+          <path d={d} fill="none" stroke="#000000" strokeWidth="12" strokeDasharray="10 10" />
         </>
+      ) : (
+        <path d={d} fill="none" stroke={isHovered ? "#ef4444" : "#111827"} strokeWidth="12" opacity={isHovered ? "0.8" : "0.6"} className={isHovered ? "animate-pulse" : ""} />
       )}
+      
+      <path d={d} fill="none" stroke={isHovered ? "#991b1b" : "#374151"} strokeWidth="8" strokeDasharray="3 9" />
+      <path d={d} fill="none" stroke={isHovered ? "#fca5a5" : "#9ca3af"} strokeWidth="4" />
+      <path d={d} fill="none" stroke="#070B12" strokeWidth="2" />
     </g>
   );
 });
+TrackCurve.displayName = 'TrackCurve';
