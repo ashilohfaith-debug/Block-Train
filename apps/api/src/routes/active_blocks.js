@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const pool = require("../db");
 
 const router = express.Router();
@@ -7,9 +7,23 @@ const router = express.Router();
 router.get("/", async (req, res, next) => {
   try {
     const result = await pool.query("SELECT * FROM active_blocks ORDER BY created_at DESC");
+    
+    // Filter out blocks that have expired
+    const now = new Date();
+    
+    const activeBlocks = result.rows.filter(row => {
+      if (!row.block_date || !row.to_time) return true;
+      try {
+         const endDateTime = new Date(`${row.block_date}T${row.to_time}:00`);
+         return endDateTime > now;
+      } catch (e) {
+         return true; 
+      }
+    });
+
     res.json({
       success: true,
-      blocks: result.rows.map(row => ({
+      blocks: activeBlocks.map(row => ({
         id: row.id,
         department: row.department,
         date: row.block_date,
@@ -32,7 +46,7 @@ router.post("/", async (req, res, next) => {
     }
 
     const result = await pool.query(
-      "INSERT INTO active_blocks (id, department, block_date, from_time, to_time) VALUES (, , , , ) RETURNING *",
+      "INSERT INTO active_blocks (id, department, block_date, from_time, to_time) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [id, department, date, fromTime, toTime]
     );
 
@@ -50,7 +64,7 @@ router.post("/", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    await pool.query("DELETE FROM active_blocks WHERE id = ", [id]);
+    await pool.query("DELETE FROM active_blocks WHERE id = $1", [id]);
     res.json({ success: true });
   } catch (error) {
     next(error);
