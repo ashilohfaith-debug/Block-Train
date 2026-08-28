@@ -10,8 +10,8 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
   const activeBlocks = React.useMemo(() => blocks.map(b => b.id), [blocks]);
   // Focus perfectly on the first major station (Tambaram) on load
   const startX = -600;
-  const startY = -400;
-  const initialScale = 0.8;
+  const startY = -600;
+  const initialScale = 1.3;
 
   return (
     <div className="w-full h-screen bg-[#070B12] overflow-hidden relative selection:bg-blue-500/30">

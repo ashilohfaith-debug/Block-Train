@@ -104,11 +104,11 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
         const filterId = isFreight ? 'url(#glow-freight)' : train.type === 'express' ? 'url(#glow-express)' : 'url(#glow-passenger)';
         
         const numCoaches = isFreight ? 12 : train.type === 'express' ? 6 : 4;
-        const coachLen = isFreight ? 12 : 18;
-        const locoLen = isFreight ? 14 : 12;
-        const bodyWidth = isFreight ? 8 : 6;
+        const coachLen = isFreight ? 18 : 26;
+        const locoLen = isFreight ? 20 : 18;
+        const bodyWidth = isFreight ? 12 : 10;
         
-        const gap = 3;
+        const gap = 4;
         
         const isBraking = Math.abs(train.speed) < 0.2 && train.speed !== 0;
 

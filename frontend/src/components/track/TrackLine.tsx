@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 const Segment = ({ x1, y1, x2, y2, opacity, interactive, onClick, isBlocked }: any) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -16,16 +16,16 @@ const Segment = ({ x1, y1, x2, y2, opacity, interactive, onClick, isBlocked }: a
       {/* If blocked, use hazard striped pattern */}
       {isBlocked ? (
         <>
-          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#facc15" strokeWidth="12" opacity="0.9" filter="drop-shadow(0 0 8px rgba(239,68,68,0.8))" />
-          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#000000" strokeWidth="12" strokeDasharray="10 10" />
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#facc15" strokeWidth="16" opacity="0.9" filter="drop-shadow(0 0 8px rgba(239,68,68,0.8))" />
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#000000" strokeWidth="16" strokeDasharray="10 10" />
         </>
       ) : (
-        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={isHovered ? "#ef4444" : "#111827"} strokeWidth="12" opacity={isHovered ? "0.8" : "0.6"} className={isHovered ? "animate-pulse" : ""} />
+        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={isHovered ? "#ef4444" : "#111827"} strokeWidth="16" opacity={isHovered ? "0.8" : "0.6"} className={isHovered ? "animate-pulse" : ""} />
       )}
       
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={isHovered ? "#991b1b" : "#374151"} strokeWidth="8" strokeDasharray="3 9" />
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={isHovered ? "#fca5a5" : "#9ca3af"} strokeWidth="4" />
-      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#070B12" strokeWidth="2" />
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={isHovered ? "#991b1b" : "#374151"} strokeWidth="10" strokeDasharray="3 9" />
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={isHovered ? "#fca5a5" : "#9ca3af"} strokeWidth="6" />
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#070B12" strokeWidth="3" />
     </g>
   );
 };
