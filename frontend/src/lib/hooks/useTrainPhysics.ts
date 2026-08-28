@@ -105,10 +105,9 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
           }
         }
         
-        const LOOKAHEAD = 350; 
+        const LOOKAHEAD = 450; 
         const SWITCH_LENGTH = 150;
         
-        // Progress active lane switch
         let newTargetLane = t.targetLane;
         let newSwitchStartX = t.switchStartX;
         let activeLane = newTargetLane !== undefined ? newTargetLane : t.baseLane;
@@ -124,47 +123,46 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
            }
         }
 
-        // 1. Detect trains ahead on the active lane
-        const trainsAhead = curr.filter(other => 
-           other.id !== t.id && 
-           (other.baseLane === activeLane || other.targetLane === activeLane) && 
-           other.direction === t.direction &&
-           ((t.direction === 1 && other.x > t.x && other.x - t.x < LOOKAHEAD) ||
-            (t.direction === -1 && other.x < t.x && t.x - other.x < LOOKAHEAD))
-        );
+        let lookaheadMin = t.direction === 1 ? t.x : t.x - LOOKAHEAD;
+        let lookaheadMax = t.direction === 1 ? t.x + LOOKAHEAD : t.x;
 
-        // 2. Detect hazard blocks ahead on the active lane
+        const trainsAhead = curr.filter(other => {
+           if (other.id === t.id) return false;
+           if (other.baseLane !== activeLane && other.targetLane !== activeLane) return false;
+           const otherLen = other.type === 'freight' ? 300 : 200;
+           const otherMin = other.direction === 1 ? other.x - otherLen : other.x;
+           const otherMax = other.direction === 1 ? other.x : other.x + otherLen;
+           return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
+        });
+
         const hazardsAhead = hazardZones.filter(z => 
            z.laneId === activeLane &&
-           ((t.direction === 1 && z.minX > t.x && z.minX - t.x < LOOKAHEAD) ||
-            (t.direction === -1 && z.maxX < t.x && t.x - z.maxX < LOOKAHEAD))
+           (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
         );
 
         if (trainsAhead.length > 0 || hazardsAhead.length > 0) {
            if (newTargetLane === undefined) {
-               // Initiate switch
                const possibleLanes = [-1, 0, 1].filter(l => l !== activeLane);
                newTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
                newSwitchStartX = t.x;
            }
 
-           // Check if the target lane is ALSO blocked (emergency stop)
            if (newTargetLane !== undefined) {
                const targetLaneHazards = hazardZones.filter(z => 
                    z.laneId === newTargetLane &&
-                   ((t.direction === 1 && z.minX > t.x && z.minX - t.x < LOOKAHEAD) ||
-                    (t.direction === -1 && z.maxX < t.x && t.x - z.maxX < LOOKAHEAD))
+                   (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
                );
-               const targetLaneTrains = curr.filter(other => 
-                   other.id !== t.id && 
-                   (other.baseLane === newTargetLane || other.targetLane === newTargetLane) && 
-                   other.direction === t.direction &&
-                   ((t.direction === 1 && other.x > t.x && other.x - t.x < LOOKAHEAD) ||
-                    (t.direction === -1 && other.x < t.x && t.x - other.x < LOOKAHEAD))
-               );
+               const targetLaneTrains = curr.filter(other => {
+                   if (other.id === t.id) return false;
+                   if (other.baseLane !== newTargetLane && other.targetLane !== newTargetLane) return false;
+                   const otherLen = other.type === 'freight' ? 300 : 200;
+                   const otherMin = other.direction === 1 ? other.x - otherLen : other.x;
+                   const otherMax = other.direction === 1 ? other.x : other.x + otherLen;
+                   return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
+               });
 
                if (targetLaneHazards.length > 0 || targetLaneTrains.length > 0) {
-                  appliedSpeed = 0; // completely stop
+                  appliedSpeed = 0; 
                   newStopUntil = now + 1000;
                }
            }
