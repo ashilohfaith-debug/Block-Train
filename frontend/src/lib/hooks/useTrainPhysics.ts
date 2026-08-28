@@ -6,14 +6,14 @@ import { useMaintenanceStore } from '../store';
 
 const generateTrains = (speedMultiplier: number): Train[] => {
   const INITIAL_TRAINS: Train[] = [
-    { id: 'T1', name: 'Express 12605 (Pallavan)', x: 600 + STATIONS[0].yardStartOffset + 200, direction: 1, baseLane: -1, switchDirection: 0, speed: 2.5, type: 'express' },
+    { id: 'T1', name: 'Local 40531 (EMU)', x: 600 + STATIONS[0].yardStartOffset + 200, direction: 1, baseLane: -1, switchDirection: 0, speed: 2.5, type: 'passenger' },
     { id: 'T2', name: 'Local 40531 (EMU)', x: 600 + 4 * STATION_SPACING + STATIONS[4].yardEndOffset - 200, direction: -1, baseLane: 1, switchDirection: 0, speed: 1.8, type: 'passenger' },
-    { id: 'T3', name: 'Freight 44920', x: 600 + 1.5 * STATION_SPACING, direction: 1, baseLane: 0, switchDirection: 0, speed: 1.2, type: 'freight' },
-    { id: 'T4', name: 'Express 16101 (Boat Mail)', x: 600 + 3 * STATION_SPACING, direction: -1, baseLane: 1, switchDirection: 0, speed: 2.4, type: 'express' },
-    { id: 'T5', name: 'Local 40533 (EMU)', x: 600 + 0.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 1.6, type: 'passenger' },
-    { id: 'T6', name: 'Express 12635 (Vaigai)', x: 600 + 2.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 2.6, type: 'express' },
-    { id: 'T7', name: 'Local 40535 (EMU)', x: 600 + 1.2 * STATION_SPACING, direction: -1, baseLane: 1, switchDirection: 0, speed: 1.7, type: 'passenger' },
-    { id: 'T8', name: 'Local 40537 (EMU)', x: 600 + 3.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 1.6, type: 'passenger' }
+    { id: 'T3', name: 'Local 40531 (EMU)', x: 600 + 1.5 * STATION_SPACING, direction: 1, baseLane: 0, switchDirection: 0, speed: 1.2, type: 'passenger' },
+    { id: 'T4', name: 'Local 40531 (EMU)', x: 600 + 3 * STATION_SPACING, direction: -1, baseLane: 1, switchDirection: 0, speed: 2.4, type: 'passenger' },
+    { id: 'T5', name: 'Local 40531 (EMU)', x: 600 + 0.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 1.6, type: 'passenger' },
+    { id: 'T6', name: 'Local 40531 (EMU)', x: 600 + 2.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 2.6, type: 'passenger' },
+    { id: 'T7', name: 'Local 40531 (EMU)', x: 600 + 1.2 * STATION_SPACING, direction: -1, baseLane: 1, switchDirection: 0, speed: 1.7, type: 'passenger' },
+    { id: 'T8', name: 'Local 40531 (EMU)', x: 600 + 3.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 1.6, type: 'passenger' }
   ];
   return INITIAL_TRAINS;
 };
@@ -109,7 +109,18 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
           }
         }
         
-        const LOOKAHEAD = 450; 
+        let inYard = false;
+        for (let i = 0; i < STATIONS.length; i++) {
+           const st = STATIONS[i];
+           const sX = 600 + i * STATION_SPACING;
+           // Expand the yard slightly to allow switching just outside the immediate platform
+           if (t.x >= sX + st.yardStartOffset - 100 && t.x <= sX + st.yardEndOffset + 100) {
+              inYard = true;
+              break;
+           }
+        }
+
+        const LOOKAHEAD = 2800; // Look ahead past the next station!
         const SWITCH_LENGTH = 150;
         
         let newTargetLane = t.targetLane;
@@ -145,10 +156,30 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
         );
 
         if (trainsAhead.length > 0 || hazardsAhead.length > 0) {
-           if (newTargetLane === undefined) {
+           if (newTargetLane === undefined && inYard) {
                const possibleLanes = [-1, 0, 1].filter(l => l !== activeLane);
                newTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
                newSwitchStartX = t.x;
+           }
+
+           if (newTargetLane === undefined && !inYard) {
+               // Must stop because we can't switch outside a yard!
+               // Wait, if it's 2800px away, we don't want to stop immediately, we just want to stop before hitting it.
+               // Let's calculate the distance to the closest hazard/train.
+               let minDistance = LOOKAHEAD;
+               hazardsAhead.forEach(z => {
+                   let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
+                   if (dist < minDistance) minDistance = dist;
+               });
+               trainsAhead.forEach(other => {
+                   let dist = t.direction === 1 ? (other.x - 200 - t.x) : (t.x - (other.x + 200));
+                   if (dist < minDistance) minDistance = dist;
+               });
+               
+               if (minDistance < 350) {
+                   appliedSpeed = 0; 
+                   newStopUntil = now + 1000;
+               }
            }
 
            if (newTargetLane !== undefined) {
@@ -166,8 +197,10 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
                });
 
                if (targetLaneHazards.length > 0 || targetLaneTrains.length > 0) {
-                  appliedSpeed = 0; 
-                  newStopUntil = now + 1000;
+                  // Wait, if target lane is ALSO blocked up to 2800px away, we should just stay on current lane and stop if close!
+                  // Let's cancel the switch if the target lane is also blocked in the distance.
+                  newTargetLane = undefined;
+                  newSwitchStartX = undefined;
                }
            }
         }

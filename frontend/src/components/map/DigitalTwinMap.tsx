@@ -60,17 +60,15 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
             >
               {/* Defs for extremely bright neon re-usable SVG elements */}
               <defs>
-                {/* Neon Cyan for Passenger */}
+                {/* Neon Red/Orange for ALL trains now */}
                 <linearGradient id="train-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#00f2fe" />
-                  <stop offset="100%" stopColor="#4facfe" />
+                  <stop offset="0%" stopColor="#ff0844" />
+                  <stop offset="100%" stopColor="#ff4e50" />
                 </linearGradient>
-                {/* Neon Magenta/Purple for Express */}
                 <linearGradient id="express-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#ff0844" />
                   <stop offset="100%" stopColor="#ea69ff" />
                 </linearGradient>
-                {/* Neon Orange/Yellow for Freight */}
                 <linearGradient id="freight-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#f9d423" />
                   <stop offset="100%" stopColor="#ff4e50" />
@@ -78,7 +76,7 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
 
                 {/* Glow Filters */}
                 <filter id="glow-passenger" x="-20%" y="-20%" width="140%" height="140%">
-                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feGaussianBlur stdDeviation="5" result="blur" />
                   <feMerge>
                     <feMergeNode in="blur" />
                     <feMergeNode in="SourceGraphic" />
