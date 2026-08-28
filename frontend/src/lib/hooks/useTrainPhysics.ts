@@ -9,11 +9,11 @@ const generateTrains = (speedMultiplier: number): Train[] => {
     { id: 'T1', name: 'Express 12605 (Pallavan)', x: 600 + STATIONS[0].yardStartOffset + 200, direction: 1, baseLane: -1, switchDirection: 0, speed: 2.5, type: 'express' },
     { id: 'T2', name: 'Local 40531 (EMU)', x: 600 + 4 * STATION_SPACING + STATIONS[4].yardEndOffset - 200, direction: -1, baseLane: 1, switchDirection: 0, speed: 1.8, type: 'passenger' },
     { id: 'T3', name: 'Freight 44920', x: 600 + 1.5 * STATION_SPACING, direction: 1, baseLane: 0, switchDirection: 0, speed: 1.2, type: 'freight' },
-    { id: 'T4', name: 'Express 16101 (Boat Mail)', x: 600 + 3 * STATION_SPACING, direction: -1, baseLane: -1, switchDirection: 0, speed: 2.4, type: 'express' },
-    { id: 'T5', name: 'Local 40533 (EMU)', x: 600 + 0.5 * STATION_SPACING, direction: 1, baseLane: 1, switchDirection: 0, speed: 1.6, type: 'passenger' },
+    { id: 'T4', name: 'Express 16101 (Boat Mail)', x: 600 + 3 * STATION_SPACING, direction: -1, baseLane: 1, switchDirection: 0, speed: 2.4, type: 'express' },
+    { id: 'T5', name: 'Local 40533 (EMU)', x: 600 + 0.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 1.6, type: 'passenger' },
     { id: 'T6', name: 'Express 12635 (Vaigai)', x: 600 + 2.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 2.6, type: 'express' },
     { id: 'T7', name: 'Local 40535 (EMU)', x: 600 + 1.2 * STATION_SPACING, direction: -1, baseLane: 1, switchDirection: 0, speed: 1.7, type: 'passenger' },
-    { id: 'T8', name: 'Local 40537 (EMU)', x: 600 + 3.5 * STATION_SPACING, direction: 1, baseLane: 1, switchDirection: 0, speed: 1.6, type: 'passenger' }
+    { id: 'T8', name: 'Local 40537 (EMU)', x: 600 + 3.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 1.6, type: 'passenger' }
   ];
   return INITIAL_TRAINS;
 };
@@ -92,6 +92,10 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
         
         let physicsFactor = 1;
         for (let i = 0; i < STATIONS.length; i++) {
+          // Do not slow down if the train is not scheduled to stop here
+          if (t.type === 'freight') continue;
+          if (t.type === 'express' && i !== 0) continue;
+
           const sX = 600 + i * STATION_SPACING;
           const dist = (sX - t.x) * t.direction;
           
