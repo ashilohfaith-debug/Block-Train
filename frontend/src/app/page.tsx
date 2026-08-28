@@ -1,79 +1,140 @@
-﻿import React from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#09090b] text-zinc-300 font-sans flex flex-col items-center justify-center relative overflow-hidden selection:bg-blue-500/30">
+    <div className="min-h-screen bg-[#1e1e24] text-slate-300 font-sans selection:bg-blue-500/30">
       
-      {/* Enterprise Subtle Grid */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]" 
-        style={{ backgroundImage: 'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)', backgroundSize: '48px 48px' }}
-      />
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))] pointer-events-none" />
-
-      {/* Header */}
-      <div className="z-10 text-center mb-24 max-w-3xl px-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 font-mono text-[11px] tracking-[0.2em] mb-8">
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-          SOUTHERN RAILWAY
+      {/* Enterprise Topbar */}
+      <header className="w-full bg-[#151519] border-b border-slate-800 px-6 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-4">
+          <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-white tracking-tighter">
+            BT
+          </div>
+          <div>
+            <h1 className="text-sm font-bold text-slate-100 tracking-wide uppercase">Block Train System</h1>
+            <p className="text-[10px] text-slate-500 font-mono tracking-widest uppercase">Southern Railway Zone</p>
+          </div>
         </div>
-        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-white mb-6">
-          Block<span className="text-zinc-500">Train</span>
-        </h1>
-        <p className="text-lg text-zinc-400 font-light leading-relaxed tracking-wide">
-          An enterprise-grade digital twin platform. Monitor live railway infrastructure, dispatch autonomous maintenance workflows, and optimize transit operations using real-time spatial intelligence.
-        </p>
-      </div>
+        <div className="flex items-center gap-6 text-xs font-mono text-slate-400 hidden sm:flex">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+            SYSTEM ONLINE
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+            DB: CONNECTED
+          </div>
+          <div>v2.1.0-STABLE</div>
+        </div>
+      </header>
 
-      {/* Navigation Grid */}
-      <div className="z-10 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl px-6">
+      {/* Main Content */}
+      <main className="p-6 md:p-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
         
-        {/* Operations Hub */}
-        <Link href="/map" className="group relative rounded-xl border border-zinc-800/50 bg-zinc-900/20 p-8 transition-all duration-500 hover:bg-zinc-800/40 hover:border-zinc-700/50 overflow-hidden backdrop-blur-xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative z-10">
-            <div className="w-10 h-10 rounded-full border border-zinc-800 bg-zinc-900 flex items-center justify-center mb-12 group-hover:border-blue-500/30 transition-colors duration-500">
-              <svg className="w-4 h-4 text-zinc-300 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-            </div>
-            <h2 className="text-xl font-medium text-zinc-100 mb-3 tracking-tight group-hover:text-blue-50 transition-colors">Operations Hub</h2>
-            <p className="text-sm text-zinc-500 font-light leading-relaxed mb-8">
-              Access the live digital twin. Monitor rolling stock telemetry, signal states, and network flow in real-time.
+        {/* Left Column: System Overview */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
+          <div className="bg-[#25252d] border border-slate-700/50 rounded-md p-6 shadow-sm">
+            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-700/50 pb-2">System Overview</h2>
+            <p className="text-sm text-slate-300 leading-relaxed mb-6">
+              Block Train is an advanced decision-support system and digital twin for railway maintenance and dispatch operations. 
+              The system integrates live telemetry, constraint-based optimization, and Generative AI to manage track closures with zero conflicts.
             </p>
-            <div className="flex items-center text-zinc-400 font-mono text-[11px] tracking-widest group-hover:text-blue-400 transition-colors">
-              INITIALIZE ENVIRONMENT <span className="ml-2 transition-transform duration-500 group-hover:translate-x-1">&rarr;</span>
+            <div className="space-y-3 font-mono text-xs">
+              <div className="flex justify-between border-b border-slate-700/30 pb-2">
+                <span className="text-slate-500">Network ID</span>
+                <span className="text-slate-200">CGL-MAS-01</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-700/30 pb-2">
+                <span className="text-slate-500">Active Nodes</span>
+                <span className="text-slate-200">14 Stations</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-700/30 pb-2">
+                <span className="text-slate-500">Track Capacity</span>
+                <span className="text-slate-200">High Density</span>
+              </div>
+              <div className="flex justify-between border-b border-slate-700/30 pb-2">
+                <span className="text-slate-500">Optimization</span>
+                <span className="text-emerald-400">CP-SAT Ready</span>
+              </div>
             </div>
           </div>
-        </Link>
 
-        {/* Dispatch Console */}
-        <Link href="/maintenance" className="group relative rounded-xl border border-zinc-800/50 bg-zinc-900/20 p-8 transition-all duration-500 hover:bg-zinc-800/40 hover:border-zinc-700/50 overflow-hidden backdrop-blur-xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative z-10">
-            <div className="w-10 h-10 rounded-full border border-zinc-800 bg-zinc-900 flex items-center justify-center mb-12 group-hover:border-amber-500/30 transition-colors duration-500">
-              <svg className="w-4 h-4 text-zinc-300 group-hover:text-amber-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <h2 className="text-xl font-medium text-zinc-100 mb-3 tracking-tight group-hover:text-amber-50 transition-colors">Dispatch Console</h2>
-            <p className="text-sm text-zinc-500 font-light leading-relaxed mb-8">
-              Engage maintenance workflows. Trigger infrastructure blocks and initiate automated crew communications.
-            </p>
-            <div className="flex items-center text-zinc-400 font-mono text-[11px] tracking-widest group-hover:text-amber-400 transition-colors">
-              OPEN CONSOLE <span className="ml-2 transition-transform duration-500 group-hover:translate-x-1">&rarr;</span>
-            </div>
+          <div className="bg-[#25252d] border border-slate-700/50 rounded-md p-6 shadow-sm">
+             <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4 border-b border-slate-700/50 pb-2">Security Notice</h2>
+             <p className="text-xs text-slate-400 leading-relaxed">
+               Access to this system is restricted to authorized personnel of the Indian Railways. All actions are logged and audited. Unauthorized access will result in immediate prosecution.
+             </p>
           </div>
-        </Link>
+        </div>
 
-      </div>
+        {/* Right Column: Modules */}
+        <div className="lg:col-span-8 flex flex-col gap-6">
+          <h2 className="text-sm font-bold text-slate-200 uppercase tracking-widest mb-2">Available Modules</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Operations Hub */}
+            <Link href="/map" className="group flex flex-col justify-between bg-[#2a2a35] border border-slate-700 rounded-md p-6 hover:border-blue-500/50 hover:bg-[#2c2c38] transition-colors shadow-sm min-h-[220px]">
+              <div>
+                <div className="w-10 h-10 bg-[#1e1e24] border border-slate-600 rounded flex items-center justify-center mb-4 group-hover:border-blue-500/50 transition-colors">
+                  <svg className="w-5 h-5 text-slate-300 group-hover:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-slate-100 mb-2">Live Operations Hub</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Access the real-time digital twin of the railway corridor. Monitor train positions, track statuses, and infrastructure health.
+                </p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-xs font-mono text-slate-500 group-hover:text-blue-400 transition-colors uppercase tracking-widest">
+                <span>Access Module</span>
+                <span>&rarr;</span>
+              </div>
+            </Link>
 
-      {/* Footer */}
-      <div className="absolute bottom-6 flex w-full justify-between px-12 text-zinc-600 font-mono text-[10px] tracking-widest">
-        <div>V 2.1.0-STABLE</div>
-        <div>AUTHORIZED PERSONNEL ONLY</div>
-      </div>
+            {/* Dispatch Console */}
+            <Link href="/maintenance" className="group flex flex-col justify-between bg-[#2a2a35] border border-slate-700 rounded-md p-6 hover:border-amber-500/50 hover:bg-[#2c2c38] transition-colors shadow-sm min-h-[220px]">
+              <div>
+                <div className="w-10 h-10 bg-[#1e1e24] border border-slate-600 rounded flex items-center justify-center mb-4 group-hover:border-amber-500/50 transition-colors">
+                  <svg className="w-5 h-5 text-slate-300 group-hover:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-slate-100 mb-2">Maintenance Dispatch</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Request, optimize, and execute track blocks. Coordinate engineering, S&T, and traction tasks with automated conflict resolution.
+                </p>
+              </div>
+              <div className="mt-6 flex items-center justify-between text-xs font-mono text-slate-500 group-hover:text-amber-400 transition-colors uppercase tracking-widest">
+                <span>Access Module</span>
+                <span>&rarr;</span>
+              </div>
+            </Link>
+          </div>
+          
+          {/* Quick Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+             <div className="bg-[#25252d] border border-slate-700/30 rounded p-4 text-center">
+                <div className="text-2xl font-bold text-slate-200">100%</div>
+                <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Uptime</div>
+             </div>
+             <div className="bg-[#25252d] border border-slate-700/30 rounded p-4 text-center">
+                <div className="text-2xl font-bold text-slate-200">0</div>
+                <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Active Conflicts</div>
+             </div>
+             <div className="bg-[#25252d] border border-slate-700/30 rounded p-4 text-center">
+                <div className="text-2xl font-bold text-emerald-500">Secure</div>
+                <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Connection</div>
+             </div>
+             <div className="bg-[#25252d] border border-slate-700/30 rounded p-4 text-center">
+                <div className="text-2xl font-bold text-slate-200">2.1</div>
+                <div className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">System Version</div>
+             </div>
+          </div>
+
+        </div>
+      </main>
+
     </div>
   );
 }
