@@ -7,7 +7,18 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
 
 export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = false, interactive = false, onTrackClick }: { speedMultiplier?: number, hideTrains?: boolean, interactive?: boolean, onTrackClick?: (id: string) => void }) => {
   const blocks = useMaintenanceStore((state) => state.activeBlocks);
+  const fetchBlocks = useMaintenanceStore((state) => state.fetchBlocks);
   const activeBlocks = React.useMemo(() => blocks.map(b => b.id), [blocks]);
+  
+  React.useEffect(() => {
+    // Initial fetch handled elsewhere, but poll every 5 seconds
+    // to automatically remove blocks that just expired in real-time.
+    const interval = setInterval(() => {
+      fetchBlocks();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [fetchBlocks]);
+
   // Focus perfectly on the first major station (Tambaram) on load
   const startX = -600;
   const startY = -600;
