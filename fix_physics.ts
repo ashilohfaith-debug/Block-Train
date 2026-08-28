@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Train } from '../types';
 import { STATIONS, CANVAS_WIDTH } from '../stations';
 import { STATION_SPACING, DEFAULT_SPEED_MULTIPLIER } from '../constants';
@@ -34,7 +34,7 @@ const getHazardZones = (activeBlockIds: string[]) => {
     for (let i = 0; i < STATIONS.length - 1; i++) {
        const st = STATIONS[i];
        const nxt = STATIONS[i+1];
-       if (bid.includes(`${st.name} to ${nxt.name}`)) {
+       if (bid.includes(\\ to \\)) {
           const sX = 600 + i * STATION_SPACING;
           minX = sX + st.yardEndOffset;
           maxX = sX + STATION_SPACING + nxt.yardStartOffset;

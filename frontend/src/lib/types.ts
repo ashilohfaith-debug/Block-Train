@@ -10,6 +10,8 @@ export interface Train {
   type: TrainType;
   speed: number;
   stopUntil?: number;
+  targetLane?: number;
+  switchStartX?: number;
 }
 
 export interface Platform {

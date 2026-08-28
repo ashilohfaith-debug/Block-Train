@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Train } from '../../lib/types';
 import { getStationMainY } from '../../lib/utils/trackGeometry';
 import { STATION_SPACING, pseudoRandom } from '../../lib/constants';
@@ -18,7 +18,7 @@ const getTrainYForLane = (train: Train, x: number, mainLane: number) => {
     const yardEnd = sX + station.yardEndOffset;
 
     if (x >= yardStart && x <= yardEnd) {
-      const r = pseudoRandom(`${train.id}-${station.id}-switch`);
+      const r = pseudoRandom(\\-\-switch\);
       const expectedMainY = getStationMainY(station, mainLane);
       
       const validPlatforms = station.platforms.filter(p => Math.abs(p.mainLineY - expectedMainY) < 1);
@@ -71,6 +71,9 @@ const getTrainY = (train: Train, x: number) => {
     const yTarget = getTrainYForLane(train, x, train.targetLane);
     const SWITCH_LENGTH = 150;
     
+    // We must handle the direction properly.
+    // If direction is 1, dist is (x - switchStartX)
+    // If direction is -1, dist is (switchStartX - x)
     const dist = train.direction === 1 ? (x - train.switchStartX) : (train.switchStartX - x);
     
     if (dist <= 0) return yBase;
@@ -110,7 +113,7 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
         const isBraking = Math.abs(train.speed) < 0.2 && train.speed !== 0;
 
         return (
-          <g key={train.id} style={{ transform: `translate(${train.x}px, ${y}px) rotate(${angle}deg)`, willChange: 'transform' }} className="cursor-pointer group" filter={filterId}>
+          <g key={train.id} style={{ transform: \	ranslate(\px, \px) rotate(\deg)\, willChange: 'transform' }} className="cursor-pointer group" filter={filterId}>
             <Headlight totalLen={totalLen} train={train} />
             {isBraking && <BrakeGlow totalLen={totalLen} bodyWidth={bodyWidth} />}
             
@@ -123,7 +126,7 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
                 const cX = totalLen/2 - locoLen - gap - (cIdx + 1) * coachLen - (cIdx * gap);
                 return (
                   <Coach 
-                    key={`coach-${cIdx}`} 
+                    key={\coach-\\} 
                     x={cX} 
                     length={coachLen} 
                     width={bodyWidth} 
@@ -142,7 +145,7 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
               y={-18} 
               textAnchor="middle" 
               className="text-[10px] font-bold fill-slate-800 drop-shadow-md tracking-wider font-mono"
-              style={{ transform: `rotate(${-angle}deg)` }}
+              style={{ transform: \otate(\deg)\ }}
             >
               {train.name}
             </text>
