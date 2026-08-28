@@ -176,6 +176,11 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
         
         if (!newStopUntil && appliedSpeed > 0) {
           for (let i = 0; i < STATIONS.length; i++) {
+            // Freight trains don't stop at stations
+            if (t.type === 'freight') continue;
+            // Express trains only stop at major terminals (index 0 - Tambaram)
+            if (t.type === 'express' && i !== 0) continue;
+
             const sX = 600 + i * STATION_SPACING;
             if ((t.direction === 1 && t.x < sX && newX >= sX) ||
                 (t.direction === -1 && t.x > sX && newX <= sX)) {
