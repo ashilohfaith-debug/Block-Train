@@ -157,29 +157,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
 
         if (trainsAhead.length > 0 || hazardsAhead.length > 0) {
            if (newTargetLane === undefined && inYard) {
-               const possibleLanes = [-1, 0, 1].filter(l => l !== activeLane);
                newTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
                newSwitchStartX = t.x;
-           }
-
-           if (newTargetLane === undefined && !inYard) {
-               // Must stop because we can't switch outside a yard!
-               // Wait, if it's 2800px away, we don't want to stop immediately, we just want to stop before hitting it.
-               // Let's calculate the distance to the closest hazard/train.
-               let minDistance = LOOKAHEAD;
-               hazardsAhead.forEach(z => {
-                   let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
-                   if (dist < minDistance) minDistance = dist;
-               });
-               trainsAhead.forEach(other => {
-                   let dist = t.direction === 1 ? (other.x - 200 - t.x) : (t.x - (other.x + 200));
-                   if (dist < minDistance) minDistance = dist;
-               });
-               
-               if (minDistance < 350) {
-                   appliedSpeed = 0; 
-                   newStopUntil = now + 1000;
-               }
            }
 
            if (newTargetLane !== undefined) {
@@ -197,10 +176,34 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
                });
 
                if (targetLaneHazards.length > 0 || targetLaneTrains.length > 0) {
-                  // Wait, if target lane is ALSO blocked up to 2800px away, we should just stay on current lane and stop if close!
-                  // Let's cancel the switch if the target lane is also blocked in the distance.
+                  // Target lane is also blocked in the distance. Cancel the switch.
                   newTargetLane = undefined;
                   newSwitchStartX = undefined;
+               }
+           }
+
+           // If we couldn't switch (either not in yard, or target blocked), we MUST brake!
+           if (newTargetLane === undefined) {
+               let minDistance = LOOKAHEAD;
+               hazardsAhead.forEach(z => {
+                   let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
+                   if (dist > 0 && dist < minDistance) minDistance = dist;
+               });
+               trainsAhead.forEach(other => {
+                   let dist = t.direction === 1 ? (other.x - 200 - t.x) : (t.x - (other.x + 200));
+                   if (dist > 0 && dist < minDistance) minDistance = dist;
+               });
+               
+               if (minDistance < 1500) {
+                   // Progressive braking! The closer to the hazard, the slower we crawl.
+                   const brakeFactor = Math.max(0.04, Math.pow(minDistance / 1500, 1.5));
+                   appliedSpeed *= brakeFactor;
+               }
+
+               if (minDistance < 100) {
+                   // Hard stop right before hitting the hazard
+                   appliedSpeed = 0; 
+                   newStopUntil = now + 1000;
                }
            }
         }
