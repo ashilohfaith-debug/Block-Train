@@ -68,6 +68,9 @@ const getHazardZones = (activeBlockIds: string[]) => {
   return zones;
 };
 
+let cachedActiveBlocksStr = '';
+let cachedHazardZones: { minX: number, maxX: number, laneId: number }[] = [];
+
 export const useTrainPhysics = (userSpeedMultiplier: number) => {
   const [trains, setTrains] = useState<Train[]>(() => generateTrains(DEFAULT_SPEED_MULTIPLIER));
 
@@ -75,7 +78,13 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
     const interval = setInterval(() => {
       const now = Date.now();
       const activeBlockIds = useMaintenanceStore.getState().activeBlocks.map((b: any) => b.id);
-      const hazardZones = getHazardZones(activeBlockIds);
+      const activeBlocksStr = activeBlockIds.join('|');
+      
+      if (activeBlocksStr !== cachedActiveBlocksStr) {
+          cachedHazardZones = getHazardZones(activeBlockIds);
+          cachedActiveBlocksStr = activeBlocksStr;
+      }
+      const hazardZones = cachedHazardZones;
 
       setTrains((curr) => curr.map((t) => {
         if (t.stopUntil && now < t.stopUntil) {

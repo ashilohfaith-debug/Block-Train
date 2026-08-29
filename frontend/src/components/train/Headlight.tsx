@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { STATIONS } from '../../lib/stations';
 import { STATION_SPACING } from '../../lib/constants';
 
-export const Headlight = ({ totalLen, train }: { totalLen: number, train: import('../../lib/types').Train }) => {
+export const Headlight = memo(({ totalLen, train }: { totalLen: number, train: import('../../lib/types').Train }) => {
   const frontX = totalLen / 2;
   
   let distanceToNextStation = 9999;

@@ -145,7 +145,7 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
             })}
 
             {/* Draw Locomotive */}
-            <g style={{ transform: `translate(${locoPos.x}px, ${locoPos.y}px) rotate(${locoPos.angle}deg)`, willChange: 'transform' }} filter={filterId}>
+            <g style={{ transform: `translate(${locoPos.x}px, ${locoPos.y}px) rotate(${locoPos.angle}deg)`, willChange: 'transform' }}>
               {/* Fake Drop Shadow for Locomotive */}
               <rect x={-locoLen/2} y={-bodyWidth/2 + 4} width={locoLen} height={bodyWidth} fill="rgba(0,0,0,0.5)" rx="2" />
               

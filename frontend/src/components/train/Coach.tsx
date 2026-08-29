@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { memo } from 'react';
 
-export const Coach = ({ x, length, width, gradient, isFreight, gap }: { x: number, length: number, width: number, gradient: string, isFreight: boolean, gap: number }) => (
+export const Coach = memo(({ x, length, width, gradient, isFreight, gap }: { x: number, length: number, width: number, gradient: string, isFreight: boolean, gap: number }) => (
   <g>
     {/* Coupler */}
     <rect x={x + length} y={-2} width={gap} height={4} fill="#374151" />
