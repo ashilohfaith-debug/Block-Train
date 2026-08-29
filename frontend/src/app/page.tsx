@@ -62,16 +62,16 @@ export default function LandingPage() {
         </div>
         
         <div className="relative inline-block">
-          <h1 className={`text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none mix-blend-difference ${glitchPhase > 1 ? 'opacity-0' : 'opacity-100'}`}>
-            Block<span className="text-red-600">Train</span>
+          <h1 className={`text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none mix-blend-difference bg-clip-text text-transparent bg-gradient-to-br from-white via-red-500 to-red-900 ${glitchPhase > 1 ? 'opacity-0' : 'opacity-100'}`}>
+            BlockTrain
           </h1>
           {glitchPhase > 0 && (
             <>
               <h1 className={`absolute top-0 left-0 text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none text-cyan-400 mix-blend-screen ${glitchPhase > 1 ? 'glitch-1' : 'glitch-2'}`}>
-                Block<span className="text-red-600">Train</span>
+                BlockTrain
               </h1>
               <h1 className={`absolute top-0 left-0 text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none text-red-500 mix-blend-screen ${glitchPhase > 2 ? 'glitch-3' : 'glitch-1'}`}>
-                Block<span className="text-red-600">Train</span>
+                BlockTrain
               </h1>
             </>
           )}
