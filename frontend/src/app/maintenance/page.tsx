@@ -55,7 +55,7 @@ export default function MaintenancePage() {
               {activeBlocks.map((b) => (
                 <div key={b.id} className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 relative group">
                   <button onClick={() => removeBlock(b.id)} className="absolute top-2 right-2 text-zinc-500 opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all text-xs">
-                    ✕
+                    ✖
                   </button>
                   <p className="font-mono text-amber-500 text-[10px] mb-1">{b.department}</p>
                   <p className="text-zinc-200 text-xs mb-2 leading-tight">{b.id}</p>

@@ -50,6 +50,24 @@ export default function WorkersPage() {
     }
   };
 
+  const handleDeleteWorker = async (id: number) => {
+    try {
+      // Optimistic update
+      setWorkers(workers.filter(w => w.id !== id));
+      
+      const res = await fetch(`http://localhost:5000/api/workers/${id}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (!data.success) {
+        // Fetch again to revert if failed (simple fallback)
+        fetch('http://localhost:5000/api/workers').then(r => r.json()).then(d => setWorkers(d.workers || []));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#1a1a1a] p-8 text-zinc-100 font-sans">
       <div className="max-w-4xl mx-auto space-y-8">
@@ -105,8 +123,14 @@ export default function WorkersPage() {
                   <p className="text-zinc-600 text-sm italic">No active personnel.</p>
                 ) : (
                   workers.filter(w => w.department === dept).map(w => (
-                    <div key={w.id} className="bg-black border border-zinc-800 p-3 flex flex-col justify-between group hover:border-emerald-500 transition-colors">
-                      <span className="font-semibold text-zinc-300">{w.name}</span>
+                    <div key={w.id} className="bg-black border border-zinc-800 p-3 flex flex-col justify-between group hover:border-emerald-500 transition-colors relative">
+                      <button 
+                        onClick={() => handleDeleteWorker(w.id)} 
+                        className="absolute top-2 right-2 text-zinc-500 opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all text-xs"
+                      >
+                        ✖
+                      </button>
+                      <span className="font-semibold text-zinc-300 pr-4">{w.name}</span>
                       <span className="text-xs text-zinc-500 font-mono mt-1">{w.phone}</span>
                     </div>
                   ))
