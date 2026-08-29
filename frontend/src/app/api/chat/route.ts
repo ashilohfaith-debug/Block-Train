@@ -115,8 +115,26 @@ Respond in a crisp, highly professional, slightly futuristic dispatch-coordinato
           });
           
           if (dbRes.ok) {
+            
+            // Trigger automated Twilio dispatch
+            try {
+              await fetch('http://localhost:5000/api/dispatch/notify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  blockId: args.id,
+                  department: args.department,
+                  date: args.date,
+                  fromTime: args.fromTime,
+                  toTime: args.toTime
+                })
+              });
+            } catch (dispatchErr) {
+              console.error("Twilio Dispatch failed to connect:", dispatchErr);
+            }
+
             return NextResponse.json({
-              reply: `SUCCESS: I have scheduled the maintenance block for ${args.department} on track \`${args.id}\` from ${args.fromTime} to ${args.toTime} on ${args.date}. The track should now instantly light up with a yellow hazard line on the map!`
+              reply: `SUCCESS: I have scheduled the maintenance block for **${args.department}** on track **${args.id}** from **${args.fromTime}** to **${args.toTime}** on **${args.date}**.\n\nThe track should now instantly light up with a yellow hazard line on the map! A Twilio automated dispatch SMS has also been triggered.`
             });
           } else {
             return NextResponse.json({

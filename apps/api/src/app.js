@@ -54,6 +54,7 @@ const optimizationRouter = require("./routes/optimization");
 const incidentsRouter    = require("./routes/incidents");
 const aiRouter           = require("./routes/ai");
 const activeBlocksRouter = require("./routes/active_blocks");
+const dispatchRouter     = require("./routes/dispatch");
 
 // ── Database pool (needed for /db-health) ────────────────────────────────────
 const pool = require("./db");
@@ -129,6 +130,9 @@ app.use("/api/network", networkRouter);
 
 // Make active blocks public for testing
 app.use("/api/active_blocks", activeBlocksRouter);
+
+// Twilio dispatch route (public for chatbot to hit easily during hackathon)
+app.use("/api/dispatch", dispatchRouter);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 3 — Global Authentication Guard
