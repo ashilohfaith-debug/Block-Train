@@ -52,6 +52,9 @@ export const Chatbot = () => {
       if (res.ok) {
         const data = await res.json();
         setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+        
+        // The AI might have scheduled a block in the DB. Fetch latest blocks so the UI updates instantly!
+        useMaintenanceStore.getState().fetchBlocks();
       } else {
         setMessages([...newMessages, { role: 'assistant', content: 'Sorry, I encountered an error communicating with the server.' }]);
       }
