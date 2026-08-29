@@ -103,9 +103,9 @@ export default function LandingPage() {
             </h2>
             <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-red-500 group-hover:w-full transition-all duration-500" />
             <p className="text-zinc-500 font-mono text-sm mb-12">
-              > monitor active fleet<br/>
-              > real-time interlocking<br/>
-              > telemetry parsing
+              &gt; monitor active fleet<br/>
+              &gt; real-time interlocking<br/>
+              &gt; telemetry parsing
             </p>
             <div className="flex justify-between items-center text-xs font-mono font-bold tracking-widest text-zinc-700 group-hover:text-white transition-colors">
               <span>INITIATE_MODULE</span>
@@ -132,9 +132,9 @@ export default function LandingPage() {
             </h2>
             <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-yellow-500 group-hover:w-full transition-all duration-500" />
             <p className="text-zinc-500 font-mono text-sm mb-12">
-              > execute line blocks<br/>
-              > divert traffic flow<br/>
-              > maintenance override
+              &gt; execute line blocks<br/>
+              &gt; divert traffic flow<br/>
+              &gt; maintenance override
             </p>
             <div className="flex justify-between items-center text-xs font-mono font-bold tracking-widest text-zinc-700 group-hover:text-white transition-colors">
               <span>OVERRIDE_SYSTEM</span>
