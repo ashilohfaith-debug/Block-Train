@@ -23,8 +23,8 @@ const getHazardZones = (activeBlockIds: string[]) => {
   
   for (const bid of activeBlockIds) {
     let laneId = 0;
-    if (bid.includes('Loop Line 1') || bid.includes('Down Line')) laneId = -1;
-    else if (bid.includes('Loop Line 2') || bid.includes('Up Line')) laneId = 1;
+    if (bid.includes('Down Line') || bid.includes('Main Line Down')) laneId = -1;
+    else if (bid.includes('Up Line') || bid.includes('Main Line Up')) laneId = 1;
     else laneId = 0;
 
     let minX = 0;
@@ -50,15 +50,31 @@ const getHazardZones = (activeBlockIds: string[]) => {
             const sX = 600 + i * STATION_SPACING;
             minX = sX + st.yardStartOffset;
             maxX = sX + st.yardEndOffset;
-            const secMatch = bid.match(/Sec (\d+)/);
-            if (secMatch) {
-               const sec = parseInt(secMatch[1], 10);
-               const totalLen = Math.abs(maxX - minX);
-               const numChunks = Math.ceil(totalLen / 150);
-               const actualChunk = totalLen / numChunks;
-               minX = minX + (sec - 1) * actualChunk;
-               maxX = minX + actualChunk;
-            }
+             if (bid.includes('Loop')) {
+                 const pfMatch = bid.match(/PF(\d+)/);
+                 if (pfMatch) {
+                     const pIdx = parseInt(pfMatch[1], 10) - 1;
+                     if (st.platforms[pIdx]) {
+                         minX = sX + st.platforms[pIdx].sZoneStartOffset;
+                         maxX = sX + st.platforms[pIdx].sZoneEndOffset;
+                         
+                         const thirdCount = Math.floor(st.p / 3);
+                         if (pIdx < thirdCount) laneId = -1;
+                         else if (pIdx < thirdCount * 2) laneId = 0;
+                         else laneId = 1;
+                     }
+                 }
+             }
+
+             const secMatch = bid.match(/Sec (\d+)/);
+             if (secMatch) {
+                const sec = parseInt(secMatch[1], 10);
+                const totalLen = Math.abs(maxX - minX);
+                const numChunks = Math.ceil(totalLen / 150);
+                const actualChunk = totalLen / numChunks;
+                minX = minX + (sec - 1) * actualChunk;
+                maxX = minX + actualChunk;
+             }
             break;
          }
        }

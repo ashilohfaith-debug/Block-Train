@@ -31,7 +31,7 @@ const Segment = ({ x1, y1, x2, y2, opacity, interactive, onClick, isBlocked }: a
 };
 
 export const TrackLine = React.memo(({ x1, y1, x2, y2, opacity = 1, interactive, onClick, isBlocked }: { x1: number, y1: number, x2: number, y2: number, opacity?: number, interactive?: boolean, onClick?: (segmentId?: number) => void, isBlocked?: boolean | ((sId: number) => boolean) }) => {
-  if (y1 === y2 && Math.abs(x2 - x1) > 200 && interactive) {
+  if (y1 === y2 && Math.abs(x2 - x1) > 200) {
     const segments = [];
     const chunkLen = 150;
     const totalLen = Math.abs(x2 - x1);
