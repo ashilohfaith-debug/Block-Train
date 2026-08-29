@@ -91,7 +91,14 @@ export const Chatbot = () => {
           <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
             {messages.filter(m => m.role !== 'system').map((m, idx) => (
               <div key={idx} className={`max-w-[85%] rounded-lg p-2.5 text-sm ${m.role === 'user' ? 'bg-blue-600 text-white self-end rounded-tr-none' : 'bg-zinc-800 text-zinc-200 self-start rounded-tl-none border border-zinc-700'}`}>
-                {m.content}
+                <span className="whitespace-pre-wrap">
+                  {m.content.split(/(\*\*.*?\*\*)/g).map((part, i) => {
+                    if (part.startsWith('**') && part.endsWith('**')) {
+                      return <strong key={i} className="text-white">{part.slice(2, -2)}</strong>;
+                    }
+                    return <span key={i}>{part}</span>;
+                  })}
+                </span>
               </div>
             ))}
             {isLoading && (
