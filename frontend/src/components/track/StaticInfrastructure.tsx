@@ -10,7 +10,7 @@ import { getStationMainY } from '../../lib/utils/trackGeometry';
 export const StaticInfrastructure = React.memo(({ interactive, onTrackClick, blockedBlocks = [] }: { interactive?: boolean, onTrackClick?: (trackId: string) => void, blockedBlocks?: string[] }) => {
   return (
     <>
-      <EntryExitTracks interactive={interactive} onTrackClick={onTrackClick} />
+      <EntryExitTracks interactive={interactive} onTrackClick={onTrackClick} blockedBlocks={blockedBlocks} />
 
       {STATIONS.map((station, i) => {
         const sX = 600 + i * STATION_SPACING;

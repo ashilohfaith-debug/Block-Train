@@ -16,7 +16,7 @@ const Segment = ({ x1, y1, x2, y2, opacity, interactive, onClick, isBlocked }: a
       {/* If blocked, use hazard striped pattern */}
       {isBlocked ? (
         <>
-          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#facc15" strokeWidth="16" opacity="0.9" filter="drop-shadow(0 0 8px rgba(239,68,68,0.8))" />
+          <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#facc15" strokeWidth="16" opacity="0.9" className="drop-shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse" />
           <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#000000" strokeWidth="16" strokeDasharray="10 10" />
         </>
       ) : (
