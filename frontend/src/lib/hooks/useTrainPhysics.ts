@@ -250,6 +250,13 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
           appliedSpeed *= physicsFactor;
         }
         
+        // Terminal station progressive braking
+        let distToEnd = t.direction === 1 ? CANVAS_WIDTH - 300 - t.x : t.x - 300;
+        if (distToEnd < 1500 && distToEnd > 0) {
+            const endBrake = Math.max(0.01, Math.pow(distToEnd / 1500, 1.5));
+            appliedSpeed *= endBrake;
+        }
+        
         let newX = t.x + t.direction * appliedSpeed;
         
         if (!newStopUntil && appliedSpeed > 0) {
@@ -270,8 +277,25 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
           }
         }
 
-        if (newX > CANVAS_WIDTH - 200) newX = 200;
-        if (newX < 200) newX = CANVAS_WIDTH - 200;
+        // Terminal reverse! When trains reach the absolute edge, they stop, wait 6s, and depart in reverse
+        if (newX > CANVAS_WIDTH - 300) {
+            return {
+               ...t,
+               x: CANVAS_WIDTH - 300,
+               direction: -1,
+               baseLane: t.baseLane === -1 ? 1 : (t.baseLane === 1 ? -1 : 0),
+               stopUntil: now + 6000,
+            };
+        }
+        if (newX < 300) {
+            return {
+               ...t,
+               x: 300,
+               direction: 1,
+               baseLane: t.baseLane === -1 ? 1 : (t.baseLane === 1 ? -1 : 0),
+               stopUntil: now + 6000,
+            };
+        }
         
         return { 
           ...t, 
