@@ -7,6 +7,7 @@ import { useMaintenanceStore } from '../../lib/store';
 import { CustomSelect } from '../../components/ui/CustomSelect';
 import { CustomCalendar } from '../../components/ui/CustomCalendar';
 import { Chatbot } from '../../components/chat/Chatbot';
+import { VoiceRecorder } from '../../components/audio/VoiceRecorder';
 
 export default function MaintenancePage() {
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
@@ -67,6 +68,11 @@ export default function MaintenancePage() {
             </div>
           </div>
         )}
+        
+        {/* Admin Voice Dispatch Widget */}
+        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 backdrop-blur-md pointer-events-auto">
+          <VoiceRecorder />
+        </div>
       </div>
 
       {/* Map (Trains Hidden, Interactive enabled) */}

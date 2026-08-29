@@ -167,6 +167,35 @@ export default function LandingPage() {
           </div>
         </Link>
 
+        {/* Workers Link */}
+        <Link 
+          href="/workers"
+          className="group relative flex-1 bg-[#050505] border border-zinc-900 p-8 hover:bg-black transition-all duration-300 shadow-2xl"
+          style={{
+            transform: `rotateY(${mousePosition.x * -5}deg) rotateX(${mousePosition.y * -5}deg)`,
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-bl from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute bottom-0 left-0 w-[1px] h-full bg-gradient-to-t from-transparent via-emerald-500 to-transparent scale-y-0 group-hover:scale-y-100 transition-transform duration-700" />
+          
+          <div className="relative" style={{ transform: 'translateZ(20px)' }}>
+            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-emerald-400 transition-colors">
+              Workers
+            </h2>
+            <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-emerald-400 group-hover:w-full transition-all duration-500" />
+            <p className="text-zinc-500 font-mono text-sm mb-12">
+              &gt; automated dispatch<br/>
+              &gt; telecom bridging<br/>
+              &gt; personnel routing
+            </p>
+            <div className="flex justify-between items-center text-xs font-mono font-bold tracking-widest text-zinc-700 group-hover:text-white transition-colors">
+              <span>TWILIO_INTEGRATION</span>
+              <span className="text-emerald-400 font-black">[{'>'}]</span>
+            </div>
+          </div>
+        </Link>
+
       </div>
       
       {/* Footer Details */}

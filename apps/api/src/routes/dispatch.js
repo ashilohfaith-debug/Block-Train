@@ -1,57 +1,95 @@
 const express = require("express");
 const twilio = require("twilio");
+const multer = require("multer");
+const path = require("path");
+const pool = require("../db");
 
 const router = express.Router();
 
-// Initialize Twilio client only if credentials exist
+// Setup Multer for audio uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../../../uploads"));
+  },
+  filename: (req, file, cb) => {
+    cb(null, `dispatch-${Date.now()}.mp3`);
+  }
+});
+const upload = multer({ storage });
+
+// Initialize Twilio client
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const fromPhone = process.env.TWILIO_PHONE_NUMBER;
-const testWorkerPhone = process.env.TEST_WORKER_PHONE;
 
 let client = null;
 if (accountSid && authToken) {
   client = twilio(accountSid, authToken);
 }
 
-// POST trigger dispatch
-router.post("/notify", async (req, res, next) => {
+// POST /notify - Automatically called by Chatbot
+router.post("/notify", async (req, res) => {
   try {
-    const { blockId, department, date, fromTime, toTime } = req.body;
+    const { blockId, department, date, fromTime, toTime, audioUrl } = req.body;
     
-    if (!client || !fromPhone || !testWorkerPhone) {
-      console.warn("Twilio credentials not fully configured. Skipping SMS dispatch.");
-      return res.json({ 
-        success: false, 
-        message: "Twilio credentials missing. SMS skipped.",
-        mocked: true 
-      });
+    // 1. Find all workers for this department
+    const { rows } = await pool.query(
+      "SELECT phone FROM workers WHERE department = $1",
+      [department]
+    );
+    const phoneNumbers = rows.map(r => r.phone);
+
+    if (phoneNumbers.length === 0) {
+      return res.json({ success: true, message: "No workers found for this department." });
     }
 
-    const messageBody = `URGENT [BlockTrain]: Maintenance Block scheduled for ${department} on ${blockId} from ${fromTime} to ${toTime} on ${date}. Please report to the track immediately.`;
+    if (!client || !fromPhone) {
+      console.warn("Twilio credentials missing. SMS skipped.");
+      return res.json({ success: false, mocked: true });
+    }
 
-    // Send SMS
-    const message = await client.messages.create({
-      body: messageBody,
-      from: fromPhone,
-      to: testWorkerPhone
+    const messageBody = `URGENT [BlockTrain]: Maintenance Block scheduled for ${department} on ${blockId} from ${fromTime} to ${toTime} on ${date}.`;
+
+    // 2. Dispatch SMS and Call to ALL workers
+    const dispatchPromises = phoneNumbers.map(async (phone) => {
+      // Send SMS
+      await client.messages.create({
+        body: messageBody,
+        from: fromPhone,
+        to: phone
+      }).catch(err => console.error("SMS Failed:", err.message));
+
+      // If audio URL was provided, make a Voice Call
+      if (audioUrl) {
+        await client.calls.create({
+          twiml: `<Response><Play>${audioUrl}</Play></Response>`,
+          to: phone,
+          from: fromPhone
+        }).catch(err => console.error("Call Failed:", err.message));
+      }
     });
 
-    console.log(`Twilio SMS sent to ${testWorkerPhone}. SID: ${message.sid}`);
-    
-    // Optionally trigger a voice call (uncomment to enable)
-    /*
-    await client.calls.create({
-      twiml: `<Response><Say voice="alice">${messageBody}</Say></Response>`,
-      to: testWorkerPhone,
-      from: fromPhone
-    });
-    */
-
-    res.json({ success: true, messageId: message.sid });
+    await Promise.all(dispatchPromises);
+    res.json({ success: true, dispatchedTo: phoneNumbers.length });
   } catch (error) {
     console.error("Twilio Dispatch Error:", error);
     res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// POST /audio - For Admin to upload recorded audio
+router.post("/audio", upload.single("audio"), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No audio file uploaded" });
+    }
+    // Return the relative URL of the uploaded file
+    // Note: For Twilio to access this, the server needs to be on a public domain or ngrok
+    const publicUrl = `/uploads/${req.file.filename}`;
+    res.json({ success: true, audioUrl: publicUrl });
+  } catch (err) {
+    console.error("Audio Upload Error:", err);
+    res.status(500).json({ error: "Upload failed" });
   }
 });
 

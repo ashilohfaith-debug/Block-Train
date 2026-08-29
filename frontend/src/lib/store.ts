@@ -12,7 +12,9 @@ export interface Block {
 interface MaintenanceStore {
   activeBlocks: Block[];
   trains: Train[];
+  dispatchAudioUrl: string | null;
   setTrains: (trains: Train[]) => void;
+  setDispatchAudioUrl: (url: string | null) => void;
   fetchBlocks: () => Promise<void>;
   addBlock: (block: Block) => Promise<void>;
   removeBlock: (id: string) => Promise<void>;
@@ -23,7 +25,9 @@ const API_URL = 'http://localhost:5000/api/active_blocks';
 export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
   activeBlocks: [],
   trains: [],
+  dispatchAudioUrl: null,
   setTrains: (trains) => set({ trains }),
+  setDispatchAudioUrl: (url) => set({ dispatchAudioUrl: url }),
   
   fetchBlocks: async () => {
     try {

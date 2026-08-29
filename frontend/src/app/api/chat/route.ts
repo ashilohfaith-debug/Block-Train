@@ -38,7 +38,7 @@ const TOOLS = [
 
 export async function POST(request: Request) {
   try {
-    const { messages, trains } = await request.json();
+    const { messages, trains, audioUrl } = await request.json();
     const apiKey = process.env.GROQ_API_KEY || 'gsk_dummy_key';
     
     // Convert trains to a readable string context
@@ -126,7 +126,8 @@ Respond in a crisp, highly professional, slightly futuristic dispatch-coordinato
                   department: args.department,
                   date: args.date,
                   fromTime: args.fromTime,
-                  toTime: args.toTime
+                  toTime: args.toTime,
+                  audioUrl: audioUrl
                 })
               });
             } catch (dispatchErr) {

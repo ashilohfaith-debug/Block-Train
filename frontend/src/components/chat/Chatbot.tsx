@@ -35,15 +35,17 @@ export const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // Fetch trains snapshot right before sending
+      // Fetch trains snapshot and audioUrl right before sending
       const currentTrains = useMaintenanceStore.getState().trains;
+      const audioUrl = useMaintenanceStore.getState().dispatchAudioUrl;
       
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           messages: newMessages,
-          trains: currentTrains
+          trains: currentTrains,
+          audioUrl
         })
       });
 
