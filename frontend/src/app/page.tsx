@@ -30,16 +30,32 @@ export default function LandingPage() {
 
   return (
     <div className="h-screen w-full bg-black text-white font-sans overflow-hidden relative flex flex-col items-center justify-center selection:bg-red-500/30">
-      {/* Background Matrix/Radar Grid */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-20 transition-transform duration-700 ease-out"
-        style={{
-          backgroundImage: 'linear-gradient(to right, #333 1px, transparent 1px), linear-gradient(to bottom, #333 1px, transparent 1px)',
-          backgroundSize: '100px 100px',
-          transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px) scale(1.1) perspective(1000px) rotateX(${mousePosition.y * 10}deg) rotateY(${mousePosition.x * 10}deg)`
-        }}
-      />
       
+      {/* Background Speeding Tracks */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-40 perspective-[1000px]"
+        style={{
+          transform: `rotateY(${mousePosition.x * 5}deg) rotateX(${mousePosition.y * 5}deg)`,
+          transformStyle: 'preserve-3d'
+        }}
+      >
+        <div 
+          className="absolute inset-[-100%] animate-[speedingTracks_0.5s_linear_infinite]"
+          style={{
+            backgroundImage: `
+              linear-gradient(to right, transparent 30%, #555 30%, #555 32%, transparent 32%, transparent 68%, #555 68%, #555 70%, transparent 70%),
+              linear-gradient(to bottom, transparent 90%, #222 90%, #222 100%)
+            `,
+            backgroundSize: '200px 200px',
+            transform: 'rotateX(75deg) translateZ(-200px)',
+            transformOrigin: 'center center'
+          }}
+        />
+      </div>
+      
+      {/* Overlay to fade out tracks in the distance */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-black via-black/80 to-transparent pointer-events-none" />
+
       {/* Scanning Line */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="w-full h-1 bg-red-500/50 shadow-[0_0_40px_10px_rgba(255,0,0,0.5)] animate-[scan_4s_linear_infinite]" />
@@ -49,6 +65,14 @@ export default function LandingPage() {
         @keyframes scan {
           0% { transform: translateY(-100px); }
           100% { transform: translateY(120vh); }
+        }
+        @keyframes flow {
+          0% { background-position: 0% center; }
+          100% { background-position: -200% center; }
+        }
+        @keyframes speedingTracks {
+          0% { background-position: 0px 0px; }
+          100% { background-position: 0px 200px; }
         }
         .glitch-1 { clip-path: inset(20% 0 80% 0); transform: translate(-5px, 5px); }
         .glitch-2 { clip-path: inset(60% 0 10% 0); transform: translate(5px, -5px); }
@@ -62,7 +86,7 @@ export default function LandingPage() {
         </div>
         
         <div className="relative inline-block">
-          <h1 className={`text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none mix-blend-difference bg-clip-text text-transparent bg-gradient-to-br from-white via-red-500 to-red-900 ${glitchPhase > 1 ? 'opacity-0' : 'opacity-100'}`}>
+          <h1 className={`text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none mix-blend-difference bg-clip-text text-transparent bg-[linear-gradient(to_right,#ffffff,#ffffff,#ef4444,#ffffff,#ffffff)] bg-[length:200%_auto] animate-[flow_3s_linear_infinite] ${glitchPhase > 1 ? 'opacity-0' : 'opacity-100'}`}>
             BlockTrain
           </h1>
           {glitchPhase > 0 && (
