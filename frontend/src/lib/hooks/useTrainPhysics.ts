@@ -121,7 +121,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
         }
 
         const LOOKAHEAD = 2800; // Look ahead past the next station!
-        const SWITCH_LENGTH = 150;
+        const SWITCH_LENGTH = 250;
         
         let newTargetLane = t.targetLane;
         let newSwitchStartX = t.switchStartX;

@@ -69,7 +69,7 @@ const getTrainY = (train: Train, x: number) => {
   const yBase = getTrainYForLane(train, x, train.baseLane);
   if (train.targetLane !== undefined && train.switchStartX !== undefined) {
     const yTarget = getTrainYForLane(train, x, train.targetLane);
-    const SWITCH_LENGTH = 150;
+    const SWITCH_LENGTH = 250;
     
     const dist = train.direction === 1 ? (x - train.switchStartX) : (train.switchStartX - x);
     
