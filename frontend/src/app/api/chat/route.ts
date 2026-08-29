@@ -41,10 +41,10 @@ export async function POST(request: Request) {
     const { messages } = await request.json();
     const apiKey = process.env.GROQ_API_KEY || 'gsk_dummy_key';
     
-    // Add system instruction to enforce strict track naming
+    // Add system instruction to enforce strict track naming and follow-up questions
     const systemMessage = {
       role: 'system',
-      content: "You are the BlockTrain AI dispatch assistant. Your job is to schedule maintenance blocks. IMPORTANT: When a user says 'Tambaram Up Line (Sec 1)', you MUST translate it to 'Tambaram - Loop Line 2 (Sec 1)' as per the station's track map. Loop Line 1 is the Down line, Loop Line 2 is the Up line, Mainline is the center line."
+      content: "You are the BlockTrain AI dispatch assistant. Your job is to schedule maintenance blocks. IMPORTANT: When a user says 'Tambaram Up Line (Sec 1)', you MUST translate it to 'Tambaram - Loop Line 2 (Sec 1)' as per the station's track map. Loop Line 1 is the Down line, Loop Line 2 is the Up line, Mainline is the center line. If the user asks to schedule a block but does not provide all the required information (Date, From Time, To Time, Department, and the EXACT Track ID), DO NOT guess. Instead, politely ask them to provide the missing details."
     };
 
     const apiMessages = [systemMessage, ...messages.map((m: any) => ({ role: m.role, content: m.content }))];
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant', 
+        model: 'llama3-8b-8192', 
         messages: apiMessages,
         temperature: 0.2,
         tools: TOOLS,
