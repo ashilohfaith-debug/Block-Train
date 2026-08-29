@@ -52,4 +52,4 @@ export const Headlight = memo(({ totalLen, train }: { totalLen: number, train: i
       <circle cx={frontX - 0.5} cy={2} r="1" fill="#ffffff" opacity={0.5 + 0.5 * intensityFactor} />
     </g>
   );
-};
+});

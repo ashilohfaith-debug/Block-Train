@@ -7,4 +7,4 @@ export const TelemetryTag = memo(({ id, angle }: { id: string, angle: number }) 
       {id}
     </text>
   </g>
-);
+));

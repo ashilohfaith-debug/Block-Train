@@ -19,4 +19,4 @@ export const Locomotive = memo(({ x, length, width, gradient }: { x: number, len
       <rect x={frontX - 2} y={-width/2 + 1.5} width={1.5} height={width - 3} fill="#a5f3fc" opacity="0.8" />
     </g>
   );
-};
+});

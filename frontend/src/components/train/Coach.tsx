@@ -18,4 +18,4 @@ export const Coach = memo(({ x, length, width, gradient, isFreight, gap }: { x: 
       </>
     )}
   </g>
-);
+));
