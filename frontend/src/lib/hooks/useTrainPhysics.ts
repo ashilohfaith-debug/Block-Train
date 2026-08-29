@@ -102,10 +102,11 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
       }
       const hazardZones = cachedHazardZones;
 
-      setTrains((curr) => curr.map((t) => {
-        if (t.stopUntil && now < t.stopUntil) {
-          return t;
-        }
+        setTrains((curr) => {
+          const nextTrains = curr.map((t) => {
+          if (t.stopUntil && now < t.stopUntil) {
+            return t;
+          }
 
         let newStopUntil = t.stopUntil;
         if (t.stopUntil && now >= t.stopUntil) {
@@ -321,7 +322,11 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
           targetLane: newTargetLane,
           switchStartX: newSwitchStartX
         };
-      }));
+      });
+      // Sync without triggering unnecessary React renders to components not explicitly listening to trains
+      useMaintenanceStore.getState().setTrains(nextTrains);
+      return nextTrains;
+    });
     }, 16); 
     
     return () => clearInterval(interval);

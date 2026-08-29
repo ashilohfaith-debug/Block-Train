@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useMaintenanceStore } from '../../lib/store';
 
 type Message = {
   role: 'system' | 'user' | 'assistant';
@@ -34,10 +35,16 @@ export const Chatbot = () => {
     setIsLoading(true);
 
     try {
+      // Fetch trains snapshot right before sending
+      const currentTrains = useMaintenanceStore.getState().trains;
+      
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: newMessages })
+        body: JSON.stringify({ 
+          messages: newMessages,
+          trains: currentTrains
+        })
       });
 
       if (res.ok) {

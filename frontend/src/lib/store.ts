@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { Train } from './types';
 
 export interface Block {
   id: string; 
@@ -10,6 +11,8 @@ export interface Block {
 
 interface MaintenanceStore {
   activeBlocks: Block[];
+  trains: Train[];
+  setTrains: (trains: Train[]) => void;
   fetchBlocks: () => Promise<void>;
   addBlock: (block: Block) => Promise<void>;
   removeBlock: (id: string) => Promise<void>;
@@ -19,6 +22,8 @@ const API_URL = 'http://localhost:5000/api/active_blocks';
 
 export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
   activeBlocks: [],
+  trains: [],
+  setTrains: (trains) => set({ trains }),
   
   fetchBlocks: async () => {
     try {
