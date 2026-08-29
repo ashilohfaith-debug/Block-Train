@@ -9,7 +9,7 @@ const router = express.Router();
 // Setup Multer for audio uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../../uploads"));
+    cb(null, path.join(__dirname, "../../uploads"));
   },
   filename: (req, file, cb) => {
     cb(null, `dispatch-${Date.now()}.mp3`);

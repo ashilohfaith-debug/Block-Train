@@ -139,7 +139,7 @@ app.use("/api/dispatch", dispatchRouter);
 app.use("/api/workers", workersRouter);
 
 // Serve uploads folder for Twilio audio fetching
-app.use("/uploads", express.static(require("path").join(__dirname, "../../uploads")));
+app.use("/uploads", express.static(require("path").join(__dirname, "../uploads")));
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 3 — Global Authentication Guard
