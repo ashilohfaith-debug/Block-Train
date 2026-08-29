@@ -6,6 +6,7 @@ import { DigitalTwinMap } from '../../components/map/DigitalTwinMap';
 import { useMaintenanceStore } from '../../lib/store';
 import { CustomSelect } from '../../components/ui/CustomSelect';
 import { CustomCalendar } from '../../components/ui/CustomCalendar';
+import { Chatbot } from '../../components/chat/Chatbot';
 
 export default function MaintenancePage() {
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
@@ -72,7 +73,6 @@ export default function MaintenancePage() {
       <div className="absolute inset-0 z-10">
         <DigitalTwinMap hideTrains={true} interactive={true} onTrackClick={setSelectedTrack} />
       </div>
-
       {/* Block Modal */}
       {selectedTrack && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
@@ -81,7 +81,7 @@ export default function MaintenancePage() {
               onClick={() => setSelectedTrack(null)}
               className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-300"
             >
-              ✕
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <h2 className="text-xl font-medium text-white mb-2">Schedule Maintenance</h2>
             <p className="text-sm text-zinc-400 mb-6 font-mono bg-zinc-950 p-2 rounded-md border border-zinc-800">
@@ -135,6 +135,8 @@ export default function MaintenancePage() {
         </div>
       )}
       
+      {/* Chatbot */}
+      <Chatbot />
     </div>
   );
 }
