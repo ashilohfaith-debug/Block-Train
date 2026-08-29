@@ -9,17 +9,7 @@ router.get("/", async (req, res, next) => {
     const result = await pool.query("SELECT * FROM active_blocks ORDER BY created_at DESC");
     
     // Filter out blocks that have expired
-    const now = new Date();
-    
-    const activeBlocks = result.rows.filter(row => {
-      if (!row.block_date || !row.to_time) return true;
-      try {
-         const endDateTime = new Date(`${row.block_date}T${row.to_time}:00`);
-         return endDateTime > now;
-      } catch (e) {
-         return true; 
-      }
-    });
+    const activeBlocks = result.rows;
 
     res.json({
       success: true,
