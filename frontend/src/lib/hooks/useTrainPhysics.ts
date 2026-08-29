@@ -167,8 +167,36 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
 
         if (trainsAhead.length > 0 || hazardsAhead.length > 0) {
            if (newTargetLane === undefined && inYard) {
-               newTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
-               newSwitchStartX = t.x;
+               // Find the nearest physical crossover in this yard!
+               // They are drawn at: sX + yardStartOffset + 50 (West) and sX + yardEndOffset - 300 (East)
+               let st = STATIONS[0];
+               let sX = 0;
+               for (let i = 0; i < STATIONS.length; i++) {
+                  const checkSx = 600 + i * STATION_SPACING;
+                  if (t.x >= checkSx + STATIONS[i].yardStartOffset - 100 && t.x <= checkSx + STATIONS[i].yardEndOffset + 100) {
+                     st = STATIONS[i];
+                     sX = checkSx;
+                     break;
+                  }
+               }
+               
+               const aStart = sX + st.yardStartOffset + 50;
+               const dStart = sX + st.yardEndOffset - 300;
+               
+               // If train is moving right, it approaches aStart first, then dStart.
+               // If train is moving left, it approaches dStart+250 first, then aStart+250.
+               let targetSwitchX = t.direction === 1 ? aStart : (dStart + 250);
+               if (t.direction === 1 && t.x > aStart) targetSwitchX = dStart;
+               if (t.direction === -1 && t.x < dStart + 250) targetSwitchX = aStart + 250;
+
+               // Only trigger the switch exactly when the train's front passes the crossover start coordinate!
+               const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - appliedSpeed) <= targetSwitchX) ||
+                                    (t.direction === -1 && t.x <= targetSwitchX && (t.x + appliedSpeed) >= targetSwitchX);
+                                    
+               if (passedSwitch) {
+                   newTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
+                   newSwitchStartX = targetSwitchX;
+               }
            }
 
            if (newTargetLane !== undefined) {
