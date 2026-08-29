@@ -15,7 +15,7 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
     // to automatically remove blocks that just expired in real-time.
     const interval = setInterval(() => {
       fetchBlocks();
-    }, 5000);
+    }, 1000);
     return () => clearInterval(interval);
   }, [fetchBlocks]);
 
