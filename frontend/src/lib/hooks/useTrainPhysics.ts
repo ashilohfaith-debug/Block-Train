@@ -139,7 +139,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
 
         if (newTargetLane !== undefined && newSwitchStartX !== undefined) {
            const distSwitched = Math.abs(t.x - newSwitchStartX);
-           if (distSwitched >= SWITCH_LENGTH) {
+           // Wait for the longest train (400px freight) to fully clear the 250px switch
+           if (distSwitched >= SWITCH_LENGTH + 500) {
               currentBaseLane = newTargetLane;
               newTargetLane = undefined;
               newSwitchStartX = undefined;
