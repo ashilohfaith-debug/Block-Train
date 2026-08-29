@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     // Add system instruction to enforce strict track naming and follow-up questions
     const systemMessage = {
       role: 'system',
-      content: "You are the BlockTrain AI dispatch assistant. Your job is to schedule maintenance blocks. IMPORTANT: When a user says 'Tambaram Up Line (Sec 1)', you MUST translate it to 'Tambaram - Loop Line 2 (Sec 1)' as per the station's track map. Loop Line 1 is the Down line, Loop Line 2 is the Up line, Mainline is the center line. If the user asks to schedule a block but does not provide all the required information (Date, From Time, To Time, Department, and the EXACT Track ID), DO NOT guess. Instead, politely ask them to provide the missing details."
+      content: "You are the BlockTrain AI dispatch assistant. Your job is to schedule maintenance blocks. IMPORTANT: When a user says 'Tambaram Up Line (Sec 1)', you MUST translate it to 'Tambaram - Loop Line 2 (Sec 1)' as per the station's track map. Loop Line 1 is the Down line, Loop Line 2 is the Up line, Mainline is the center line. If the user asks to schedule a block but does not provide all the required information (Date, From Time, To Time, Department, and the EXACT Track ID), DO NOT guess. Instead, politely ask them to provide the missing details. If the user asks for the best time to schedule a block for minimum train disruption, advise them that night blocks (23:30 to 03:30) have the lowest traffic, and mid-day blocks (11:00 to 13:00) are the second best option. Suggest one of these windows based on their needs."
     };
 
     const apiMessages = [systemMessage, ...messages.map((m: any) => ({ role: m.role, content: m.content }))];
