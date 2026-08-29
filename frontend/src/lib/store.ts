@@ -25,7 +25,15 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
       const res = await fetch(API_URL);
       const data = await res.json();
       if (data.success) {
-        set({ activeBlocks: data.blocks });
+        const now = new Date();
+        const liveBlocks = data.blocks.filter((b: Block) => {
+          if (!b.date || !b.fromTime || !b.toTime) return true;
+          // Parse as local time exactly as the user inputs it
+          const start = new Date(`${b.date}T${b.fromTime}:00`);
+          const end = new Date(`${b.date}T${b.toTime}:00`);
+          return now >= start && now <= end;
+        });
+        set({ activeBlocks: liveBlocks });
       }
     } catch (err) {
       console.error('Failed to fetch blocks:', err);
@@ -34,8 +42,15 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
 
   addBlock: async (block) => {
     try {
-      // Optimistic UI update
-      set((state) => ({ activeBlocks: [...state.activeBlocks.filter(b => b.id !== block.id), block] }));
+      const now = new Date();
+      const start = new Date(`${block.date}T${block.fromTime}:00`);
+      const end = new Date(`${block.date}T${block.toTime}:00`);
+      const isLive = now >= start && now <= end;
+
+      // Optimistic UI update only if the block is currently live
+      if (isLive) {
+        set((state) => ({ activeBlocks: [...state.activeBlocks.filter(b => b.id !== block.id), block] }));
+      }
       
       await fetch(API_URL, {
         method: 'POST',
