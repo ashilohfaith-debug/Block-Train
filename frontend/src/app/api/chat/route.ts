@@ -56,7 +56,7 @@ export async function POST(request: Request) {
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'llama3-8b-8192', 
+        model: 'qwen/qwen3.8-27b', 
         messages: apiMessages,
         temperature: 0.2,
         tools: TOOLS,
