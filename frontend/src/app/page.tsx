@@ -1,78 +1,158 @@
-﻿import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function LandingPage() {
-  return (
-    <div className="min-h-screen bg-[#09090b] text-zinc-300 font-sans flex flex-col items-center justify-center relative overflow-hidden selection:bg-blue-500/30">
-      
-      {/* Enterprise Subtle Grid */}
-      <div 
-        className="absolute inset-0 z-0 pointer-events-none opacity-[0.03]" 
-        style={{ backgroundImage: 'linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)', backgroundSize: '48px 48px' }}
-      />
-      <div className="absolute inset-0 z-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(255,255,255,0))] pointer-events-none" />
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [glitchPhase, setGlitchPhase] = useState(0);
 
-      {/* Header */}
-      <div className="z-10 text-center mb-24 max-w-3xl px-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-zinc-800 bg-zinc-900/50 text-zinc-400 font-mono text-[11px] tracking-[0.2em] mb-8">
-          <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-          SOUTHERN RAILWAY
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({
+        x: (e.clientX / window.innerWidth) * 2 - 1,
+        y: (e.clientY / window.innerHeight) * 2 - 1
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Math.random() > 0.8) {
+        setGlitchPhase(Math.random() * 3);
+        setTimeout(() => setGlitchPhase(0), 100);
+      }
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="h-screen w-full bg-black text-white font-sans overflow-hidden relative flex flex-col items-center justify-center selection:bg-red-500/30">
+      {/* Background Matrix/Radar Grid */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-20 transition-transform duration-700 ease-out"
+        style={{
+          backgroundImage: 'linear-gradient(to right, #333 1px, transparent 1px), linear-gradient(to bottom, #333 1px, transparent 1px)',
+          backgroundSize: '100px 100px',
+          transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px) scale(1.1) perspective(1000px) rotateX(${mousePosition.y * 10}deg) rotateY(${mousePosition.x * 10}deg)`
+        }}
+      />
+      
+      {/* Scanning Line */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="w-full h-1 bg-red-500/50 shadow-[0_0_40px_10px_rgba(255,0,0,0.5)] animate-[scan_4s_linear_infinite]" />
+      </div>
+
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes scan {
+          0% { transform: translateY(-100px); }
+          100% { transform: translateY(120vh); }
+        }
+        .glitch-1 { clip-path: inset(20% 0 80% 0); transform: translate(-5px, 5px); }
+        .glitch-2 { clip-path: inset(60% 0 10% 0); transform: translate(5px, -5px); }
+        .glitch-3 { clip-path: inset(40% 0 50% 0); transform: translate(-5px, -2px); }
+      `}} />
+
+      {/* Main Title */}
+      <div className="relative z-10 text-center mb-16 select-none">
+        <div className="text-[10px] md:text-sm text-red-500 font-mono tracking-[0.5em] mb-4 uppercase">
+          Southern Railway Command
         </div>
-        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-white mb-6">
-          Block<span className="text-zinc-500">Train</span>
-        </h1>
-        <p className="text-lg text-zinc-400 font-light leading-relaxed tracking-wide">
-          An enterprise-grade digital twin platform. Monitor live railway infrastructure, dispatch autonomous maintenance workflows, and optimize transit operations using real-time spatial intelligence.
+        
+        <div className="relative inline-block">
+          <h1 className={`text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none mix-blend-difference ${glitchPhase > 1 ? 'opacity-0' : 'opacity-100'}`}>
+            Block<span className="text-red-600">Train</span>
+          </h1>
+          {glitchPhase > 0 && (
+            <>
+              <h1 className={`absolute top-0 left-0 text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none text-cyan-400 mix-blend-screen ${glitchPhase > 1 ? 'glitch-1' : 'glitch-2'}`}>
+                Block<span className="text-red-600">Train</span>
+              </h1>
+              <h1 className={`absolute top-0 left-0 text-7xl md:text-[120px] font-black tracking-tighter uppercase leading-none text-red-500 mix-blend-screen ${glitchPhase > 2 ? 'glitch-3' : 'glitch-1'}`}>
+                Block<span className="text-red-600">Train</span>
+              </h1>
+            </>
+          )}
+        </div>
+        
+        <p className="mt-8 max-w-2xl mx-auto text-sm md:text-base text-zinc-400 font-mono lowercase tracking-widest leading-relaxed px-4">
+          system initialization ... connected ... 0x7FA4 ... ready for input.
         </p>
       </div>
 
-      {/* Navigation Grid */}
-      <div className="z-10 grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl px-6">
+      {/* Links Grid */}
+      <div className="relative z-20 flex flex-col md:flex-row gap-8 w-full max-w-5xl px-8" style={{ perspective: '1000px' }}>
         
-        {/* Operations Hub */}
-        <Link href="/map" className="group relative rounded-xl border border-zinc-800/50 bg-zinc-900/20 p-8 transition-all duration-500 hover:bg-zinc-800/40 hover:border-zinc-700/50 overflow-hidden backdrop-blur-xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative z-10">
-            <div className="w-10 h-10 rounded-full border border-zinc-800 bg-zinc-900 flex items-center justify-center mb-12 group-hover:border-blue-500/30 transition-colors duration-500">
-              <svg className="w-4 h-4 text-zinc-300 group-hover:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-              </svg>
-            </div>
-            <h2 className="text-xl font-medium text-zinc-100 mb-3 tracking-tight group-hover:text-blue-50 transition-colors">Operations Hub</h2>
-            <p className="text-sm text-zinc-500 font-light leading-relaxed mb-8">
-              Access the live digital twin. Monitor rolling stock telemetry, signal states, and network flow in real-time.
+        {/* Map Link */}
+        <Link 
+          href="/map"
+          className="group relative flex-1 bg-[#050505] border border-zinc-900 p-8 hover:bg-black transition-all duration-300 shadow-2xl"
+          style={{
+            transform: `rotateY(${mousePosition.x * 5}deg) rotateX(${mousePosition.y * -5}deg)`,
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-red-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
+          
+          <div className="relative" style={{ transform: 'translateZ(20px)' }}>
+            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-red-500 transition-colors">
+              Live Map
+            </h2>
+            <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-red-500 group-hover:w-full transition-all duration-500" />
+            <p className="text-zinc-500 font-mono text-sm mb-12">
+              > monitor active fleet<br/>
+              > real-time interlocking<br/>
+              > telemetry parsing
             </p>
-            <div className="flex items-center text-zinc-400 font-mono text-[11px] tracking-widest group-hover:text-blue-400 transition-colors">
-              INITIALIZE ENVIRONMENT <span className="ml-2 transition-transform duration-500 group-hover:translate-x-1">&rarr;</span>
+            <div className="flex justify-between items-center text-xs font-mono font-bold tracking-widest text-zinc-700 group-hover:text-white transition-colors">
+              <span>INITIATE_MODULE</span>
+              <span className="text-red-600 font-black">[{'>'}]</span>
             </div>
           </div>
         </Link>
 
-        {/* Dispatch Console */}
-        <Link href="/maintenance" className="group relative rounded-xl border border-zinc-800/50 bg-zinc-900/20 p-8 transition-all duration-500 hover:bg-zinc-800/40 hover:border-zinc-700/50 overflow-hidden backdrop-blur-xl">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative z-10">
-            <div className="w-10 h-10 rounded-full border border-zinc-800 bg-zinc-900 flex items-center justify-center mb-12 group-hover:border-amber-500/30 transition-colors duration-500">
-              <svg className="w-4 h-4 text-zinc-300 group-hover:text-amber-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <h2 className="text-xl font-medium text-zinc-100 mb-3 tracking-tight group-hover:text-amber-50 transition-colors">Dispatch Console</h2>
-            <p className="text-sm text-zinc-500 font-light leading-relaxed mb-8">
-              Engage maintenance workflows. Trigger infrastructure blocks and initiate automated crew communications.
+        {/* Maintenance Link */}
+        <Link 
+          href="/maintenance"
+          className="group relative flex-1 bg-[#050505] border border-zinc-900 p-8 hover:bg-black transition-all duration-300 shadow-2xl"
+          style={{
+            transform: `rotateY(${mousePosition.x * 5}deg) rotateX(${mousePosition.y * -5}deg)`,
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute bottom-0 right-0 w-[1px] h-full bg-gradient-to-t from-transparent via-yellow-500 to-transparent scale-y-0 group-hover:scale-y-100 transition-transform duration-700" />
+          
+          <div className="relative" style={{ transform: 'translateZ(20px)' }}>
+            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-yellow-500 transition-colors">
+              Blocks
+            </h2>
+            <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-yellow-500 group-hover:w-full transition-all duration-500" />
+            <p className="text-zinc-500 font-mono text-sm mb-12">
+              > execute line blocks<br/>
+              > divert traffic flow<br/>
+              > maintenance override
             </p>
-            <div className="flex items-center text-zinc-400 font-mono text-[11px] tracking-widest group-hover:text-amber-400 transition-colors">
-              OPEN CONSOLE <span className="ml-2 transition-transform duration-500 group-hover:translate-x-1">&rarr;</span>
+            <div className="flex justify-between items-center text-xs font-mono font-bold tracking-widest text-zinc-700 group-hover:text-white transition-colors">
+              <span>OVERRIDE_SYSTEM</span>
+              <span className="text-yellow-500 font-black">[{'>'}]</span>
             </div>
           </div>
         </Link>
 
       </div>
-
-      {/* Footer */}
-      <div className="absolute bottom-6 flex w-full justify-between px-12 text-zinc-600 font-mono text-[10px] tracking-widest">
-        <div>V 2.1.0-STABLE</div>
-        <div>AUTHORIZED PERSONNEL ONLY</div>
+      
+      {/* Footer Details */}
+      <div className="absolute bottom-4 left-4 font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
+        SR-SYS-CORE // 10.42.1.0<br/>
+        ENCRYPTION: ACTIVE
+      </div>
+      <div className="absolute bottom-4 right-4 font-mono text-[9px] text-zinc-600 uppercase tracking-widest text-right">
+        AUTHORIZED ACCESS ONLY<br/>
+        SECURE TERMINAL
       </div>
     </div>
   );
