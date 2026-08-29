@@ -59,14 +59,20 @@ router.post("/notify", async (req, res) => {
         to: phone
       }).catch(err => console.error("SMS Failed:", err.message));
 
-      // If audio URL was provided, make a Voice Call
+      // 2. Voice Call (Custom audio or Text-to-Speech fallback)
+      let twimlParams = {};
       if (audioUrl) {
-        await client.calls.create({
-          twiml: `<Response><Play>${audioUrl}</Play></Response>`,
-          to: phone,
-          from: fromPhone
-        }).catch(err => console.error("Call Failed:", err.message));
+        twimlParams = { twiml: `<Response><Play>${audioUrl}</Play></Response>` };
+      } else {
+        // Fallback to text-to-speech
+        twimlParams = { twiml: `<Response><Say voice="alice">${messageBody}</Say></Response>` };
       }
+
+      await client.calls.create({
+        ...twimlParams,
+        to: phone,
+        from: fromPhone
+      }).catch(err => console.error("Call Failed:", err.message));
     });
 
     await Promise.all(dispatchPromises);
