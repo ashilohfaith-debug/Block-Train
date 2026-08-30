@@ -134,12 +134,21 @@ export default function MaintenancePage() {
                     const notifyData = await notifyRes.json();
                     
                     if (notifyData.success) {
-                      alert(`SUCCESS: Dispatch complete! Twilio called/texted workers.\nDetails: ${JSON.stringify(notifyData)}`);
+                      // Trigger native SMS App (Windows/Android/iOS)
+                      if (notifyData.phoneNumbers && notifyData.phoneNumbers.length > 0) {
+                        const smsBody = `🚨 URGENT: Maintenance Block scheduled for ${department}.\nTrack: ${selectedTrack}\nTime: ${fromTime} to ${toTime} on ${date}.\n\nListen to dispatch audio: ${audioUrl || 'N/A'}`;
+                        const phoneString = notifyData.phoneNumbers.join(',');
+                        
+                        // Instantly open the SMS app without any browser alerts
+                        window.location.href = `sms:${phoneString}?body=${encodeURIComponent(smsBody)}`;
+                      }
+                      
+                      // Modal will close automatically because of setSelectedTrack(null) below
                     } else {
-                      alert(`FAILED: Dispatch returned error.\nReason: ${notifyData.error || notifyData.message}`);
+                      console.error(`FAILED: Dispatch returned error.\nReason: ${notifyData.error || notifyData.message}`);
                     }
                   } catch (err) {
-                    alert(`NETWORK ERROR: Could not reach backend for dispatch.\nDetails: ${err}`);
+                    console.error(`NETWORK ERROR: Could not reach backend for dispatch.\nDetails: ${err}`);
                   }
                 }
                 setSelectedTrack(null); 
