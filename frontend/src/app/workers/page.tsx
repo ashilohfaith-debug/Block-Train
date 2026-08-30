@@ -17,7 +17,8 @@ const DEPARTMENTS = [
 ];
 
 export default function WorkersPage() {
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || '${API_URL}';
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const API_URL = `${baseUrl}/api`;
 
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [name, setName] = useState("");
