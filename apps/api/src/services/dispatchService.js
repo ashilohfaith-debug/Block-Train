@@ -1,6 +1,6 @@
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8601089913:AAEEm4wlQ_0GcOEIKaJaYodXmzg83Ds6M_k";
 // We will use a fallback chat ID if the env var isn't set yet
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || "6774806866";
 
 const DispatchService = {
   async notifyWorkers(phoneNumbers, { blockId, department, date, fromTime, toTime, audioUrl }) {
