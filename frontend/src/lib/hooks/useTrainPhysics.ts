@@ -225,23 +225,55 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
            }
         }
 
-        if (appliedSpeed > 0) {
-          appliedSpeed *= physicsFactor;
+        let targetSpeed = appliedSpeed;
+        
+        // Smooth Station Braking
+        if (!newStopUntil && targetSpeed > 0) {
+          let distToNextStation = LOOKAHEAD;
+          for (let i = 0; i < STATIONS.length; i++) {
+             const sX = 600 + i * STATION_SPACING;
+             const targetX = sX + (95 * t.direction);
+             const dist = t.direction === 1 ? (targetX - t.x) : (t.x - targetX);
+             if (dist > 0 && dist < distToNextStation) {
+                distToNextStation = dist;
+             }
+          }
+          if (distToNextStation < 1200) {
+             const stationBrake = Math.max(0.02, Math.pow(distToNextStation / 1200, 1.5));
+             targetSpeed *= stationBrake;
+          }
         }
+
+        // Apply Momentum (currentSpeed)
+        let cur = t.currentSpeed !== undefined ? t.currentSpeed : 0;
+        
+        // Hard collision override
+        if (targetSpeed === 0) {
+            cur = 0;
+        } else {
+            if (cur < targetSpeed) {
+                cur += 0.003 * physicsFactor; // Very smooth, slow acceleration like real trains
+                if (cur > targetSpeed) cur = targetSpeed;
+            } else if (cur > targetSpeed) {
+                cur -= 0.015 * physicsFactor; // Smooth but assertive braking
+                if (cur < targetSpeed) cur = targetSpeed;
+            }
+        }
+
+        let actualApplied = cur * physicsFactor;
         
         // Final edge-of-world checks and terminal stops
-        let newX = t.x + t.direction * appliedSpeed;
+        let newX = t.x + t.direction * actualApplied;
         
-        if (!newStopUntil && appliedSpeed > 0) {
+        if (!newStopUntil && actualApplied > 0) {
           for (let i = 0; i < STATIONS.length; i++) {
             const sX = 600 + i * STATION_SPACING;
-            // The train length is roughly 190px. Center is 95px behind the front.
-            // To align the train's center with sX, the front (t.x) must overshoot sX by 95px.
             const targetX = sX + (95 * t.direction);
 
             if ((t.direction === 1 && t.x < targetX && newX >= targetX) ||
                 (t.direction === -1 && t.x > targetX && newX <= targetX)) {
               newX = targetX;
+              cur = 0; // Kill engine completely at stop
               const waitTime = 10000 / Math.max(1, userSpeedMultiplier); 
               newStopUntil = now + waitTime;
               break;
@@ -256,6 +288,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                direction: -1,
                baseLane: t.baseLane === -1 ? 1 : (t.baseLane === 1 ? -1 : 0),
                stopUntil: now + 6000,
+               currentSpeed: 0
             };
         }
         if (newX < 300) {
@@ -265,6 +298,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                direction: 1,
                baseLane: t.baseLane === -1 ? 1 : (t.baseLane === 1 ? -1 : 0),
                stopUntil: now + 6000,
+               currentSpeed: 0
             };
         }
         
@@ -274,7 +308,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
           stopUntil: newStopUntil,
           baseLane: currentBaseLane,
           targetLane: newTargetLane,
-          switchStartX: newSwitchStartX
+          switchStartX: newSwitchStartX,
+          currentSpeed: cur
         };
       });
       useMaintenanceStore.getState().setTrains(nextTrains);
