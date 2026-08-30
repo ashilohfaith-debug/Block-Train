@@ -92,6 +92,7 @@ export const VoiceRecorder = () => {
       <div className="flex flex-col items-center justify-center flex-1 bg-zinc-900/50 rounded-lg border border-zinc-800/50 p-6 gap-4">
         {!isRecording ? (
           <button
+            type="button"
             onClick={startRecording}
             className="group relative w-16 h-16 rounded-full bg-red-950 flex items-center justify-center border-2 border-red-900 hover:border-red-500 hover:bg-red-900 transition-all shadow-[0_0_15px_rgba(220,38,38,0.15)] hover:shadow-[0_0_25px_rgba(220,38,38,0.3)]"
           >
@@ -99,6 +100,7 @@ export const VoiceRecorder = () => {
           </button>
         ) : (
           <button
+            type="button"
             onClick={stopRecording}
             className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center border-2 border-red-500 animate-pulse shadow-[0_0_30px_rgba(220,38,38,0.5)]"
           >
