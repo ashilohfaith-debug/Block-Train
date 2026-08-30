@@ -117,18 +117,30 @@ export default function MaintenancePage() {
                   // Trigger Twilio Call
                   const audioUrl = useMaintenanceStore.getState().dispatchAudioUrl;
                   const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-                  await fetch(`${backendUrl}/api/dispatch/notify`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      blockId: selectedTrack,
-                      department,
-                      date,
-                      fromTime,
-                      toTime,
-                      audioUrl
-                    })
-                  });
+                  
+                  try {
+                    const notifyRes = await fetch(`${backendUrl}/api/dispatch/notify`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        blockId: selectedTrack,
+                        department,
+                        date,
+                        fromTime,
+                        toTime,
+                        audioUrl
+                      })
+                    });
+                    const notifyData = await notifyRes.json();
+                    
+                    if (notifyData.success) {
+                      alert(`SUCCESS: Dispatch complete! Twilio called/texted workers.\nDetails: ${JSON.stringify(notifyData)}`);
+                    } else {
+                      alert(`FAILED: Dispatch returned error.\nReason: ${notifyData.error || notifyData.message}`);
+                    }
+                  } catch (err) {
+                    alert(`NETWORK ERROR: Could not reach backend for dispatch.\nDetails: ${err}`);
+                  }
                 }
                 setSelectedTrack(null); 
               }}>
