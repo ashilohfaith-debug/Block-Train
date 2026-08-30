@@ -133,7 +133,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
         let distToSwitch = Infinity;
         for (const sx of validSwitches) {
             const dist = t.direction === 1 ? (sx - t.x) : (t.x - sx);
-            if (dist > 0 && dist < distToSwitch) {
+            if (dist > -50 && dist < distToSwitch) {
                 distToSwitch = dist;
                 targetSwitchX = sx;
             }
@@ -235,9 +235,10 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
 
         // 5. Trigger Physical Switch if safe and reached
         if (escapeIsSafe && newTargetLane === undefined) {
-            const approxSpeed = Math.abs((t.currentSpeed || 0) * physicsFactor) + 1.0;
-            const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - approxSpeed) <= targetSwitchX) ||
-                                 (t.direction === -1 && t.x <= targetSwitchX && (t.x + approxSpeed) >= targetSwitchX);
+            // Provide a 60-pixel activation window so trains that mathematically parked exactly on 
+            // the crossover (due to a 300px collision shield) can still trigger the switch.
+            const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - 60.0) <= targetSwitchX) ||
+                                 (t.direction === -1 && t.x <= targetSwitchX && (t.x + 60.0) >= targetSwitchX);
             if (passedSwitch) {
                 newTargetLane = proposedTargetLane;
                 newSwitchStartX = targetSwitchX;
