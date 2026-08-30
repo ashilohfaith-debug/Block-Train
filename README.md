@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=timeGradient&height=250&section=header&text=BlockTrain&fontSize=80&desc=Next-Gen%20Railway%20Digital%20Twin%20%26%20Dispatch&descSize=20&descAlignY=70" width="100%" alt="BlockTrain Header" />
+  <img src="./header.svg" width="100%" alt="BlockTrain Flowing Gradient Header" />
 </div>
 
 <p align="center">
@@ -83,5 +83,5 @@ npm run dev
 <br>
 
 <div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=timeGradient&height=100&section=footer" width="100%" alt="Footer" />
+  <img src="./footer.svg" width="100%" alt="Flowing Gradient Footer" />
 </div>
