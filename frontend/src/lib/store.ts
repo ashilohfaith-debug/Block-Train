@@ -35,7 +35,15 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
       const res = await fetch(API_URL);
       const data = await res.json();
       if (data.success) {
-        set({ activeBlocks: data.blocks });
+        const now = new Date();
+        const activeOnly = data.blocks.filter((b: Block) => {
+          // Fix: Prevent "Invalid Date" if backend returns full ISO string
+          const dateStr = b.date.split('T')[0];
+          const start = new Date(`${dateStr}T${b.fromTime}:00`);
+          const end = new Date(`${dateStr}T${b.toTime}:00`);
+          return now >= start && now <= end;
+        });
+        set({ activeBlocks: activeOnly });
       }
     } catch (err) {
       console.error('Failed to fetch blocks:', err);
@@ -44,8 +52,16 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
 
   addBlock: async (block) => {
     try {
-      // Optimistic UI update - always add it for the hackathon demo
-      set((state) => ({ activeBlocks: [...state.activeBlocks.filter(b => b.id !== block.id), block] }));
+      const now = new Date();
+      const dateStr = block.date.split('T')[0];
+      const start = new Date(`${dateStr}T${block.fromTime}:00`);
+      const end = new Date(`${dateStr}T${block.toTime}:00`);
+      const isLive = now >= start && now <= end;
+
+      // Optimistic UI update only if it's currently within the time window
+      if (isLive) {
+        set((state) => ({ activeBlocks: [...state.activeBlocks.filter(b => b.id !== block.id), block] }));
+      }
       
       await fetch(API_URL, {
         method: 'POST',
