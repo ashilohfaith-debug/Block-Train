@@ -1,6 +1,6 @@
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,2,3,4&height=250&section=header&text=BlockTrain&fontSize=70&fontAlignY=35&desc=Next-Gen%20Railway%20Digital%20Twin%20%26%20Dispatch&descAlignY=55&descAlign=50" />
-</p>
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=timeGradient&height=250&section=header&text=BlockTrain&fontSize=80&desc=Next-Gen%20Railway%20Digital%20Twin%20%26%20Dispatch&descSize=20&descAlignY=70" width="100%" alt="BlockTrain Header" />
+</div>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js" />
@@ -82,6 +82,6 @@ npm run dev
 
 <br>
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,2,3,4&height=100&section=footer" />
-</p>
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=timeGradient&height=100&section=footer" width="100%" alt="Footer" />
+</div>
