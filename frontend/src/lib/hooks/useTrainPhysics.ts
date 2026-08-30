@@ -149,7 +149,9 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
             );
             const targetLaneTrains = curr.filter(other => {
                 if (other.id === t.id) return false;
-                if (other.baseLane !== proposedTargetLane && other.targetLane !== proposedTargetLane) return false;
+                const otherIsSwitching = other.targetLane !== undefined && Math.abs(other.x - (other.switchStartX || 0)) < 600;
+                const inTargetLane = other.baseLane === proposedTargetLane || other.targetLane === proposedTargetLane || (otherIsSwitching && other.baseLane === proposedTargetLane);
+                if (!inTargetLane) return false;
                 const otherMin = other.direction === 1 ? other.x - 200 : other.x;
                 const otherMax = other.direction === 1 ? other.x : other.x + 200;
                 return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
@@ -170,7 +172,9 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
 
         const trainsAhead = curr.filter(other => {
            if (other.id === t.id) return false;
-           if (other.baseLane !== activeLane && other.targetLane !== activeLane) return false;
+           const otherIsSwitching = other.targetLane !== undefined && Math.abs(other.x - (other.switchStartX || 0)) < 600;
+           const inMyLane = other.baseLane === activeLane || other.targetLane === activeLane || (otherIsSwitching && other.baseLane === activeLane);
+           if (!inMyLane) return false;
            const otherMin = other.direction === 1 ? other.x - 200 : other.x;
            const otherMax = other.direction === 1 ? other.x : other.x + 200;
            return Math.max(threatLookaheadMin, otherMin) <= Math.min(threatLookaheadMax, otherMax);
@@ -184,7 +188,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
         // 4. Calculate Distance to Threat
         if (trainsAhead.length > 0 || hazardsAhead.length > 0) {
            let minDistanceToThreat = LOOKAHEAD;
-           let threatIsOppositeTrain = false;
+           let minDistanceToOppositeTrain = Infinity;
            
            hazardsAhead.forEach(z => {
                let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
@@ -200,9 +204,9 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                }
                if (dist > 0 && dist < minDistanceToThreat) {
                    minDistanceToThreat = dist;
-                   if (other.direction !== t.direction) {
-                       threatIsOppositeTrain = true;
-                   }
+               }
+               if (dist > 0 && other.direction !== t.direction && dist < minDistanceToOppositeTrain) {
+                   minDistanceToOppositeTrain = dist;
                }
            });
 
@@ -213,9 +217,9 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                appliedSpeed *= (minDistanceToThreat - 300) / 1200;
            }
 
-           // Right of Way Logic
+           // Right of Way Logic (Only yield/reverse if the direct threat is an oncoming train)
            let mustYield = false;
-           if (threatIsOppositeTrain && t.direction === -1 && minDistanceToThreat < 3000) {
+           if (t.direction === -1 && minDistanceToOppositeTrain < 3000 && minDistanceToOppositeTrain <= minDistanceToThreat + 50) {
                mustYield = true;
            }
 
@@ -274,6 +278,28 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                 if (cur < targetSpeed) cur = targetSpeed;
             }
         }
+
+        // ABSOLUTE ANTI-OVERLAP SHIELD (Omnidirectional)
+        // Prevents crashes if a train reverses into the train behind it, or if momentum allows clipping.
+        curr.forEach(other => {
+            if (other.id === t.id) return;
+            const otherIsSwitching = other.targetLane !== undefined && Math.abs(other.x - (other.switchStartX || 0)) < 600;
+            const inMyLane = other.baseLane === activeLane || other.targetLane === activeLane || (otherIsSwitching && other.baseLane === activeLane);
+            
+            if (inMyLane) {
+                const centerDist = Math.abs(t.x - other.x);
+                if (centerDist < 250) { 
+                    // We are physically touching or overlapping! Cut momentum if moving towards them.
+                    if (t.direction === 1) {
+                        if (cur > 0 && t.x < other.x) cur = 0;
+                        if (cur < 0 && t.x > other.x) cur = 0;
+                    } else {
+                        if (cur > 0 && t.x > other.x) cur = 0;
+                        if (cur < 0 && t.x < other.x) cur = 0;
+                    }
+                }
+            }
+        });
 
         let actualApplied = cur * physicsFactor;
         
