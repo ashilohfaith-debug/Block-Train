@@ -249,8 +249,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                 distToNextStation = dist;
              }
           }
-          if (distToNextStation < 1200) {
-             const stationBrake = Math.max(0.02, Math.pow(distToNextStation / 1200, 1.5));
+          if (distToNextStation < 600) {
+             const stationBrake = Math.max(0.15, Math.pow(distToNextStation / 600, 1.5));
              targetSpeed *= stationBrake;
           }
         }
@@ -266,7 +266,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                 cur += 0.001 * physicsFactor; // Very smooth, slow acceleration like real trains
                 if (cur > targetSpeed) cur = targetSpeed;
             } else if (cur > targetSpeed) {
-                cur -= 0.005 * physicsFactor; // Smooth but assertive braking
+                cur -= 0.01 * physicsFactor; // Smooth but assertive braking
                 if (cur < targetSpeed) cur = targetSpeed;
             }
         }
