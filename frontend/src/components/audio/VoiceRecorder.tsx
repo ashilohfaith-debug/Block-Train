@@ -35,8 +35,8 @@ export const VoiceRecorder = () => {
         formData.append('audio', audioBlob, 'dispatch-voice.mp3');
 
         try {
-          // Use absolute URL for now to ensure it hits the Express backend during the hackathon
-          const res = await fetch('http://localhost:5000/api/dispatch/audio', {
+          // Use Next.js Serverless Function to upload directly to Cloudinary
+          const res = await fetch('/api/upload', {
             method: 'POST',
             body: formData,
           });
