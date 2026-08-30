@@ -223,12 +223,14 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                mustYield = true;
            }
 
-           if (mustYield && targetSwitchX !== -1) {
-               if (distToSwitch > -50 && distToSwitch < 600) {
+           if (mustYield) {
+               if (minDistanceToOppositeTrain < 450) {
+                   // DEADLOCK EMERGENCY: If nose-to-nose, Westbound MUST reverse!
+                   appliedSpeed = -0.5;
+               } else if (targetSwitchX !== -1 && distToSwitch > -50 && distToSwitch < 600) {
+                   // SAFE YIELDING: Wait at the upcoming switch for the Eastbound train to pass
                    if (appliedSpeed > 0) appliedSpeed *= 0.05;
                    if (distToSwitch < 100) appliedSpeed = 0; 
-               } else if (minDistanceToThreat < 450) {
-                   appliedSpeed = -0.5; 
                }
            }
         }
