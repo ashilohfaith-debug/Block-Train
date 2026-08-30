@@ -81,7 +81,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
     
     const interval = setInterval(() => {
       const state = useMaintenanceStore.getState();
-      const activeBlocks = state.tasks.filter(t => t.status === 'BLOCKED').map(t => t.blockId);
+      const activeBlocks = state.activeBlocks.map((b) => b.id);
       const hazardZones = getHazardZones(activeBlocks);
       const now = Date.now();
 
