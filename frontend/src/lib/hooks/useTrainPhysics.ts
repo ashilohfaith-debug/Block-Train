@@ -235,9 +235,13 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
         if (!newStopUntil && appliedSpeed > 0) {
           for (let i = 0; i < STATIONS.length; i++) {
             const sX = 600 + i * STATION_SPACING;
-            if ((t.direction === 1 && t.x < sX && newX >= sX) ||
-                (t.direction === -1 && t.x > sX && newX <= sX)) {
-              newX = sX;
+            // The train length is roughly 190px. Center is 95px behind the front.
+            // To align the train's center with sX, the front (t.x) must overshoot sX by 95px.
+            const targetX = sX + (95 * t.direction);
+
+            if ((t.direction === 1 && t.x < targetX && newX >= targetX) ||
+                (t.direction === -1 && t.x > targetX && newX <= targetX)) {
+              newX = targetX;
               const waitTime = 10000 / Math.max(1, userSpeedMultiplier); 
               newStopUntil = now + waitTime;
               break;
