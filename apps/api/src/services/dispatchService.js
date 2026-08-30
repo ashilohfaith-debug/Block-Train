@@ -2,7 +2,7 @@ const twilio = require("twilio");
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const fromPhone = process.env.TWILIO_PHONE_NUMBER;
+const fromPhone = process.env.TWILIO_PHONE_NUMBER || "+17372212163";
 
 let client = null;
 if (accountSid && authToken) {
@@ -13,7 +13,7 @@ const DispatchService = {
   async notifyWorkers(phoneNumbers, { blockId, department, date, fromTime, toTime, audioUrl }) {
     if (!client || !fromPhone) {
       console.warn("Twilio credentials missing. SMS skipped.");
-      return { success: false, mocked: true };
+      return { success: false, error: "TWILIO_ACCOUNT_SID or TWILIO_AUTH_TOKEN missing in server environment variables. Please add them to Render." };
     }
 
     const messageBody = `URGENT [BlockTrain]: Maintenance Block scheduled for ${department} on ${blockId} from ${fromTime} to ${toTime} on ${date}.`;
