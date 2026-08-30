@@ -168,25 +168,32 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
            // Predictive Routing & Lane Switching
            // We run this even if appliedSpeed is 0, because a train might need to initiate a switch or reverse from a standstill.
            if (newTargetLane === undefined) {
-               let st = STATIONS[0];
-               let sX = 0;
+               // Gather ALL physical crossovers across the entire map
+               const validSwitches: number[] = [];
                for (let i = 0; i < STATIONS.length; i++) {
-                  const checkSx = 600 + i * STATION_SPACING;
-                  if (t.x >= checkSx + STATIONS[i].yardStartOffset - 1000 && t.x <= checkSx + STATIONS[i].yardEndOffset + 1000) {
-                     st = STATIONS[i];
-                     sX = checkSx;
-                     break;
-                  }
+                   const sX = 600 + i * STATION_SPACING;
+                   const st = STATIONS[i];
+                   if (t.direction === 1) {
+                       validSwitches.push(sX + st.yardStartOffset + 50);
+                       validSwitches.push(sX + st.yardEndOffset - 300);
+                   } else {
+                       validSwitches.push(sX + st.yardStartOffset + 300); // 50 + 250
+                       validSwitches.push(sX + st.yardEndOffset - 50); // -300 + 250
+                   }
                }
                
-               const aStart = sX + st.yardStartOffset + 50;
-               const dStart = sX + st.yardEndOffset - 300;
+               // Find the nearest physical switch directly in front of the train
+               let targetSwitchX = -1;
+               let distToSwitch = Infinity;
+               for (const sx of validSwitches) {
+                   const dist = t.direction === 1 ? (sx - t.x) : (t.x - sx);
+                   if (dist > 0 && dist < distToSwitch) {
+                       distToSwitch = dist;
+                       targetSwitchX = sx;
+                   }
+               }
                
-               let targetSwitchX = t.direction === 1 ? aStart : (dStart + 250);
-               if (t.direction === 1 && t.x > aStart) targetSwitchX = dStart;
-               if (t.direction === -1 && t.x < dStart + 250) targetSwitchX = aStart + 250;
-               
-               let distToSwitch = t.direction === 1 ? (targetSwitchX - t.x) : (t.x - targetSwitchX);
+               if (targetSwitchX !== -1) {
 
                // Strict Right of Way Yielding
                let mustYield = false;
@@ -233,6 +240,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                        }
                    }
                }
+               } // Close targetSwitchX check
            }
         }
 
