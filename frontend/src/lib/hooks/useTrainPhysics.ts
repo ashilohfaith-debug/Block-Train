@@ -115,20 +115,73 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
         let lookaheadMin = t.direction === 1 ? t.x : t.x - LOOKAHEAD;
         let lookaheadMax = t.direction === 1 ? t.x + LOOKAHEAD : t.x;
 
+        // 1. Find the absolute nearest physical crossover in front of the train
+        const validSwitches: number[] = [];
+        for (let i = 0; i < STATIONS.length; i++) {
+            const sX = 600 + i * STATION_SPACING;
+            const st = STATIONS[i];
+            if (t.direction === 1) {
+                validSwitches.push(sX + st.yardStartOffset + 50);
+                validSwitches.push(sX + st.yardEndOffset - 300);
+            } else {
+                validSwitches.push(sX + st.yardStartOffset + 300);
+                validSwitches.push(sX + st.yardEndOffset - 50);
+            }
+        }
+        
+        let targetSwitchX = -1;
+        let distToSwitch = Infinity;
+        for (const sx of validSwitches) {
+            const dist = t.direction === 1 ? (sx - t.x) : (t.x - sx);
+            if (dist > 0 && dist < distToSwitch) {
+                distToSwitch = dist;
+                targetSwitchX = sx;
+            }
+        }
+
+        // 2. Evaluate if an escape lane is safe
+        let escapeIsSafe = false;
+        let proposedTargetLane = activeLane;
+        if (targetSwitchX !== -1 && newTargetLane === undefined) {
+            proposedTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
+            const targetLaneHazards = hazardZones.filter(z => 
+                z.laneId === proposedTargetLane && (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
+            );
+            const targetLaneTrains = curr.filter(other => {
+                if (other.id === t.id) return false;
+                if (other.baseLane !== proposedTargetLane && other.targetLane !== proposedTargetLane) return false;
+                const otherMin = other.direction === 1 ? other.x - 200 : other.x;
+                const otherMax = other.direction === 1 ? other.x : other.x + 200;
+                return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
+            });
+            if (targetLaneHazards.length === 0 && targetLaneTrains.length === 0) {
+                escapeIsSafe = true;
+            }
+        }
+
+        // 3. Find threats on CURRENT lane
+        // If we have a safe escape route, we only care about threats that occur BEFORE the switch!
+        let threatLookaheadMin = lookaheadMin;
+        let threatLookaheadMax = lookaheadMax;
+        if (escapeIsSafe) {
+            if (t.direction === 1) threatLookaheadMax = targetSwitchX + 150;
+            else threatLookaheadMin = targetSwitchX - 150;
+        }
+
         const trainsAhead = curr.filter(other => {
            if (other.id === t.id) return false;
            if (other.baseLane !== activeLane && other.targetLane !== activeLane) return false;
-           // Train length is 200px
            const otherMin = other.direction === 1 ? other.x - 200 : other.x;
            const otherMax = other.direction === 1 ? other.x : other.x + 200;
-           return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
+           return Math.max(threatLookaheadMin, otherMin) <= Math.min(threatLookaheadMax, otherMax);
         });
 
         const hazardsAhead = hazardZones.filter(z => 
            z.laneId === activeLane &&
-           (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
+           (Math.max(threatLookaheadMin, z.minX) <= Math.min(threatLookaheadMax, z.maxX))
         );
 
+        // 4. Calculate Distance to Threat
         if (trainsAhead.length > 0 || hazardsAhead.length > 0) {
            let minDistanceToThreat = LOOKAHEAD;
            let threatIsOppositeTrain = false;
@@ -139,14 +192,12 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
            });
            
            trainsAhead.forEach(other => {
-               // Calculate strict nose-to-tail or nose-to-nose distance
                let dist = 0;
                if (t.direction === 1) {
                    dist = other.direction === 1 ? (other.x - 200) - t.x : other.x - t.x;
                } else {
                    dist = other.direction === 1 ? t.x - other.x : t.x - (other.x + 200);
                }
-               
                if (dist > 0 && dist < minDistanceToThreat) {
                    minDistanceToThreat = dist;
                    if (other.direction !== t.direction) {
@@ -156,92 +207,37 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
            });
 
            // Absolute Collision Prevention
-           // If we are within 300px of a threat, prevent forward movement.
-           // However, we allow negative speeds if the train decides to reverse!
            if (minDistanceToThreat < 300) {
                appliedSpeed = 0;
            } else if (minDistanceToThreat < 1500) {
-               // Progressive gentle braking so it looks smooth, approaching 0 at 300px
                appliedSpeed *= (minDistanceToThreat - 300) / 1200;
            }
 
-           // Predictive Routing & Lane Switching
-           // We run this even if appliedSpeed is 0, because a train might need to initiate a switch or reverse from a standstill.
-           if (newTargetLane === undefined) {
-               // Gather ALL physical crossovers across the entire map
-               const validSwitches: number[] = [];
-               for (let i = 0; i < STATIONS.length; i++) {
-                   const sX = 600 + i * STATION_SPACING;
-                   const st = STATIONS[i];
-                   if (t.direction === 1) {
-                       validSwitches.push(sX + st.yardStartOffset + 50);
-                       validSwitches.push(sX + st.yardEndOffset - 300);
-                   } else {
-                       validSwitches.push(sX + st.yardStartOffset + 300); // 50 + 250
-                       validSwitches.push(sX + st.yardEndOffset - 50); // -300 + 250
-                   }
-               }
-               
-               // Find the nearest physical switch directly in front of the train
-               let targetSwitchX = -1;
-               let distToSwitch = Infinity;
-               for (const sx of validSwitches) {
-                   const dist = t.direction === 1 ? (sx - t.x) : (t.x - sx);
-                   if (dist > 0 && dist < distToSwitch) {
-                       distToSwitch = dist;
-                       targetSwitchX = sx;
-                   }
-               }
-               
-               if (targetSwitchX !== -1) {
-
-               // Strict Right of Way Yielding
-               let mustYield = false;
-               if (threatIsOppositeTrain && t.direction === -1 && minDistanceToThreat < 3000) {
-                   mustYield = true;
-               }
-
-               if (mustYield) {
-                   // Westbound train comes to a complete halt BEFORE the switch to let Eastbound pass
-                   if (distToSwitch > -50 && distToSwitch < 600) {
-                       if (appliedSpeed > 0) appliedSpeed *= 0.05;
-                       if (distToSwitch < 100) appliedSpeed = 0; // Hard wait at switch
-                   } 
-                   // REALISTIC DEADLOCK RESOLUTION: REVERSING
-                   // If they are trapped face-to-face and not safely at a switch, the Westbound train 
-                   // puts it in reverse and backs up!
-                   else if (minDistanceToThreat < 450) {
-                       appliedSpeed = -0.5; // Negative speed forces the physics engine to run backwards
-                   }
-               } else if (appliedSpeed > 0) {
-                   // Proceed to switch if safe (only if moving forward)
-                   const proposedTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
-                   const targetLaneHazards = hazardZones.filter(z => 
-                       z.laneId === proposedTargetLane &&
-                       (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
-                   );
-                   const targetLaneTrains = curr.filter(other => {
-                       if (other.id === t.id) return false;
-                       if (other.baseLane !== proposedTargetLane && other.targetLane !== proposedTargetLane) return false;
-                       const otherMin = other.direction === 1 ? other.x - 200 : other.x;
-                       const otherMax = other.direction === 1 ? other.x : other.x + 200;
-                       return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
-                   });
-
-                   if (targetLaneHazards.length === 0 && targetLaneTrains.length === 0) {
-                       // STRICT SPATIAL CROSSOVER: The train must physically roll exactly over the crossover coordinate 
-                       // before it is allowed to shift lanes. We use a dynamic window based on current speed.
-                       const approxSpeed = Math.abs((t.currentSpeed || 0) * physicsFactor) + 1.0;
-                       const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - approxSpeed) <= targetSwitchX) ||
-                                            (t.direction === -1 && t.x <= targetSwitchX && (t.x + approxSpeed) >= targetSwitchX);
-                       if (passedSwitch) {
-                           newTargetLane = proposedTargetLane;
-                           newSwitchStartX = targetSwitchX;
-                       }
-                   }
-               }
-               } // Close targetSwitchX check
+           // Right of Way Logic
+           let mustYield = false;
+           if (threatIsOppositeTrain && t.direction === -1 && minDistanceToThreat < 3000) {
+               mustYield = true;
            }
+
+           if (mustYield && targetSwitchX !== -1) {
+               if (distToSwitch > -50 && distToSwitch < 600) {
+                   if (appliedSpeed > 0) appliedSpeed *= 0.05;
+                   if (distToSwitch < 100) appliedSpeed = 0; 
+               } else if (minDistanceToThreat < 450) {
+                   appliedSpeed = -0.5; 
+               }
+           }
+        }
+
+        // 5. Trigger Physical Switch if safe and reached
+        if (escapeIsSafe && newTargetLane === undefined) {
+            const approxSpeed = Math.abs((t.currentSpeed || 0) * physicsFactor) + 1.0;
+            const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - approxSpeed) <= targetSwitchX) ||
+                                 (t.direction === -1 && t.x <= targetSwitchX && (t.x + approxSpeed) >= targetSwitchX);
+            if (passedSwitch) {
+                newTargetLane = proposedTargetLane;
+                newSwitchStartX = targetSwitchX;
+            }
         }
 
         let targetSpeed = appliedSpeed;
