@@ -222,8 +222,11 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                    });
 
                    if (targetLaneHazards.length === 0 && targetLaneTrains.length === 0) {
-                       const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - appliedSpeed * physicsFactor) <= targetSwitchX) ||
-                                            (t.direction === -1 && t.x <= targetSwitchX && (t.x + appliedSpeed * physicsFactor) >= targetSwitchX);
+                       // STRICT SPATIAL CROSSOVER: The train must physically roll exactly over the crossover coordinate 
+                       // before it is allowed to shift lanes. We use a dynamic window based on current speed.
+                       const approxSpeed = Math.abs((t.currentSpeed || 0) * physicsFactor) + 1.0;
+                       const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - approxSpeed) <= targetSwitchX) ||
+                                            (t.direction === -1 && t.x <= targetSwitchX && (t.x + approxSpeed) >= targetSwitchX);
                        if (passedSwitch) {
                            newTargetLane = proposedTargetLane;
                            newSwitchStartX = targetSwitchX;
