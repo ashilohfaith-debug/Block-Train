@@ -155,8 +155,9 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                }
            });
 
-           // Absolute Collision Prevention (HARD OVERLAP BLOCK)
-           // If we are within 300px of a threat, literally lock speed to 0. It cannot overlap.
+           // Absolute Collision Prevention
+           // If we are within 300px of a threat, prevent forward movement.
+           // However, we allow negative speeds if the train decides to reverse!
            if (minDistanceToThreat < 300) {
                appliedSpeed = 0;
            } else if (minDistanceToThreat < 1500) {
@@ -165,7 +166,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
            }
 
            // Predictive Routing & Lane Switching
-           if (newTargetLane === undefined && appliedSpeed > 0) {
+           // We run this even if appliedSpeed is 0, because a train might need to initiate a switch or reverse from a standstill.
+           if (newTargetLane === undefined) {
                let st = STATIONS[0];
                let sX = 0;
                for (let i = 0; i < STATIONS.length; i++) {
@@ -195,18 +197,17 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                if (mustYield) {
                    // Westbound train comes to a complete halt BEFORE the switch to let Eastbound pass
                    if (distToSwitch > -50 && distToSwitch < 600) {
-                       appliedSpeed *= 0.05;
-                       if (distToSwitch < 100) appliedSpeed = 0; // Hard wait
+                       if (appliedSpeed > 0) appliedSpeed *= 0.05;
+                       if (distToSwitch < 100) appliedSpeed = 0; // Hard wait at switch
+                   } 
+                   // REALISTIC DEADLOCK RESOLUTION: REVERSING
+                   // If they are trapped face-to-face and not safely at a switch, the Westbound train 
+                   // puts it in reverse and backs up!
+                   else if (minDistanceToThreat < 450) {
+                       appliedSpeed = -0.5; // Negative speed forces the physics engine to run backwards
                    }
-
-                   // EMERGENCY SHUNT: If they are deadlocked facing each other because a block was just lifted 
-                   // or no crossover existed, force the yielding train to instantly slide to the opposite track.
-                   if (minDistanceToThreat < 350) {
-                       newTargetLane = activeLane === -1 ? 1 : -1;
-                       newSwitchStartX = t.x;
-                   }
-               } else {
-                   // Proceed to switch if safe
+               } else if (appliedSpeed > 0) {
+                   // Proceed to switch if safe (only if moving forward)
                    const proposedTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
                    const targetLaneHazards = hazardZones.filter(z => 
                        z.laneId === proposedTargetLane &&
