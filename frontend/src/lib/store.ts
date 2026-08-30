@@ -35,13 +35,7 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
       const res = await fetch(API_URL);
       const data = await res.json();
       if (data.success) {
-        const now = new Date();
-        const activeOnly = data.blocks.filter((b: Block) => {
-          const start = new Date(`${b.date}T${b.fromTime}:00`);
-          const end = new Date(`${b.date}T${b.toTime}:00`);
-          return now >= start && now <= end;
-        });
-        set({ activeBlocks: activeOnly });
+        set({ activeBlocks: data.blocks });
       }
     } catch (err) {
       console.error('Failed to fetch blocks:', err);
@@ -50,15 +44,8 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
 
   addBlock: async (block) => {
     try {
-      const now = new Date();
-      const start = new Date(`${block.date}T${block.fromTime}:00`);
-      const end = new Date(`${block.date}T${block.toTime}:00`);
-      const isLive = now >= start && now <= end;
-
-      // Optimistic UI update only if the block is currently live
-      if (isLive) {
-        set((state) => ({ activeBlocks: [...state.activeBlocks.filter(b => b.id !== block.id), block] }));
-      }
+      // Optimistic UI update - always add it for the hackathon demo
+      set((state) => ({ activeBlocks: [...state.activeBlocks.filter(b => b.id !== block.id), block] }));
       
       await fetch(API_URL, {
         method: 'POST',
