@@ -1,72 +1,69 @@
-const twilio = require("twilio");
-
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const fromPhone = process.env.TWILIO_PHONE_NUMBER || "+17372212163";
-
-let client = null;
-if (accountSid && authToken) {
-  client = twilio(accountSid, authToken);
-}
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || "8601089913:AAEEm4wlQ_0GcOEIKaJaYodXmzg83Ds6M_k";
+// We will use a fallback chat ID if the env var isn't set yet
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 const DispatchService = {
   async notifyWorkers(phoneNumbers, { blockId, department, date, fromTime, toTime, audioUrl }) {
-    if (!client || !fromPhone) {
-      console.warn("Twilio credentials missing. SMS skipped.");
-      return { success: false, error: "TWILIO_ACCOUNT_SID or TWILIO_AUTH_TOKEN missing in server environment variables. Please add them to Render." };
+    console.log("Telegram Dispatch Triggered for:", department);
+    
+    // For the hackathon demo, we will route all alerts to the specified Telegram Chat ID
+    // instead of the raw phone numbers from the database.
+    const targetChatId = TELEGRAM_CHAT_ID;
+    
+    if (!TELEGRAM_BOT_TOKEN || !targetChatId) {
+      console.warn("Telegram credentials missing.");
+      return { success: false, error: "Missing Telegram Bot Token or Chat ID." };
     }
 
-    const messageBody = `URGENT [BlockTrain]: Maintenance Block scheduled for ${department} on ${blockId} from ${fromTime} to ${toTime} on ${date}.`;
+    const messageBody = `🚨 *URGENT [BlockTrain]* 🚨\n\nMaintenance Block scheduled for *${department}*.\n*Track:* ${blockId}\n*Time:* ${fromTime} to ${toTime}\n*Date:* ${date}\n\n_Please listen to the attached emergency voice dispatch._`;
 
     const errors = [];
-    const dispatchPromises = phoneNumbers.map(async (phone) => {
-      // Ensure E.164 format with +91 if they only provided 10 digits
-      let formattedPhone = phone.trim();
-      if (!formattedPhone.startsWith('+')) {
-        formattedPhone = formattedPhone.startsWith('91') && formattedPhone.length === 12 
-          ? `+${formattedPhone}` 
-          : `+91${formattedPhone}`;
-      }
-
-      // Send SMS
-      try {
-        await client.messages.create({
-          body: messageBody,
-          from: fromPhone,
-          to: formattedPhone
-        });
-      } catch (err) {
-        console.error("SMS Failed:", err.message);
-        errors.push(`SMS to ${formattedPhone} failed: ${err.message}`);
-      }
-
-      // Voice Call
-      let twimlParams = {};
-      if (audioUrl) {
-        twimlParams = { twiml: `<Response><Play>${audioUrl}</Play></Response>` };
-      } else {
-        twimlParams = { twiml: `<Response><Say voice="alice">${messageBody}</Say></Response>` };
-      }
-
-      try {
-        await client.calls.create({
-          ...twimlParams,
-          to: formattedPhone,
-          from: fromPhone
-        });
-      } catch (err) {
-        console.error("Call Failed:", err.message);
-        errors.push(`Call to ${formattedPhone} failed: ${err.message}`);
-      }
-    });
-
-    await Promise.all(dispatchPromises);
     
+    try {
+      // 1. Send the Text Alert
+      const textResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: targetChatId,
+          text: messageBody,
+          parse_mode: 'Markdown'
+        })
+      });
+      
+      const textData = await textResponse.json();
+      if (!textData.ok) {
+        errors.push(`Telegram Text Error: ${textData.description}`);
+      }
+
+      // 2. Send the Audio File
+      if (audioUrl) {
+        const audioResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendAudio`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: targetChatId,
+            audio: audioUrl,
+            caption: "🔊 Emergency Voice Dispatch"
+          })
+        });
+        
+        const audioData = await audioResponse.json();
+        if (!audioData.ok) {
+          errors.push(`Telegram Audio Error: ${audioData.description}`);
+        }
+      }
+      
+    } catch (err) {
+      console.error("Telegram API Failed:", err.message);
+      errors.push(`Telegram API Failed: ${err.message}`);
+    }
+
     if (errors.length > 0) {
       return { success: false, error: errors.join(" | ") };
     }
     
-    return { success: true, dispatchedTo: phoneNumbers.length };
+    return { success: true, dispatchedTo: 1, method: "telegram" };
   }
 };
 
