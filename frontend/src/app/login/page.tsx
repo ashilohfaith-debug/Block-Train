@@ -11,16 +11,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -50,67 +40,101 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center relative overflow-hidden">
-      {/* Interactive Background Elements */}
-      <div 
-        className="absolute w-full h-full pointer-events-none opacity-30"
-        style={{
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(56, 189, 248, 0.15), transparent 40%)`
-        }}
-      />
+    <div className="min-h-screen bg-[#061428] flex items-center justify-center relative overflow-hidden font-sans">
       
-      {/* Animated Train Track Lines */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute w-full h-[2px] bg-sky-500 top-1/4 animate-pulse" />
-        <div className="absolute w-full h-[2px] bg-sky-500 top-1/4 mt-4 animate-pulse delay-75" />
-        <div className="absolute w-full h-[2px] bg-indigo-500 bottom-1/3 animate-pulse delay-150" />
-        <div className="absolute w-full h-[2px] bg-indigo-500 bottom-1/3 mt-4 animate-pulse delay-300" />
+      {/* Cinematic Custom CSS for Fast Train Streaks */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes fast-train {
+          0% { transform: translateX(-100vw); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateX(100vw); opacity: 0; }
+        }
+        .train-light-red {
+          animation: fast-train 2s linear infinite;
+          box-shadow: 0 0 40px 10px rgba(220, 38, 38, 0.6);
+        }
+        .train-light-blue {
+          animation: fast-train 3.5s linear infinite;
+          box-shadow: 0 0 40px 10px rgba(56, 189, 248, 0.6);
+        }
+        .train-light-white {
+          animation: fast-train 1.8s linear infinite;
+          animation-delay: 1s;
+          box-shadow: 0 0 40px 10px rgba(255, 255, 255, 0.8);
+        }
+      `}} />
+
+      {/* Cinematic Background Elements */}
+      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 mix-blend-overlay pointer-events-none" />
+      
+      {/* Fast Moving Train Streaks */}
+      <div className="absolute inset-0 pointer-events-none opacity-60">
+        {/* Top Track */}
+        <div className="absolute top-[20%] w-32 h-1 bg-red-500 rounded-full train-light-red blur-[1px]" />
+        {/* Middle Track */}
+        <div className="absolute top-[50%] w-48 h-[2px] bg-sky-400 rounded-full train-light-blue blur-[1px] delay-500" />
+        {/* Bottom Track */}
+        <div className="absolute bottom-[25%] w-24 h-1 bg-white rounded-full train-light-white blur-[2px]" />
+        {/* Far Background Track */}
+        <div className="absolute bottom-[40%] w-64 h-[1px] bg-red-600 rounded-full train-light-red blur-sm delay-1000" style={{ animationDuration: '4s' }} />
       </div>
 
-      <div className="z-10 bg-slate-800/80 backdrop-blur-xl p-8 rounded-2xl border border-slate-700 shadow-2xl w-full max-w-md transform transition-all hover:scale-[1.02] duration-500">
+      {/* Radial Vignette for Cinematic Focus */}
+      <div className="absolute inset-0 bg-radial-gradient from-transparent to-[#020813] opacity-80 pointer-events-none" />
+
+      {/* Login Card */}
+      <div className="z-10 bg-white p-10 rounded-2xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.7)] w-full max-w-md transform transition-all duration-500 border-t-4 border-red-600 relative overflow-hidden">
         
-        <div className="flex flex-col items-center justify-center mb-8">
-          <div className="bg-sky-500/20 p-4 rounded-full mb-4 shadow-[0_0_30px_rgba(14,165,233,0.3)] border border-sky-500/30">
-            <TrainFront className="w-12 h-12 text-sky-400" />
+        {/* Accent Corner Design */}
+        <div className="absolute -right-16 -top-16 w-32 h-32 bg-blue-100 rounded-full opacity-50 blur-2xl" />
+
+        <div className="flex flex-col items-center justify-center mb-8 relative z-10">
+          <div className="bg-[#061428] p-4 rounded-xl mb-5 shadow-lg">
+            <TrainFront className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-black text-white tracking-wider">BlockTrain</h1>
-          <p className="text-slate-400 text-sm font-medium mt-1 uppercase tracking-widest">
+          <h1 className="text-3xl font-black text-[#061428] tracking-tight">BlockTrain</h1>
+          <p className="text-red-600 text-xs font-bold mt-1 uppercase tracking-widest">
             Central Dispatch System
           </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-5">
+        <form onSubmit={handleLogin} className="space-y-6 relative z-10">
           {error && (
-            <div className="bg-red-500/10 border border-red-500/50 p-3 rounded-lg flex items-center gap-2 text-red-400 text-sm">
-              <ShieldAlert className="w-5 h-5" />
-              <span>{error}</span>
+            <div className="bg-red-50 border-l-4 border-red-600 p-4 rounded-r-md flex items-center gap-3 text-red-800 text-sm shadow-sm">
+              <ShieldAlert className="w-5 h-5 text-red-600" />
+              <span className="font-medium">{error}</span>
             </div>
           )}
 
           <div>
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 block">Username</label>
-            <div className="relative">
-              <User className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <label className="text-[11px] font-bold text-[#061428] uppercase tracking-widest mb-2 block">
+              Dispatcher ID
+            </label>
+            <div className="relative group">
+              <User className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
               <input 
                 type="text" 
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 text-white pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all placeholder:text-slate-600"
-                placeholder="Enter dispatcher ID"
+                className="w-full bg-slate-50 border border-slate-200 text-[#061428] pl-10 pr-4 py-3.5 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all font-medium placeholder:text-slate-400 placeholder:font-normal"
+                placeholder="Enter your ID"
                 required
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 block">Password</label>
-            <div className="relative">
-              <KeyRound className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+            <label className="text-[11px] font-bold text-[#061428] uppercase tracking-widest mb-2 block">
+              Security Key
+            </label>
+            <div className="relative group">
+              <KeyRound className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
               <input 
                 type="password" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 text-white pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all placeholder:text-slate-600"
+                className="w-full bg-slate-50 border border-slate-200 text-[#061428] pl-10 pr-4 py-3.5 rounded-lg focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all font-medium placeholder:text-slate-400 placeholder:font-normal"
                 placeholder="••••••••"
                 required
               />
@@ -120,19 +144,19 @@ export default function LoginPage() {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full mt-4 bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold py-3 px-4 rounded-lg shadow-[0_0_20px_rgba(14,165,233,0.3)] transition-all flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(14,165,233,0.5)] disabled:opacity-50"
+            className="w-full mt-2 bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-4 rounded-lg shadow-lg shadow-red-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 tracking-wide uppercase text-sm"
           >
             {loading ? (
-              <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
             ) : (
-              "AUTHORIZE DISPATCH"
+              "Authorize Access"
             )}
           </button>
         </form>
         
-        <div className="mt-8 text-center border-t border-slate-700/50 pt-4">
-          <p className="text-xs text-slate-500 font-mono">
-            AUTHORIZED RAILWAY PERSONNEL ONLY
+        <div className="mt-8 text-center border-t border-slate-100 pt-5">
+          <p className="text-[10px] text-slate-400 font-bold tracking-widest uppercase">
+            Restricted Government Network
           </p>
         </div>
       </div>
