@@ -1,5 +1,5 @@
 const express = require("express");
-const { analyzeTaskRisk, explainOptimization, analyzeIncident } = require("../ai/aiService");
+const { analyzeTaskRisk, explainOptimization, analyzeIncident } = require('./chatbot.service');
 
 const router = express.Router();
 

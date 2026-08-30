@@ -1,8 +1,8 @@
 const express = require("express");
-const pool = require("../db");
-const { calculatePriority } = require("../optimization/priorityService");
-const { generateBaseline } = require("../optimization/baselineScheduler");
-const { optimizeSchedule, optimizeAndSavePlan } = require("../optimization/optimizerService");
+const pool = require('../../core/db');
+const { calculatePriority } = require('./priority.service');
+const { generateBaseline } = require('./baseline.scheduler');
+const { optimizeSchedule, optimizeAndSavePlan } = require('./optimizer.service');
 
 const router = express.Router();
 

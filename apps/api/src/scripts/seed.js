@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const pool = require("../db");
+const pool = require('../core/db');
 
 const stations = [
   { code: "CGL", name: "Chengalpattu Junction", type: "MAJOR", lat: 12.6934, lng: 79.9756, platforms: 8 },

@@ -1,4 +1,4 @@
-const pool = require("../db");
+const pool = require('../db');
 
 /**
  * Creates an audit log entry in the database.

@@ -1,4 +1,4 @@
-const ActiveBlockModel = require("../models/activeBlockModel");
+const ActiveBlockModel = require('./block.model');
 
 const ActiveBlockService = {
   async fetchActiveBlocks() {

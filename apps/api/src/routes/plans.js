@@ -1,6 +1,6 @@
 const express = require("express");
-const pool = require("../db");
-const { logAction } = require("../services/auditService");
+const pool = require('../core/db');
+const { logAction } = require('../core/services/auditService');
 
 const router = express.Router();
 

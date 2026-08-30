@@ -1,5 +1,5 @@
 require("dotenv").config({ path: require('path').resolve(__dirname, '../../.env') });
-const pool = require("../db");
+const pool = require('../core/db');
 
 async function run() {
   try {

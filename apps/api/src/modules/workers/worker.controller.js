@@ -1,4 +1,4 @@
-const WorkerService = require("../services/workerService");
+const WorkerService = require('./worker.service');
 
 const WorkerController = {
   /**

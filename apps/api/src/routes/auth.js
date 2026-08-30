@@ -40,8 +40,8 @@ const express  = require("express");
 const bcrypt   = require("bcryptjs");
 const jwt      = require("jsonwebtoken");
 const crypto   = require("crypto");
-const pool     = require("../db");
-const { logAction } = require("../services/auditService");
+const pool     = require('../core/db');
+const { logAction } = require('../core/services/auditService');
 
 const router = express.Router();
 

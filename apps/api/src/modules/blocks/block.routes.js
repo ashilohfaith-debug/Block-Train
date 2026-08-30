@@ -1,5 +1,5 @@
 const express = require("express");
-const ActiveBlockController = require("../controllers/activeBlockController");
+const ActiveBlockController = require('./block.controller');
 
 const router = express.Router();
 

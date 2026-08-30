@@ -26,7 +26,7 @@
  *
  * Example usage in a router file:
  *
- *   const { requireRole } = require("../middleware/rbac");
+ *   const { requireRole } = require('./rbac');
  *
  *   // Only ADMIN and CONTROLLER can approve a plan
  *   router.post("/:id/approve", authenticateToken, requireRole("ADMIN","CONTROLLER"), handler);

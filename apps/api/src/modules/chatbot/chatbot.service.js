@@ -1,4 +1,4 @@
-const { sendChatCompletion } = require("./grokClient");
+const { sendChatCompletion } = require('./grok.client');
 const {
   RISK_ANALYSIS_SYSTEM,
   buildRiskAnalysisPrompt,
@@ -6,8 +6,8 @@ const {
   buildOptimizationExplanationPrompt,
   RECOVERY_ADVISORY_SYSTEM,
   buildRecoveryAdvisoryPrompt
-} = require("./prompts");
-const { calculatePriority } = require("../optimization/priorityService");
+} = require('./prompts');
+const { calculatePriority } = require('../optimization/priority.service');
 
 /**
  * AI Service wrapping xAI Grok API calls with robust deterministic fallbacks.

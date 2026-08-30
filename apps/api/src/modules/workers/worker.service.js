@@ -1,4 +1,4 @@
-const WorkerModel = require("../models/workerModel");
+const WorkerModel = require('./worker.model');
 
 const WorkerService = {
   async fetchAllWorkers() {
