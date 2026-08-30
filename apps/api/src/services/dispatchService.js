@@ -9,6 +9,7 @@ const DispatchService = {
     return { 
       success: true, 
       dispatchedTo: phoneNumbers.length, 
+      phoneNumbers,
       method: "mock" 
     };
   }

@@ -134,7 +134,18 @@ export default function MaintenancePage() {
                     const notifyData = await notifyRes.json();
                     
                     if (notifyData.success) {
-                      alert(`SUCCESS: Dispatch complete! Twilio called/texted workers.\nDetails: ${JSON.stringify(notifyData)}`);
+                      // Trigger native SMS App (Windows/Android/iOS)
+                      if (notifyData.phoneNumbers && notifyData.phoneNumbers.length > 0) {
+                        const smsBody = `🚨 URGENT: Maintenance Block scheduled for ${department}.\nTrack: ${selectedTrack}\nTime: ${fromTime} to ${toTime} on ${date}.\n\nListen to dispatch audio: ${audioUrl || 'N/A'}`;
+                        const phoneString = notifyData.phoneNumbers.join(',');
+                        
+                        // Using a small timeout to let the alert show, then open SMS app
+                        setTimeout(() => {
+                          window.location.href = `sms:${phoneString}?body=${encodeURIComponent(smsBody)}`;
+                        }, 500);
+                      }
+                      
+                      alert(`SUCCESS: Dispatch complete! Opening SMS app to send alerts...`);
                     } else {
                       alert(`FAILED: Dispatch returned error.\nReason: ${notifyData.error || notifyData.message}`);
                     }
