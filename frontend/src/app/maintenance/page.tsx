@@ -69,10 +69,7 @@ export default function MaintenancePage() {
           </div>
         )}
         
-        {/* Admin Voice Dispatch Widget */}
-        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 backdrop-blur-md pointer-events-auto">
-          <VoiceRecorder />
-        </div>
+
       </div>
 
       {/* Map (Trains Hidden, Interactive enabled) */}
@@ -82,61 +79,118 @@ export default function MaintenancePage() {
       {/* Block Modal */}
       {selectedTrack && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-md shadow-2xl relative">
-            <button 
-              onClick={() => setSelectedTrack(null)}
-              className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-300"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-            <h2 className="text-xl font-medium text-white mb-2">Schedule Maintenance</h2>
-            <p className="text-sm text-zinc-400 mb-6 font-mono bg-zinc-950 p-2 rounded-md border border-zinc-800">
-              {selectedTrack}
-            </p>
-
-            <form className="space-y-4" onSubmit={(e) => { 
-              e.preventDefault(); 
-              const formData = new FormData(e.currentTarget);
-              if (selectedTrack) {
-                addBlock({
-                  id: selectedTrack,
-                  department: formData.get('dept') as string,
-                  date: formData.get('date') as string,
-                  fromTime: formData.get('fromTime') as string,
-                  toTime: formData.get('toTime') as string
-                });
-              }
-              setSelectedTrack(null); 
-            }}>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-4xl shadow-2xl relative flex flex-col">
+            
+            <div className="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-950/50 rounded-t-2xl shrink-0">
               <div>
-                <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2">Station / Department</label>
-                <select name="dept" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-300 outline-none focus:border-amber-500 transition-colors">
-                  <option>Track Maintenance Dept.</option>
-                  <option>Signal & Telecom Dept.</option>
-                  <option>Electrical Traction Dept.</option>
-                </select>
+                <h2 className="text-xl font-medium text-white mb-1">Schedule Maintenance</h2>
+                <p className="text-sm text-zinc-400 font-mono">
+                  {selectedTrack}
+                </p>
               </div>
-
-              <div>
-                <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2">Date</label>
-                <CustomCalendar name="date" />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2">From Time (24H)</label>
-                  <CustomSelect name="fromTime" placeholder="Start Time" options={times} />
-                </div>
-                <div>
-                  <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2">To Time (24H)</label>
-                  <CustomSelect name="toTime" placeholder="End Time" options={times} />
-                </div>
-              </div>
-
-              <button type="submit" className="w-full bg-white text-black font-medium py-3 rounded-lg mt-4 hover:bg-zinc-200 transition-colors">
-                Confirm Block
+              <button 
+                onClick={() => setSelectedTrack(null)}
+                className="text-zinc-500 hover:text-zinc-300 bg-zinc-800 p-2 rounded-full transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
               </button>
-            </form>
+            </div>
+
+            <div className="p-6 flex-1">
+              <form className="flex flex-col h-full" onSubmit={async (e) => { 
+                e.preventDefault(); 
+                const formData = new FormData(e.currentTarget);
+                if (selectedTrack) {
+                  const department = formData.get('dept') as string;
+                  const date = formData.get('date') as string;
+                  const fromTime = formData.get('fromTime') as string;
+                  const toTime = formData.get('toTime') as string;
+
+                  await addBlock({
+                    id: selectedTrack,
+                    department,
+                    date,
+                    fromTime,
+                    toTime
+                  });
+
+                  // Trigger Twilio Call
+                  const audioUrl = useMaintenanceStore.getState().dispatchAudioUrl;
+                  const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+                  
+                  try {
+                    const notifyRes = await fetch(`${backendUrl}/api/dispatch/notify`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        blockId: selectedTrack,
+                        department,
+                        date,
+                        fromTime,
+                        toTime,
+                        audioUrl
+                      })
+                    });
+                    const notifyData = await notifyRes.json();
+                    
+                    if (notifyData.success) {
+                      alert(`SUCCESS: Dispatch complete! Twilio called/texted workers.\nDetails: ${JSON.stringify(notifyData)}`);
+                    } else {
+                      alert(`FAILED: Dispatch returned error.\nReason: ${notifyData.error || notifyData.message}`);
+                    }
+                  } catch (err) {
+                    alert(`NETWORK ERROR: Could not reach backend for dispatch.\nDetails: ${err}`);
+                  }
+                }
+                setSelectedTrack(null); 
+              }}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                  {/* Left Column: Form Details */}
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2 font-bold">Station / Department</label>
+                      <select name="dept" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-300 outline-none focus:border-amber-500 transition-colors">
+                        <option>Track Maintenance Dept.</option>
+                        <option>Signal & Telecom Dept.</option>
+                        <option>Electrical Traction Dept.</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2 font-bold">Date</label>
+                      <CustomCalendar name="date" />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2 font-bold">From Time (24H)</label>
+                        <CustomSelect name="fromTime" placeholder="Start Time" options={times} />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2 font-bold">To Time (24H)</label>
+                        <CustomSelect name="toTime" placeholder="End Time" options={times} />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Right Column: Voice Recorder */}
+                  <div className="space-y-6">
+                    <div>
+                      
+                      <div className="">
+                        <VoiceRecorder />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-auto pt-4 border-t border-zinc-800">
+                  <button type="submit" className="w-full bg-emerald-500 text-black font-bold text-lg py-4 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:bg-emerald-400 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all">
+                    CONFIRM BLOCK & DISPATCH NOTIFICATIONS
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}

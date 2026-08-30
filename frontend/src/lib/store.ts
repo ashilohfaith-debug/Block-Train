@@ -20,7 +20,8 @@ interface MaintenanceStore {
   removeBlock: (id: string) => Promise<void>;
 }
 
-const API_URL = 'http://localhost:5000/api/active_blocks';
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_URL = `${backendUrl}/api/active_blocks`;
 
 export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
   activeBlocks: [],
@@ -34,8 +35,13 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
       const res = await fetch(API_URL);
       const data = await res.json();
       if (data.success) {
-        // For the hackathon demo, show all scheduled blocks so they appear immediately on the map!
-        set({ activeBlocks: data.blocks });
+        const now = new Date();
+        const activeOnly = data.blocks.filter((b: Block) => {
+          const start = new Date(`${b.date}T${b.fromTime}:00`);
+          const end = new Date(`${b.date}T${b.toTime}:00`);
+          return now >= start && now <= end;
+        });
+        set({ activeBlocks: activeOnly });
       }
     } catch (err) {
       console.error('Failed to fetch blocks:', err);

@@ -70,23 +70,8 @@ app.use(securityHeaders);
 // Applied to every request before it reaches any route handler.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// CORS — in production restrict origin to the actual frontend domain.
-// During development "*" is acceptable but must be tightened before deployment.
-// CORS is deny-by-default in production; configure trusted web origins in .env.
-const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
-  .split(",")
-  .map(origin => origin.trim())
-  .filter(Boolean);
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    return callback(new Error("Origin is not allowed."));
-  },
-  methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"]
-}));
+// For the Hackathon Demo: Allow all CORS origins to prevent Vercel preview domain issues
+app.use(cors());
 
 // JSON body parser.  The 10 kb limit protects against payload-based DoS attacks.
 app.use(express.json({ limit: "10kb" }));
@@ -138,12 +123,10 @@ app.use("/api/dispatch", dispatchRouter);
 // Workers route
 app.use("/api/workers", workersRouter);
 
-// Serve uploads folder for Twilio audio fetching
-app.use("/uploads", express.static(require("path").join(__dirname, "../uploads")));
+// (The /uploads folder static serving was removed because we now use Cloudinary for audio storage)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 3 — Global Authentication Guard
-// Every request that reaches here MUST carry a valid JWT.
 // authenticateToken() will return 401 if the token is missing or invalid.
 // ─────────────────────────────────────────────────────────────────────────────
 app.use("/api", authenticateToken);

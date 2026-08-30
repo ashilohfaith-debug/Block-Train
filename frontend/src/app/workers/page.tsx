@@ -17,13 +17,16 @@ const DEPARTMENTS = [
 ];
 
 export default function WorkersPage() {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  const API_URL = `${baseUrl}/api`;
+
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [selectedDept, setSelectedDept] = useState(DEPARTMENTS[0]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/workers')
+    fetch(`${API_URL}/workers`)
       .then(res => res.json())
       .then(data => {
         if (data.workers) setWorkers(data.workers);
@@ -34,7 +37,7 @@ export default function WorkersPage() {
   const handleAddWorker = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/workers', {
+      const res = await fetch(`${API_URL}/workers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, phone, department: selectedDept })
@@ -55,13 +58,13 @@ export default function WorkersPage() {
       // Optimistic update
       setWorkers(workers.filter(w => w.id !== id));
       
-      const res = await fetch(`http://localhost:5000/api/workers/${id}`, {
+      const res = await fetch(`${API_URL}/workers/${id}`, {
         method: 'DELETE'
       });
       const data = await res.json();
       if (!data.success) {
         // Fetch again to revert if failed (simple fallback)
-        fetch('http://localhost:5000/api/workers').then(r => r.json()).then(d => setWorkers(d.workers || []));
+        fetch(`${API_URL}/workers`).then(r => r.json()).then(d => setWorkers(d.workers || []));
       }
     } catch (err) {
       console.error(err);
