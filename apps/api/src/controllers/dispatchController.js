@@ -1,0 +1,53 @@
+const DispatchService = require("../services/dispatchService");
+const pool = require("../db"); // Using pool for now since we haven't refactored WorkerModel fully for department lookup yet, or we can write a raw query. Wait, let's just do raw query to ensure we don't break anything
+
+const DispatchController = {
+  /**
+   * @route   POST /api/dispatch/notify
+   * @desc    Trigger SMS and Voice Calls for workers
+   * @access  Public
+   */
+  async notify(req, res) {
+    try {
+      const { blockId, department, date, fromTime, toTime, audioUrl } = req.body;
+      
+      // 1. Find all workers for this department
+      const { rows } = await pool.query(
+        "SELECT phone FROM workers WHERE department = $1",
+        [department]
+      );
+      const phoneNumbers = rows.map(r => r.phone);
+
+      if (phoneNumbers.length === 0) {
+        return res.json({ success: true, message: "No workers found for this department." });
+      }
+
+      const result = await DispatchService.notifyWorkers(phoneNumbers, { blockId, department, date, fromTime, toTime, audioUrl });
+      res.json(result);
+
+    } catch (error) {
+      console.error("Twilio Dispatch Error:", error);
+      res.status(500).json({ success: false, error: error.message });
+    }
+  },
+
+  /**
+   * @route   POST /api/dispatch/audio
+   * @desc    Handle audio file upload from admin dashboard
+   * @access  Public
+   */
+  async uploadAudio(req, res) {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No audio file uploaded" });
+      }
+      const publicUrl = `/uploads/${req.file.filename}`;
+      res.json({ success: true, audioUrl: publicUrl });
+    } catch (err) {
+      console.error("Audio Upload Error:", err);
+      res.status(500).json({ error: "Upload failed" });
+    }
+  }
+};
+
+module.exports = DispatchController;
