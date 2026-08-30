@@ -8,7 +8,11 @@ const ActiveBlockModel = {
 
   async create({ id, department, date, fromTime, toTime }) {
     const { rows } = await pool.query(
-      "INSERT INTO active_blocks (id, department, block_date, from_time, to_time) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      `INSERT INTO active_blocks (id, department, block_date, from_time, to_time) 
+       VALUES ($1, $2, $3, $4, $5) 
+       ON CONFLICT (id) DO UPDATE 
+       SET department = EXCLUDED.department, block_date = EXCLUDED.block_date, from_time = EXCLUDED.from_time, to_time = EXCLUDED.to_time
+       RETURNING *`,
       [id, department, date, fromTime, toTime]
     );
     return rows[0];
