@@ -1,86 +1,87 @@
-<div align="center">
-  <h1>🚂 BlockTrain</h1>
-  <p><strong>Next-Generation Railway Digital Twin & Emergency Dispatch Platform</strong></p>
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,2,3,4&height=250&section=header&text=BlockTrain&fontSize=70&fontAlignY=35&desc=Next-Gen%20Railway%20Digital%20Twin%20%26%20Dispatch&descAlignY=55&descAlign=50" />
+</p>
 
-  ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
-  ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs)
-  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql)
-  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css)
-</div>
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js" />
+  <img src="https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css" />
+  <img src="https://img.shields.io/badge/Grok_AI-Integration-FF4500?style=for-the-badge" />
+</p>
 
----
+<br>
 
-## ⚡ Overview
+<blockquote align="center">
+  <strong>Replacing archaic paper-based track approvals with a live, interactive map, automated AI path optimization, and instantaneous voice/SMS dispatch protocols.</strong>
+</blockquote>
 
-**BlockTrain** is an intelligent, real-time digital twin platform designed to completely modernize railway maintenance scheduling, train routing, and emergency dispatch protocols. 
+<br>
 
-Built for high-stakes, mission-critical rail environments, it replaces archaic paper-based track block approvals with a **live, interactive map**, automated **AI-driven path optimization**, and instantaneous **voice/SMS dispatch protocols**.
+## 🚀 The Core Vision
+Currently, authorizing a railway maintenance "block" requires a staggering amount of phone calls, physical paper trails, and radio miscommunications. If a train is on an intercept path, the results can be catastrophic. **BlockTrain** completely digitizes this workflow to remove human error and prioritize human lives.
 
----
+<br>
 
-## ✨ Key Features
+## ✨ Platform Features
 
-### 🗺️ Live Digital Twin & Kinematics
-*   **Interactive Railway Map:** A beautifully rendered, fully interactive SVG map of the railway network.
-*   **Real-Time Visualization:** Instantly visualizes active trains, maintenance blocks (yellow hazard zones), and station platforms.
-*   **Physics-Based Kinematics:** Trains move smoothly across the network using custom physics hooks, preventing instant teleportation and providing a realistic simulation of network traffic.
+<table>
+  <tr>
+    <td width="50%">
+      <h3>🗺️ Live Digital Twin</h3>
+      <p>A beautifully rendered, fully interactive SVG map of the railway network. Visualizes active trains, maintenance blocks (yellow hazard zones), and station platforms in real-time.</p>
+    </td>
+    <td width="50%">
+      <h3>🚂 Physics-Based Kinematics</h3>
+      <p>Trains move smoothly across the network using custom mathematical physics hooks, preventing instant teleportation and providing a realistic simulation of network traffic.</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <h3>🎙️ Emergency Voice Dispatch</h3>
+      <p>Click any track to schedule a block and record live emergency audio. Instantly triggers native SMS protocols to blast the custom text and Cloudinary audio link to field workers.</p>
+    </td>
+    <td width="50%">
+      <h3>🧠 AI-Powered Rerouting</h3>
+      <p>Integrated with Grok AI to analyze blocked tracks, calculate ripple effects, and automatically suggest optimized routing paths to minimize delays.</p>
+    </td>
+  </tr>
+</table>
 
-### 🎙️ Instant Emergency Dispatch
-*   **One-Click Maintenance Blocks:** Click any track on the map to instantly schedule a maintenance block.
-*   **Voice Recorder Integration:** Record live emergency audio dispatches directly from the browser UI.
-*   **Native SMS Routing:** Instantly triggers native SMS protocols to blast the custom emergency text—including the Cloudinary-hosted audio playback link—directly to all relevant field workers' cell phones simultaneously.
+<br>
 
-### 🧠 AI-Powered Rerouting & Optimization
-*   **Smart Analytics:** Integrated with **Grok AI** to analyze blocked tracks and calculate the ripple effects across the network.
-*   **Automated Solutions:** Automatically suggests optimized routing paths to dispatchers, minimizing train delays and maximizing network throughput while preserving absolute safety boundaries.
+## 🏗️ Enterprise Architecture
 
-### 🏗️ Enterprise-Grade Architecture
-*   **Domain-Driven Design (DDD):** The backend is cleanly structured into 5 highly scalable feature domains (`blocks`, `dispatch`, `workers`, `chatbot`, `optimization`).
-*   **High Performance:** Powered by a lightweight Next.js frontend and an Express.js backend connected via connection pooling to PostgreSQL.
+Our backend employs a strict **Domain-Driven Design (DDD)**, cleanly structured into highly scalable feature modules.
 
----
+> 📂 `modules/blocks` — Maintenance scheduling logic <br>
+> 📂 `modules/dispatch` — Native SMS, telecom, and Cloudinary media <br>
+> 📂 `modules/workers` — Personnel and department routing <br>
+> 📂 `modules/chatbot` — Grok AI analytics and prompting <br>
+> 📂 `modules/optimization` — Railway pathfinding and kinematic scheduling
 
-## 🛠️ Tech Stack
+<br>
 
-**Frontend Interface**
-*   **Framework:** Next.js 14 (App Router)
-*   **Styling:** Tailwind CSS (with highly customized UI components)
-*   **State Management:** Zustand
-*   **Icons:** Lucide React
+## 🛠️ Getting Started
 
-**Backend API & Database**
-*   **Runtime:** Node.js + Express.js
-*   **Database:** PostgreSQL (using `pg` pool)
-*   **Media Storage:** Cloudinary (for instant memory-buffer audio streaming)
-*   **AI Integration:** Grok AI
-
----
-
-## 🚀 Getting Started
-
-To run the project locally, you will need to boot up both the backend API and the frontend client.
-
-### 1. Start the Backend API
+### 1. Boot the API Server
 ```bash
 cd apps/api
 npm install
-# Ensure you have your .env file configured with DATABASE_URL, CLOUDINARY credentials, etc.
 npm run dev
 ```
-*The API will start locally on `http://localhost:5000`*
+> *API mounts on `http://localhost:5000`*
 
-### 2. Start the Frontend
-Open a new terminal window:
+### 2. Launch the Digital Twin
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-*The Digital Twin map will be available at `http://localhost:3000`*
+> *Map & Dispatch UI available at `http://localhost:3000`*
 
----
+<br>
 
-## 🎯 The Problem We Solve
-Currently, authorizing a railway maintenance "block" requires a staggering amount of phone calls, physical paper trails, and radio miscommunications. If a train is on an intercept path, the results can be catastrophic. 
-
-**BlockTrain** completely digitizes this workflow. By visually locking the track on a centralized map and automatically firing SMS and Voice alerts to the exact workers stationed at that track, we remove human error from the equation and prioritize human lives.
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=1,2,3,4&height=100&section=footer" />
+</p>
