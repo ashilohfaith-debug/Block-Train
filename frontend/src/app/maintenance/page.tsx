@@ -69,10 +69,7 @@ export default function MaintenancePage() {
           </div>
         )}
         
-        {/* Admin Voice Dispatch Widget */}
-        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 backdrop-blur-md pointer-events-auto">
-          <VoiceRecorder />
-        </div>
+
       </div>
 
       {/* Map (Trains Hidden, Interactive enabled) */}
@@ -94,16 +91,37 @@ export default function MaintenancePage() {
               {selectedTrack}
             </p>
 
-            <form className="space-y-4" onSubmit={(e) => { 
+            <form className="space-y-4" onSubmit={async (e) => { 
               e.preventDefault(); 
               const formData = new FormData(e.currentTarget);
               if (selectedTrack) {
-                addBlock({
+                const department = formData.get('dept') as string;
+                const date = formData.get('date') as string;
+                const fromTime = formData.get('fromTime') as string;
+                const toTime = formData.get('toTime') as string;
+
+                await addBlock({
                   id: selectedTrack,
-                  department: formData.get('dept') as string,
-                  date: formData.get('date') as string,
-                  fromTime: formData.get('fromTime') as string,
-                  toTime: formData.get('toTime') as string
+                  department,
+                  date,
+                  fromTime,
+                  toTime
+                });
+
+                // Trigger Twilio Call
+                const audioUrl = useMaintenanceStore.getState().dispatchAudioUrl;
+                const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+                await fetch(`${backendUrl}/api/dispatch/notify`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    blockId: selectedTrack,
+                    department,
+                    date,
+                    fromTime,
+                    toTime,
+                    audioUrl
+                  })
                 });
               }
               setSelectedTrack(null); 
@@ -133,8 +151,13 @@ export default function MaintenancePage() {
                 </div>
               </div>
 
+              <div className="pt-2 border-t border-zinc-800">
+                <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2">Emergency Voice Dispatch</label>
+                <VoiceRecorder />
+              </div>
+
               <button type="submit" className="w-full bg-white text-black font-medium py-3 rounded-lg mt-4 hover:bg-zinc-200 transition-colors">
-                Confirm Block
+                Confirm Block & Dispatch
               </button>
             </form>
           </div>
