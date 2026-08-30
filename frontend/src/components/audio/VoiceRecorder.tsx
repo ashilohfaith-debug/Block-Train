@@ -74,45 +74,49 @@ export const VoiceRecorder = () => {
   };
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 p-4 rounded-sm mt-4 shadow-xl">
-      <h3 className="text-emerald-400 font-bold uppercase text-sm mb-3 flex items-center gap-2">
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
-        Emergency Voice Broadcast
-      </h3>
-      
-      <p className="text-zinc-400 text-xs mb-4">
-        Record verbal safety instructions. Upon block confirmation, an automated voice dispatch will immediately dial all active field personnel in the assigned department and broadcast this message.
-      </p>
+    <div className="bg-zinc-950 border border-zinc-800 p-6 rounded-xl h-full flex flex-col justify-between shadow-inner">
+      <div>
+        <h3 className="text-emerald-400 font-bold uppercase text-[11px] tracking-wider mb-2 flex items-center gap-2">
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          </span>
+          Emergency Voice Broadcast
+        </h3>
+        
+        <p className="text-zinc-500 text-[11px] leading-relaxed mb-6 font-mono">
+          Record verbal safety instructions. Upon block confirmation, an automated voice dispatch will immediately dial all active field personnel in the assigned department and broadcast this message.
+        </p>
+      </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col items-center justify-center flex-1 bg-zinc-900/50 rounded-lg border border-zinc-800/50 p-6 gap-4">
         {!isRecording ? (
           <button
             onClick={startRecording}
-            className="bg-red-900/50 hover:bg-red-600 text-red-500 hover:text-white border border-red-900/50 hover:border-red-500 px-4 py-2 rounded-sm text-sm font-bold transition-colors flex items-center gap-2"
+            className="group relative w-16 h-16 rounded-full bg-red-950 flex items-center justify-center border-2 border-red-900 hover:border-red-500 hover:bg-red-900 transition-all shadow-[0_0_15px_rgba(220,38,38,0.15)] hover:shadow-[0_0_25px_rgba(220,38,38,0.3)]"
           >
-            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-            REC
+            <div className="w-5 h-5 rounded-full bg-red-500 group-hover:scale-110 transition-transform shadow-[0_0_10px_rgba(220,38,38,0.8)]"></div>
           </button>
         ) : (
           <button
             onClick={stopRecording}
-            className="bg-red-600 text-white border border-red-500 px-4 py-2 rounded-sm text-sm font-bold transition-colors flex items-center gap-2 animate-pulse"
+            className="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center border-2 border-red-500 animate-pulse shadow-[0_0_30px_rgba(220,38,38,0.5)]"
           >
-            <div className="w-2 h-2 bg-white"></div>
-            STOP
+            <div className="w-5 h-5 bg-white rounded-sm"></div>
           </button>
         )}
 
-        {isUploading && (
-          <span className="text-zinc-500 text-xs uppercase animate-pulse">Uploading to Dispatch Server...</span>
-        )}
-
-        {audioUrl && !isUploading && (
-          <div className="flex items-center gap-2 text-emerald-500 text-xs uppercase font-bold">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-            Voice Payload Armed
-          </div>
-        )}
+        <div className="h-6 flex items-center justify-center">
+          {isRecording && <span className="text-red-500 text-xs font-bold uppercase tracking-widest animate-pulse">Recording...</span>}
+          {!isRecording && !audioUrl && !isUploading && <span className="text-zinc-600 text-xs font-mono tracking-widest">TAP TO RECORD</span>}
+          {isUploading && <span className="text-amber-500 text-xs uppercase animate-pulse font-bold tracking-widest">Uploading...</span>}
+          {audioUrl && !isUploading && (
+            <div className="flex items-center gap-2 text-emerald-500 text-xs uppercase font-bold tracking-widest bg-emerald-950/50 px-3 py-1 rounded-full border border-emerald-900/50">
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+              Payload Armed
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

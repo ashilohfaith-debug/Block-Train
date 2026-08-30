@@ -164,8 +164,8 @@ export default function MaintenancePage() {
                   {/* Right Column: Voice Recorder */}
                   <div className="space-y-6">
                     <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2 font-bold">Emergency Voice Dispatch</label>
-                      <div className="bg-zinc-950 border border-zinc-800 p-1 rounded-xl h-[280px]">
+                      
+                      <div className="">
                         <VoiceRecorder />
                       </div>
                     </div>
