@@ -20,7 +20,8 @@ interface MaintenanceStore {
   removeBlock: (id: string) => Promise<void>;
 }
 
-const API_URL = 'http://localhost:5000/api/active_blocks';
+const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_URL = `${backendUrl}/api/active_blocks`;
 
 export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
   activeBlocks: [],
