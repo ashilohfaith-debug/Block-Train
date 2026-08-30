@@ -39,26 +39,26 @@ const express = require("express");
 const cors    = require("cors");
 
 // ── Middleware imports ────────────────────────────────────────────────────────
-const { authenticateToken } = require("./middleware/auth");
-const { requireRole }       = require("./middleware/rbac");
-const { errorHandler }      = require("./middleware/errorHandler");
-const { securityHeaders, createRateLimiter } = require("./middleware/security");
+const { authenticateToken } = require('./core/middleware/auth');
+const { requireRole }       = require('./core/middleware/rbac');
+const { errorHandler }      = require('./core/middleware/errorHandler');
+const { securityHeaders, createRateLimiter } = require('./core/middleware/security');
 
 // ── Route imports ─────────────────────────────────────────────────────────────
-const authRouter         = require("./routes/auth");
-const tracksRouter       = require("./routes/tracks");
-const networkRouter      = require("./routes/network");
-const tasksRouter        = require("./routes/tasks");
-const plansRouter        = require("./routes/plans");
-const optimizationRouter = require("./routes/optimization");
-const incidentsRouter    = require("./routes/incidents");
-const aiRouter           = require("./routes/ai");
-const activeBlocksRouter = require("./routes/active_blocks");
-const dispatchRouter     = require("./routes/dispatch");
-const workersRouter      = require("./routes/workers");
+const authRouter         = require('./routes/auth');
+const tracksRouter       = require('./routes/tracks');
+const networkRouter      = require('./routes/network');
+const tasksRouter        = require('./routes/tasks');
+const plansRouter        = require('./routes/plans');
+const optimizationRouter = require('./modules/optimization/optimization.routes');
+const incidentsRouter    = require('./routes/incidents');
+const aiRouter           = require('./modules/chatbot/chatbot.routes');
+const activeBlocksRouter = require('./modules/blocks/block.routes');
+const dispatchRouter     = require('./modules/dispatch/dispatch.routes');
+const workersRouter      = require('./modules/workers/worker.routes');
 
 // ── Database pool (needed for /db-health) ────────────────────────────────────
-const pool = require("./db");
+const pool = require('./core/db');
 
 const app = express();
 

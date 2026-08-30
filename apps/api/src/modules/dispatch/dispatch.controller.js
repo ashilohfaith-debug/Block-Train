@@ -1,6 +1,6 @@
-const DispatchService = require("../services/dispatchService");
-const CloudinaryService = require("../services/cloudinaryService");
-const pool = require("../db"); // Using pool for now since we haven't refactored WorkerModel fully for department lookup yet, or we can write a raw query. Wait, let's just do raw query to ensure we don't break anything
+const DispatchService = require('./dispatch.service');
+const CloudinaryService = require('./cloudinary.service');
+const pool = require('../../core/db'); // Using pool for now since we haven't refactored WorkerModel fully for department lookup yet, or we can write a raw query. Wait, let's just do raw query to ensure we don't break anything
 
 const DispatchController = {
   /**

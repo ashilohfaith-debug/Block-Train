@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const pool = require("../db");
+const pool = require('../core/db');
 
 /**
  * Initializes the RailTwin PostgreSQL database schema.

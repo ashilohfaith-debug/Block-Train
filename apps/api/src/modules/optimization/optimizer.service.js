@@ -1,8 +1,8 @@
-const pool = require("../db");
-const { calculatePriority } = require("./priorityService");
-const { calculateMetrics } = require("./metricsService");
-const { generateExplanation } = require("./explanationService");
-const { logAction } = require("../services/auditService");
+const pool = require('../../core/db');
+const { calculatePriority } = require('./priority.service');
+const { calculateMetrics } = require('./metrics.service');
+const { generateExplanation } = require('./explanation.service');
+const { logAction } = require('../../core/services/auditService');
 
 /**
  * Pure optimization logic. Takes inputs and computes the optimal coordinated schedule.

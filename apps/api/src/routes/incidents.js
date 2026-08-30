@@ -1,8 +1,8 @@
 const express = require("express");
-const pool = require("../db");
-const { logAction } = require("../services/auditService");
-const { optimizeAndSavePlan } = require("../optimization/optimizerService");
-const { explainRecovery } = require("../ai/aiService");
+const pool = require('../core/db');
+const { logAction } = require('../core/services/auditService');
+const { optimizeAndSavePlan } = require('../modules/optimization/optimizer.service');
+const { explainRecovery } = require('../modules/chatbot/chatbot.service');
 
 const router = express.Router();
 

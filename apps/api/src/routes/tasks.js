@@ -1,8 +1,8 @@
 const express = require("express");
-const pool = require("../db");
-const { calculatePriority } = require("../optimization/priorityService");
-const { logAction } = require("../services/auditService");
-const { requireOwnDepartment } = require("../middleware/rbac");
+const pool = require('../core/db');
+const { calculatePriority } = require('../modules/optimization/priority.service');
+const { logAction } = require('../core/services/auditService');
+const { requireOwnDepartment } = require('../core/middleware/rbac');
 
 const router = express.Router();
 

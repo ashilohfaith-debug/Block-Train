@@ -1,4 +1,4 @@
-const ActiveBlockService = require("../services/activeBlockService");
+const ActiveBlockService = require('./block.service');
 
 const ActiveBlockController = {
   /**

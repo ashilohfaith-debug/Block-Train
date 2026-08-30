@@ -1,4 +1,4 @@
-const { calculatePriority } = require("./priorityService");
+const { calculatePriority } = require('./priority.service');
 
 /**
  * Generates an uncoordinated baseline schedule where every task is assigned its own independent block.
