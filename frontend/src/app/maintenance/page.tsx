@@ -6,12 +6,18 @@ import { DigitalTwinMap } from '../../components/map/DigitalTwinMap';
 import { useMaintenanceStore } from '../../lib/store';
 import { CustomSelect } from '../../components/ui/CustomSelect';
 import { CustomCalendar } from '../../components/ui/CustomCalendar';
+import { Chatbot } from '../../components/chat/Chatbot';
+import { VoiceRecorder } from '../../components/audio/VoiceRecorder';
 
 export default function MaintenancePage() {
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
   const addBlock = useMaintenanceStore((state) => state.addBlock);
   const activeBlocks = useMaintenanceStore((state) => state.activeBlocks);
   const removeBlock = useMaintenanceStore((state) => state.removeBlock);
+
+  React.useEffect(() => {
+    useMaintenanceStore.getState().fetchBlocks();
+  }, []);
 
   const times = Array.from({ length: 48 }, (_, i) => {
     const h = Math.floor(i / 2).toString().padStart(2, '0');
@@ -49,7 +55,7 @@ export default function MaintenancePage() {
               {activeBlocks.map((b) => (
                 <div key={b.id} className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 relative group">
                   <button onClick={() => removeBlock(b.id)} className="absolute top-2 right-2 text-zinc-500 opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all text-xs">
-                    ✕
+                    ✖
                   </button>
                   <p className="font-mono text-amber-500 text-[10px] mb-1">{b.department}</p>
                   <p className="text-zinc-200 text-xs mb-2 leading-tight">{b.id}</p>
@@ -62,13 +68,17 @@ export default function MaintenancePage() {
             </div>
           </div>
         )}
+        
+        {/* Admin Voice Dispatch Widget */}
+        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 backdrop-blur-md pointer-events-auto">
+          <VoiceRecorder />
+        </div>
       </div>
 
       {/* Map (Trains Hidden, Interactive enabled) */}
       <div className="absolute inset-0 z-10">
         <DigitalTwinMap hideTrains={true} interactive={true} onTrackClick={setSelectedTrack} />
       </div>
-
       {/* Block Modal */}
       {selectedTrack && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
@@ -77,7 +87,7 @@ export default function MaintenancePage() {
               onClick={() => setSelectedTrack(null)}
               className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-300"
             >
-              ✕
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
             <h2 className="text-xl font-medium text-white mb-2">Schedule Maintenance</h2>
             <p className="text-sm text-zinc-400 mb-6 font-mono bg-zinc-950 p-2 rounded-md border border-zinc-800">
@@ -131,6 +141,8 @@ export default function MaintenancePage() {
         </div>
       )}
       
+      {/* Chatbot */}
+      <Chatbot />
     </div>
   );
 }

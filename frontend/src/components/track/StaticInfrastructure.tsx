@@ -10,7 +10,7 @@ import { getStationMainY } from '../../lib/utils/trackGeometry';
 export const StaticInfrastructure = React.memo(({ interactive, onTrackClick, blockedBlocks = [] }: { interactive?: boolean, onTrackClick?: (trackId: string) => void, blockedBlocks?: string[] }) => {
   return (
     <>
-      <EntryExitTracks interactive={interactive} onTrackClick={onTrackClick} />
+      <EntryExitTracks interactive={interactive} onTrackClick={onTrackClick} blockedBlocks={blockedBlocks} />
 
       {STATIONS.map((station, i) => {
         const sX = 600 + i * STATION_SPACING;
@@ -47,45 +47,31 @@ export const StaticInfrastructure = React.memo(({ interactive, onTrackClick, blo
               );
             })()}
 
-            {/* Natural, Non-Uniform Crossovers in the straight yard limits */}
+            {/* Standard Physical Crossovers in the straight yard limits */}
             {(() => {
-              // Pseudo-random seeds based on station ID to ensure determinism but unique layouts
-              const r1 = ((i + 1) * 13) % 10 / 10;
-              const r2 = ((i + 1) * 29) % 10 / 10;
-              const r3 = ((i + 1) * 37) % 10 / 10;
+              // Standard Crossovers
+              // Left Crossover: yardStartOffset + 50 to yardStartOffset + 300
+              const aStart = sX + station.yardStartOffset + 50;
+              const aEnd = aStart + 250;
 
-              // Departing switches (Right side)
-              // Vary placement and length per station
-              const dStart = sX + 270 + (r1 * 120);
-              const dLen = 200 + (r2 * 100);
-              const dEnd = dStart + dLen;
-
-              // Approaching switches (Left side)
-              const aStart = sX - 300 - (r3 * 150) - dLen;
-              const aEnd = aStart + dLen;
+              // Right Crossover: yardEndOffset - 300 to yardEndOffset - 50
+              const dStart = sX + station.yardEndOffset - 300;
+              const dEnd = dStart + 250;
 
               return (
                 <>
-                  {/* Departing - Randomly drop some crossovers to create realistic asymmetry */}
-                  {r1 > 0.1 && <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Crossover`)} />}
-                  {r2 > 0.2 && <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Main Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Main Crossover`)} />}
-                  {r3 > 0.1 && <TrackCurve d={drawThroat(dStart + 120, mBot, dEnd + 120, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Outer Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Outer Crossover`)} />}
+                  {/* Departing (East) Crossovers */}
+                  <TrackCurve d={drawThroat(dStart, mTop, dEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Crossover`)} />
+                  <TrackCurve d={drawThroat(dStart, mMid, dEnd, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Main Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Main Crossover`)} />
+                  <TrackCurve d={drawThroat(dStart, mBot, dEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} East Outer Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} East Outer Crossover`)} />
                   
-                  {/* Approaching */}
-                  {r2 > 0.1 && <TrackCurve d={drawThroat(aStart, mMid, aEnd, mTop)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Crossover`)} />}
-                  {r1 > 0.2 && <TrackCurve d={drawThroat(aStart, mBot, aEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Main Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Main Crossover`)} />}
-                  {r3 > 0.1 && <TrackCurve d={drawThroat(aStart - 120, mMid, aEnd - 120, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Outer Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Outer Crossover`)} />}
+                  {/* Approaching (West) Crossovers */}
+                  <TrackCurve d={drawThroat(aStart, mMid, aEnd, mTop)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Crossover`)} />
+                  <TrackCurve d={drawThroat(aStart, mBot, aEnd, mMid)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Main Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Main Crossover`)} />
+                  <TrackCurve d={drawThroat(aStart, mMid, aEnd, mBot)} interactive={interactive} onClick={() => onTrackClick?.(`${station.name} West Outer Crossover`)} isBlocked={blockedBlocks?.includes(`${station.name} West Outer Crossover`)} />
                 </>
               );
             })()}
-
-            {/* Explicit Crossovers specifically at MMNK */}
-            {station.id === 'MMNK' && station.p <= 4 && (
-              <>
-                <TrackCurve d={drawThroat(sX - 450, mTop, sX - 300, mBot)} />
-                <TrackCurve d={drawThroat(sX - 450, mBot, sX - 300, mTop)} />
-              </>
-            )}
 
             {/* Premium Glassmorphic Station Box */}
             <rect x={sX - 250} y={station.platforms[0].y - 45} width={500} height={(station.p * TRACK_GAP) + 70} fill="rgba(255, 255, 255, 0.05)" stroke="#374151" strokeWidth="1" rx="8" pointerEvents="none" />

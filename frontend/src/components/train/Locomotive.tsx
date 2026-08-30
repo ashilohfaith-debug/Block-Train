@@ -1,6 +1,6 @@
-﻿import React from 'react';
+import React, { memo } from 'react';
 
-export const Locomotive = ({ x, length, width, gradient }: { x: number, length: number, width: number, gradient: string }) => {
+export const Locomotive = memo(({ x, length, width, gradient }: { x: number, length: number, width: number, gradient: string }) => {
   const frontX = x + length;
   return (
     <g>
@@ -19,4 +19,4 @@ export const Locomotive = ({ x, length, width, gradient }: { x: number, length: 
       <rect x={frontX - 2} y={-width/2 + 1.5} width={1.5} height={width - 3} fill="#a5f3fc" opacity="0.8" />
     </g>
   );
-};
+});

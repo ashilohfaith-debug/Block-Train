@@ -24,6 +24,7 @@ const initializeDatabase = async () => {
       DROP TABLE IF EXISTS maintenance_tasks CASCADE;
       DROP TABLE IF EXISTS track_sections CASCADE;
       DROP TABLE IF EXISTS stations CASCADE;
+      DROP TABLE IF EXISTS active_blocks CASCADE;
       DROP TABLE IF EXISTS users CASCADE;
     `);
 
@@ -155,6 +156,15 @@ const initializeDatabase = async () => {
         train_id VARCHAR(30) REFERENCES trains(id),
         action VARCHAR(30) NOT NULL,
         reason TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS active_blocks (
+        id VARCHAR(255) PRIMARY KEY,
+        department VARCHAR(100) NOT NULL,
+        block_date VARCHAR(20) NOT NULL,
+        from_time VARCHAR(10) NOT NULL,
+        to_time VARCHAR(10) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
