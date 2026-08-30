@@ -77,11 +77,11 @@ export const VoiceRecorder = () => {
     <div className="bg-zinc-900 border border-zinc-800 p-4 rounded-sm mt-4 shadow-xl">
       <h3 className="text-emerald-400 font-bold uppercase text-sm mb-3 flex items-center gap-2">
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
-        Admin Voice Dispatch Override
+        Emergency Voice Broadcast
       </h3>
       
       <p className="text-zinc-400 text-xs mb-4">
-        Record an emergency voice message. When the AI schedules a block, all workers in that department will be called by Twilio and this audio will play.
+        Record verbal safety instructions. Upon block confirmation, an automated voice dispatch will immediately dial all active field personnel in the assigned department and broadcast this message.
       </p>
 
       <div className="flex items-center gap-4">
