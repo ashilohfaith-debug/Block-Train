@@ -138,12 +138,10 @@ app.use("/api/dispatch", dispatchRouter);
 // Workers route
 app.use("/api/workers", workersRouter);
 
-// Serve uploads folder for Twilio audio fetching
-app.use("/uploads", express.static(require("path").join(__dirname, "../uploads")));
+// (The /uploads folder static serving was removed because we now use Cloudinary for audio storage)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STEP 3 — Global Authentication Guard
-// Every request that reaches here MUST carry a valid JWT.
 // authenticateToken() will return 401 if the token is missing or invalid.
 // ─────────────────────────────────────────────────────────────────────────────
 app.use("/api", authenticateToken);

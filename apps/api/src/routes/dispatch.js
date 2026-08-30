@@ -5,15 +5,9 @@ const DispatchController = require("../controllers/dispatchController");
 
 const router = express.Router();
 
-// Setup Multer for audio uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../uploads"));
-  },
-  filename: (req, file, cb) => {
-    cb(null, `dispatch-${Date.now()}.mp3`);
-  }
-});
+// Setup Multer to store the file in a memory buffer instead of writing to disk.
+// This is strictly required for Serverless (Vercel) since disk is read-only.
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 router.post("/notify", DispatchController.notify);

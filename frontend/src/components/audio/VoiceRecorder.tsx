@@ -35,6 +35,7 @@ export const VoiceRecorder = () => {
         formData.append('audio', audioBlob, 'dispatch-voice.mp3');
 
         try {
+          // Use absolute URL for now to ensure it hits the Express backend during the hackathon
           const res = await fetch('http://localhost:5000/api/dispatch/audio', {
             method: 'POST',
             body: formData,
@@ -43,9 +44,8 @@ export const VoiceRecorder = () => {
           if (data.success) {
             setAudioUrl(data.audioUrl);
             if (setDispatchAudioUrl) {
-              // We need the full ngrok or local url for twilio, but localhost won't work for real twilio call unless exposed.
-              // We'll pass the public or local url.
-              setDispatchAudioUrl(`http://localhost:5000${data.audioUrl}`); 
+              // Now that we are using Cloudinary, data.audioUrl is a fully qualified public HTTPS URL!
+              setDispatchAudioUrl(data.audioUrl); 
             }
           }
         } catch (err) {

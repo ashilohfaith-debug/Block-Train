@@ -1,4 +1,5 @@
 const DispatchService = require("../services/dispatchService");
+const CloudinaryService = require("../services/cloudinaryService");
 const pool = require("../db"); // Using pool for now since we haven't refactored WorkerModel fully for department lookup yet, or we can write a raw query. Wait, let's just do raw query to ensure we don't break anything
 
 const DispatchController = {
@@ -33,7 +34,7 @@ const DispatchController = {
 
   /**
    * @route   POST /api/dispatch/audio
-   * @desc    Handle audio file upload from admin dashboard
+   * @desc    Handle audio file upload from admin dashboard directly to Cloudinary
    * @access  Public
    */
   async uploadAudio(req, res) {
@@ -41,8 +42,12 @@ const DispatchController = {
       if (!req.file) {
         return res.status(400).json({ error: "No audio file uploaded" });
       }
-      const publicUrl = `/uploads/${req.file.filename}`;
-      res.json({ success: true, audioUrl: publicUrl });
+
+      // Upload directly from memory buffer to Cloudinary
+      const cloudinaryUrl = await CloudinaryService.uploadAudioStream(req.file.buffer);
+
+      // Return the permanent public Cloudinary URL to the frontend
+      res.json({ success: true, audioUrl: cloudinaryUrl });
     } catch (err) {
       console.error("Audio Upload Error:", err);
       res.status(500).json({ error: "Upload failed" });
