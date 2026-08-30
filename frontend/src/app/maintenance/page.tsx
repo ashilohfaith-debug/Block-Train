@@ -79,7 +79,7 @@ export default function MaintenancePage() {
       {/* Block Modal */}
       {selectedTrack && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-md shadow-2xl relative">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-md shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <button 
               onClick={() => setSelectedTrack(null)}
               className="absolute top-4 right-4 text-zinc-500 hover:text-zinc-300"
