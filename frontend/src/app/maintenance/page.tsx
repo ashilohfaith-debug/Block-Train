@@ -79,7 +79,7 @@ export default function MaintenancePage() {
       {/* Block Modal */}
       {selectedTrack && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-4xl shadow-2xl relative max-h-[90vh] flex flex-col">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-4xl shadow-2xl relative flex flex-col">
             
             <div className="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-950/50 rounded-t-2xl shrink-0">
               <div>
@@ -96,7 +96,7 @@ export default function MaintenancePage() {
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto flex-1">
+            <div className="p-6 flex-1">
               <form className="flex flex-col h-full" onSubmit={async (e) => { 
                 e.preventDefault(); 
                 const formData = new FormData(e.currentTarget);
