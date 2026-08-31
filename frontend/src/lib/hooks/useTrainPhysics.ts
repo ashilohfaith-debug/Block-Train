@@ -21,10 +21,13 @@ const generateTrains = (speedMultiplier: number): Train[] => {
   ];
 };
 
-const getHazardZones = (activeBlockIds: string[]) => {
-  const zones: { minX: number, maxX: number, laneId: number }[] = [];
+const getHazardZones = (activeBlocks: any[]) => {
+  const zones: { minX: number, maxX: number, laneId: number, urgency: string }[] = [];
   
-  for (const bid of activeBlockIds) {
+  for (const block of activeBlocks) {
+    const bid = block.id;
+    const urgency = block.urgency || 'Critical';
+    
     let laneId = 0;
     if (bid.includes('Down Line') || bid.includes('Main Line Down')) laneId = -1;
     else if (bid.includes('Up Line') || bid.includes('Main Line Up')) laneId = 1;
@@ -54,7 +57,7 @@ const getHazardZones = (activeBlockIds: string[]) => {
             minX = sX + st.yardStartOffset;
             maxX = sX + st.yardEndOffset;
              if (bid.includes('Loop')) {
-                 const pfMatch = bid.match(/PF(\\d+)/);
+                 const pfMatch = bid.match(/PF(\d+)/);
                  if (pfMatch) {
                      const pIdx = parseInt(pfMatch[1], 10) - 1;
                      if (st.platforms[pIdx]) {
@@ -68,7 +71,7 @@ const getHazardZones = (activeBlockIds: string[]) => {
        }
     }
     
-    zones.push({ minX, maxX, laneId });
+    zones.push({ minX, maxX, laneId, urgency });
   }
   return zones;
 };
@@ -85,8 +88,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
     
     const interval = setInterval(() => {
       const state = useMaintenanceStore.getState();
-      const activeBlocks = state.activeBlocks.map((b: any) => b.id);
-      const hazardZones = getHazardZones(activeBlocks);
+      const hazardZones = getHazardZones(state.activeBlocks);
       const now = Date.now();
 
       setTrains(curr => {
@@ -185,12 +187,15 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
            (Math.max(threatLookaheadMin, z.minX) <= Math.min(threatLookaheadMax, z.maxX))
         );
 
+        const solidHazards = hazardsAhead.filter(z => z.urgency === 'High' || z.urgency === 'Critical');
+        const softHazards = hazardsAhead.filter(z => z.urgency === 'Low' || z.urgency === 'Medium');
+
         // 4. Calculate Distance to Threat
-        if (trainsAhead.length > 0 || hazardsAhead.length > 0) {
+        if (trainsAhead.length > 0 || solidHazards.length > 0) {
            let minDistanceToThreat = LOOKAHEAD;
            let minDistanceToOppositeTrain = Infinity;
            
-           hazardsAhead.forEach(z => {
+           solidHazards.forEach(z => {
                let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
                if (dist > 0 && dist < minDistanceToThreat) minDistanceToThreat = dist;
            });
@@ -217,7 +222,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                appliedSpeed *= (minDistanceToThreat - 300) / 1200;
            }
 
-           // Right of Way Logic (Only yield/reverse if the direct threat is an oncoming train)
+           // Right of Way Logic
            let mustYield = false;
            if (t.direction === -1 && minDistanceToOppositeTrain < 3000 && minDistanceToOppositeTrain <= minDistanceToThreat + 50) {
                mustYield = true;
@@ -228,11 +233,24 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                    // DEADLOCK EMERGENCY: If nose-to-nose, Westbound MUST reverse!
                    appliedSpeed = -0.5;
                } else if (targetSwitchX !== -1 && distToSwitch > -50 && distToSwitch < 600) {
-                   // SAFE YIELDING: Wait at the upcoming switch for the Eastbound train to pass
+                   // SAFE YIELDING
                    if (appliedSpeed > 0) appliedSpeed *= 0.05;
                    if (distToSwitch < 100) appliedSpeed = 0; 
                }
            }
+        }
+
+        // Apply Speed Restrictions for Low/Medium Urgency Blocks
+        const currentSoftHazards = hazardZones.filter(z => 
+            (z.urgency === 'Low' || z.urgency === 'Medium') && 
+            z.laneId === activeLane && 
+            t.x >= z.minX - 200 && t.x <= z.maxX + 200
+        );
+        
+        if (currentSoftHazards.length > 0 && appliedSpeed > 0) {
+            const worstUrgency = currentSoftHazards.some(z => z.urgency === 'Medium') ? 'Medium' : 'Low';
+            const speedCap = worstUrgency === 'Medium' ? 0.35 : 0.6;
+            appliedSpeed = Math.min(appliedSpeed, speedCap);
         }
 
         // 5. Trigger Physical Switch if safe and reached

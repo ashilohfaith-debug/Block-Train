@@ -7,6 +7,7 @@ export interface Block {
   date: string;
   fromTime: string;
   toTime: string;
+  urgency?: string;
 }
 
 interface MaintenanceStore {

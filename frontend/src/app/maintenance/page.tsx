@@ -52,19 +52,21 @@ export default function MaintenancePage() {
               Active Blocks ({activeBlocks.length})
             </h2>
             <div className="overflow-y-auto pr-2 space-y-3">
-              {activeBlocks.map((b) => (
-                <div key={b.id} className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 relative group">
-                  <button onClick={() => removeBlock(b.id)} className="absolute top-2 right-2 text-zinc-500 opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all text-xs">
-                    ✖
-                  </button>
-                  <p className="font-mono text-amber-500 text-[10px] mb-1">{b.department}</p>
-                  <p className="text-zinc-200 text-xs mb-2 leading-tight">{b.id}</p>
-                  <div className="flex justify-between items-center text-[10px] text-zinc-500 font-mono bg-zinc-900 px-2 py-1 rounded">
-                    <span>{b.date}</span>
-                    <span>{b.fromTime} - {b.toTime}</span>
+                {activeBlocks.map((b) => (
+                  <div key={b.id} className={`bg-zinc-950 border ${b.urgency === 'Critical' ? 'border-red-500/50' : b.urgency === 'High' ? 'border-orange-500/50' : b.urgency === 'Medium' ? 'border-amber-500/50' : 'border-zinc-800'} rounded-lg p-4 relative group`}>
+                    <button onClick={() => removeBlock(b.id)} className="absolute top-2 right-2 text-zinc-500 opacity-0 group-hover:opacity-100 hover:text-red-400 transition-all text-xs">
+                      ✕
+                    </button>
+                    <p className={`font-mono text-[10px] mb-1 ${b.urgency === 'Critical' ? 'text-red-500' : b.urgency === 'High' ? 'text-orange-500' : b.urgency === 'Medium' ? 'text-amber-500' : 'text-emerald-500'}`}>
+                      {b.department} • {b.urgency ? b.urgency.toUpperCase() : 'CRITICAL'}
+                    </p>
+                    <p className="text-zinc-200 text-xs mb-2 leading-tight">{b.id}</p>
+                    <div className="flex justify-between items-center text-[10px] text-zinc-500 font-mono bg-zinc-900 px-2 py-1 rounded">
+                      <span>{b.date}</span>
+                      <span>{b.fromTime} - {b.toTime}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         )}
@@ -105,13 +107,15 @@ export default function MaintenancePage() {
                   const date = formData.get('date') as string;
                   const fromTime = formData.get('fromTime') as string;
                   const toTime = formData.get('toTime') as string;
+                  const urgency = formData.get('urgency') as string;
 
                   await addBlock({
                     id: selectedTrack,
                     department,
                     date,
                     fromTime,
-                    toTime
+                    toTime,
+                    urgency
                   });
 
                   // Trigger Twilio Call
@@ -179,6 +183,16 @@ export default function MaintenancePage() {
                         <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2 font-bold">To Time (24H)</label>
                         <CustomSelect name="toTime" placeholder="End Time" options={times} />
                       </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2 font-bold">Urgency</label>
+                      <select name="urgency" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-300 outline-none focus:border-amber-500 transition-colors">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                      </select>
                     </div>
                   </div>
                   
