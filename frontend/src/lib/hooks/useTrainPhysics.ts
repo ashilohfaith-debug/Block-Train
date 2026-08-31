@@ -29,8 +29,8 @@ const getHazardZones = (activeBlocks: any[]) => {
     const urgency = block.urgency || 'Critical';
     
     let laneId = 0;
-    if (bid.includes('Down Line') || bid.includes('Main Line Down')) laneId = -1;
-    else if (bid.includes('Up Line') || bid.includes('Main Line Up')) laneId = 1;
+    if (bid.includes('Down Line') || bid.includes('Main Line Down') || bid.includes('Loop Line 1')) laneId = -1;
+    else if (bid.includes('Up Line') || bid.includes('Main Line Up') || bid.includes('Loop Line 2')) laneId = 1;
     else laneId = 0;
 
     let minX = 0;
