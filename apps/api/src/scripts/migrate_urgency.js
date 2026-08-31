@@ -1,0 +1,1 @@
+require("dotenv").config({ path: __dirname + "/../../.env" }); const pool = require("../core/db"); pool.query("ALTER TABLE active_blocks ADD COLUMN urgency VARCHAR(50) DEFAULT 'Critical';").then(() => {console.log("done"); process.exit(0)}).catch(e => {console.log(e); process.exit(0)});

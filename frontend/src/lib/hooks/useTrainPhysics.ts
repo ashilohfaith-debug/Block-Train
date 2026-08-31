@@ -5,26 +5,32 @@ import { STATION_SPACING, DEFAULT_SPEED_MULTIPLIER } from '../constants';
 import { useMaintenanceStore } from '../store';
 
 const generateTrains = (speedMultiplier: number): Train[] => {
-  const INITIAL_TRAINS: Train[] = [
-    { id: 'T1', name: 'Local 40531 (EMU)', x: 600 + STATIONS[0].yardStartOffset + 200, direction: 1, baseLane: -1, switchDirection: 0, speed: 2.5, type: 'passenger' },
-    { id: 'T2', name: 'Local 40531 (EMU)', x: 600 + 4 * STATION_SPACING + STATIONS[4].yardEndOffset - 200, direction: -1, baseLane: 1, switchDirection: 0, speed: 1.8, type: 'passenger' },
-    { id: 'T3', name: 'Local 40531 (EMU)', x: 600 + 1.5 * STATION_SPACING, direction: 1, baseLane: 0, switchDirection: 0, speed: 1.2, type: 'passenger' },
-    { id: 'T4', name: 'Local 40531 (EMU)', x: 600 + 3 * STATION_SPACING, direction: -1, baseLane: 1, switchDirection: 0, speed: 2.4, type: 'passenger' },
-    { id: 'T5', name: 'Local 40531 (EMU)', x: 600 + 0.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 1.6, type: 'passenger' },
-    { id: 'T6', name: 'Local 40531 (EMU)', x: 600 + 2.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 2.6, type: 'passenger' },
-    { id: 'T7', name: 'Local 40531 (EMU)', x: 600 + 1.2 * STATION_SPACING, direction: -1, baseLane: 1, switchDirection: 0, speed: 1.7, type: 'passenger' },
-    { id: 'T8', name: 'Local 40531 (EMU)', x: 600 + 3.5 * STATION_SPACING, direction: 1, baseLane: -1, switchDirection: 0, speed: 1.6, type: 'passenger' }
+  // 1. Made every train the exact same type ("passenger")
+  // 2. Significantly reduced base speeds (0.8 to 1.1)
+  // 3. Spaced them out perfectly on their dedicated lanes to prevent spawn overlap
+  return [
+    { id: 'T1', name: 'Local 101', x: 600, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.8, type: 'passenger' },
+    { id: 'T2', name: 'Local 202', x: 2800, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.7, type: 'passenger' },
+    { id: 'T3', name: 'Local 303', x: 5000, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.65, type: 'passenger' },
+    { id: 'T4', name: 'Local 404', x: 7200, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.75, type: 'passenger' },
+    
+    { id: 'T5', name: 'Local 505', x: 8000, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.8, type: 'passenger' },
+    { id: 'T6', name: 'Local 606', x: 5800, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.7, type: 'passenger' },
+    { id: 'T7', name: 'Local 707', x: 3600, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.65, type: 'passenger' },
+    { id: 'T8', name: 'Local 808', x: 1400, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.75, type: 'passenger' }
   ];
-  return INITIAL_TRAINS;
 };
 
-const getHazardZones = (activeBlockIds: string[]) => {
-  const zones: { minX: number, maxX: number, laneId: number }[] = [];
+const getHazardZones = (activeBlocks: any[]) => {
+  const zones: { minX: number, maxX: number, laneId: number, urgency: string }[] = [];
   
-  for (const bid of activeBlockIds) {
+  for (const block of activeBlocks) {
+    const bid = block.id;
+    const urgency = block.urgency || 'Critical';
+    
     let laneId = 0;
-    if (bid.includes('Down Line') || bid.includes('Main Line Down')) laneId = -1;
-    else if (bid.includes('Up Line') || bid.includes('Main Line Up')) laneId = 1;
+    if (bid.includes('Down Line') || bid.includes('Main Line Down') || bid.includes('Loop Line 1')) laneId = -1;
+    else if (bid.includes('Up Line') || bid.includes('Main Line Up') || bid.includes('Loop Line 2')) laneId = 1;
     else laneId = 0;
 
     let minX = 0;
@@ -57,106 +63,48 @@ const getHazardZones = (activeBlockIds: string[]) => {
                      if (st.platforms[pIdx]) {
                          minX = sX + st.platforms[pIdx].sZoneStartOffset;
                          maxX = sX + st.platforms[pIdx].sZoneEndOffset;
-                         
-                         const thirdCount = Math.floor(st.p / 3);
-                         if (pIdx < thirdCount) laneId = -1;
-                         else if (pIdx < thirdCount * 2) laneId = 0;
-                         else laneId = 1;
                      }
                  }
-             }
-
-             const secMatch = bid.match(/Sec (\d+)/);
-             if (secMatch) {
-                const sec = parseInt(secMatch[1], 10);
-                const totalLen = Math.abs(maxX - minX);
-                const numChunks = Math.ceil(totalLen / 150);
-                const actualChunk = totalLen / numChunks;
-                minX = minX + (sec - 1) * actualChunk;
-                maxX = minX + actualChunk;
              }
             break;
          }
        }
     }
-    zones.push({ minX, maxX, laneId });
+    
+    zones.push({ minX, maxX, laneId, urgency });
   }
   return zones;
 };
 
-let cachedActiveBlocksStr = '';
-let cachedHazardZones: { minX: number, maxX: number, laneId: number }[] = [];
-
-export const useTrainPhysics = (userSpeedMultiplier: number) => {
-  const [trains, setTrains] = useState<Train[]>(() => generateTrains(DEFAULT_SPEED_MULTIPLIER));
+export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULTIPLIER) => {
+  const [trains, setTrains] = useState<Train[]>([]);
+  
+  useEffect(() => {
+    setTrains(generateTrains(userSpeedMultiplier));
+  }, []);
 
   useEffect(() => {
+    const physicsFactor = Math.min(10, Math.max(0.1, userSpeedMultiplier)); 
+    
     const interval = setInterval(() => {
+      const state = useMaintenanceStore.getState();
+      const hazardZones = getHazardZones(state.activeBlocks);
       const now = Date.now();
-      const activeBlockIds = useMaintenanceStore.getState().activeBlocks.map((b: any) => b.id);
-      const activeBlocksStr = activeBlockIds.join('|');
-      
-      if (activeBlocksStr !== cachedActiveBlocksStr) {
-          cachedHazardZones = getHazardZones(activeBlockIds);
-          cachedActiveBlocksStr = activeBlocksStr;
-      }
-      const hazardZones = cachedHazardZones;
 
-        setTrains((curr) => {
-          const nextTrains = curr.map((t) => {
-          if (t.stopUntil && now < t.stopUntil) {
-            return t;
-          }
-
-        let newStopUntil = t.stopUntil;
-        if (t.stopUntil && now >= t.stopUntil) {
-          newStopUntil = undefined;
-        }
-
-        const dynamicSpeed = t.speed * userSpeedMultiplier;
-        let appliedSpeed = dynamicSpeed * 0.53;
+      setTrains(curr => {
+        const nextTrains = curr.map(t => {
+        if (t.stopUntil && now < t.stopUntil) return t;
         
-        let physicsFactor = 1;
-        for (let i = 0; i < STATIONS.length; i++) {
-          // Do not slow down if the train is not scheduled to stop here
-          if (t.type === 'freight') continue;
-          if (t.type === 'express' && i !== 0) continue;
-
-          const sX = 600 + i * STATION_SPACING;
-          const dist = (sX - t.x) * t.direction;
-          
-          if (dist > 0 && dist < 500) {
-             physicsFactor = Math.max(0.08, Math.pow(dist / 500, 0.7));
-             break;
-          }
-          if (dist < 0 && dist > -500) {
-             physicsFactor = Math.max(0.08, Math.pow(Math.abs(dist) / 500, 0.7));
-             break;
-          }
-        }
-        
-        let inYard = false;
-        for (let i = 0; i < STATIONS.length; i++) {
-           const st = STATIONS[i];
-           const sX = 600 + i * STATION_SPACING;
-           // Expand the yard slightly to allow switching just outside the immediate platform
-           if (t.x >= sX + st.yardStartOffset - 100 && t.x <= sX + st.yardEndOffset + 100) {
-              inYard = true;
-              break;
-           }
-        }
-
-        const LOOKAHEAD = 2800; // Look ahead past the next station!
-        const SWITCH_LENGTH = 250;
-        
+        let newStopUntil = undefined;
+        let appliedSpeed = t.speed;
+        let currentBaseLane = t.baseLane;
         let newTargetLane = t.targetLane;
         let newSwitchStartX = t.switchStartX;
-        let activeLane = newTargetLane !== undefined ? newTargetLane : t.baseLane;
-        let currentBaseLane = t.baseLane;
-
+        let activeLane = newTargetLane !== undefined ? newTargetLane : currentBaseLane;
+        const SWITCH_LENGTH = 250;
+        
         if (newTargetLane !== undefined && newSwitchStartX !== undefined) {
            const distSwitched = Math.abs(t.x - newSwitchStartX);
-           // Wait for the longest train (400px freight) to fully clear the 250px switch
            if (distSwitched >= SWITCH_LENGTH + 500) {
               currentBaseLane = newTargetLane;
               newTargetLane = undefined;
@@ -165,128 +113,221 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
            }
         }
 
+        const LOOKAHEAD = 5000;
         let lookaheadMin = t.direction === 1 ? t.x : t.x - LOOKAHEAD;
         let lookaheadMax = t.direction === 1 ? t.x + LOOKAHEAD : t.x;
 
+        // 1. Find the absolute nearest physical crossover in front of the train
+        const validSwitches: number[] = [];
+        for (let i = 0; i < STATIONS.length; i++) {
+            const sX = 600 + i * STATION_SPACING;
+            const st = STATIONS[i];
+            if (t.direction === 1) {
+                validSwitches.push(sX + st.yardStartOffset + 50);
+                validSwitches.push(sX + st.yardEndOffset - 300);
+            } else {
+                validSwitches.push(sX + st.yardStartOffset + 300);
+                validSwitches.push(sX + st.yardEndOffset - 50);
+            }
+        }
+        
+        let targetSwitchX = -1;
+        let distToSwitch = Infinity;
+        for (const sx of validSwitches) {
+            const dist = t.direction === 1 ? (sx - t.x) : (t.x - sx);
+            if (dist > -50 && dist < distToSwitch) {
+                distToSwitch = dist;
+                targetSwitchX = sx;
+            }
+        }
+
+        // 2. Evaluate if an escape lane is safe
+        let escapeIsSafe = false;
+        let proposedTargetLane = activeLane;
+        if (targetSwitchX !== -1 && newTargetLane === undefined) {
+            proposedTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
+            const targetLaneHazards = hazardZones.filter(z => 
+                z.laneId === proposedTargetLane && (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
+            );
+            const targetLaneTrains = curr.filter(other => {
+                if (other.id === t.id) return false;
+                const otherIsSwitching = other.targetLane !== undefined && Math.abs(other.x - (other.switchStartX || 0)) < 600;
+                const inTargetLane = other.baseLane === proposedTargetLane || other.targetLane === proposedTargetLane || (otherIsSwitching && other.baseLane === proposedTargetLane);
+                if (!inTargetLane) return false;
+                const otherMin = other.direction === 1 ? other.x - 200 : other.x;
+                const otherMax = other.direction === 1 ? other.x : other.x + 200;
+                return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
+            });
+            if (targetLaneHazards.length === 0 && targetLaneTrains.length === 0) {
+                escapeIsSafe = true;
+            }
+        }
+
+        // 3. Find threats on CURRENT lane
+        // If we have a safe escape route, we only care about threats that occur BEFORE the switch!
+        let threatLookaheadMin = lookaheadMin;
+        let threatLookaheadMax = lookaheadMax;
+        if (escapeIsSafe) {
+            if (t.direction === 1) threatLookaheadMax = targetSwitchX;
+            else threatLookaheadMin = targetSwitchX;
+        }
+
         const trainsAhead = curr.filter(other => {
            if (other.id === t.id) return false;
-           if (other.baseLane !== activeLane && other.targetLane !== activeLane) return false;
-           const otherLen = other.type === 'freight' ? 300 : 200;
-           const otherMin = other.direction === 1 ? other.x - otherLen : other.x;
-           const otherMax = other.direction === 1 ? other.x : other.x + otherLen;
-           return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
+           const otherIsSwitching = other.targetLane !== undefined && Math.abs(other.x - (other.switchStartX || 0)) < 600;
+           const inMyLane = other.baseLane === activeLane || other.targetLane === activeLane || (otherIsSwitching && other.baseLane === activeLane);
+           if (!inMyLane) return false;
+           const otherMin = other.direction === 1 ? other.x - 200 : other.x;
+           const otherMax = other.direction === 1 ? other.x : other.x + 200;
+           return Math.max(threatLookaheadMin, otherMin) <= Math.min(threatLookaheadMax, otherMax);
         });
 
         const hazardsAhead = hazardZones.filter(z => 
            z.laneId === activeLane &&
-           (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
+           (Math.max(threatLookaheadMin, z.minX) <= Math.min(threatLookaheadMax, z.maxX))
         );
 
-        if (trainsAhead.length > 0 || hazardsAhead.length > 0) {
-           if (newTargetLane === undefined && inYard) {
-               // Find the nearest physical crossover in this yard!
-               // They are drawn at: sX + yardStartOffset + 50 (West) and sX + yardEndOffset - 300 (East)
-               let st = STATIONS[0];
-               let sX = 0;
-               for (let i = 0; i < STATIONS.length; i++) {
-                  const checkSx = 600 + i * STATION_SPACING;
-                  if (t.x >= checkSx + STATIONS[i].yardStartOffset - 100 && t.x <= checkSx + STATIONS[i].yardEndOffset + 100) {
-                     st = STATIONS[i];
-                     sX = checkSx;
-                     break;
-                  }
-               }
-               
-               const aStart = sX + st.yardStartOffset + 50;
-               const dStart = sX + st.yardEndOffset - 300;
-               
-               // If train is moving right, it approaches aStart first, then dStart.
-               // If train is moving left, it approaches dStart+250 first, then aStart+250.
-               let targetSwitchX = t.direction === 1 ? aStart : (dStart + 250);
-               if (t.direction === 1 && t.x > aStart) targetSwitchX = dStart;
-               if (t.direction === -1 && t.x < dStart + 250) targetSwitchX = aStart + 250;
+        const solidHazards = hazardsAhead; // ALL blocks are dangerous and stop the train
 
-               // Only trigger the switch exactly when the train's front passes the crossover start coordinate!
-               const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - appliedSpeed) <= targetSwitchX) ||
-                                    (t.direction === -1 && t.x <= targetSwitchX && (t.x + appliedSpeed) >= targetSwitchX);
-                                    
-               if (passedSwitch) {
-                   newTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
-                   newSwitchStartX = targetSwitchX;
-               }
-           }
-
-           if (newTargetLane !== undefined) {
-               const targetLaneHazards = hazardZones.filter(z => 
-                   z.laneId === newTargetLane &&
-                   (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
-               );
-               const targetLaneTrains = curr.filter(other => {
-                   if (other.id === t.id) return false;
-                   if (other.baseLane !== newTargetLane && other.targetLane !== newTargetLane) return false;
-                   const otherLen = other.type === 'freight' ? 300 : 200;
-                   const otherMin = other.direction === 1 ? other.x - otherLen : other.x;
-                   const otherMax = other.direction === 1 ? other.x : other.x + otherLen;
-                   return Math.max(lookaheadMin, otherMin) <= Math.min(lookaheadMax, otherMax);
-               });
-
-               if (targetLaneHazards.length > 0 || targetLaneTrains.length > 0) {
-                  // Target lane is also blocked in the distance. Cancel the switch.
-                  newTargetLane = undefined;
-                  newSwitchStartX = undefined;
-               }
-           }
-
-           // If we couldn't switch (either not in yard, or target blocked), we MUST brake!
-           if (newTargetLane === undefined) {
-               let minDistance = LOOKAHEAD;
-               hazardsAhead.forEach(z => {
+        // 4. Calculate Distance to Threat
+        if (trainsAhead.length > 0 || solidHazards.length > 0) {
+           let minDistanceToThreat = LOOKAHEAD;
+           let minDistanceToOppositeTrain = Infinity;
+           
+           solidHazards.forEach(z => {
+               const tMin = t.direction === 1 ? t.x - 200 : t.x;
+               const tMax = t.direction === 1 ? t.x : t.x + 200;
+               if (Math.max(tMin, z.minX) <= Math.min(tMax, z.maxX)) {
+                   minDistanceToThreat = 0; // INSTANT HALT if already inside hazard
+               } else {
                    let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
-                   if (dist > 0 && dist < minDistance) minDistance = dist;
-               });
-               trainsAhead.forEach(other => {
-                   let dist = t.direction === 1 ? (other.x - 200 - t.x) : (t.x - (other.x + 200));
-                   if (dist > 0 && dist < minDistance) minDistance = dist;
-               });
-               
-               if (minDistance < 1500) {
-                   // Progressive braking! The closer to the hazard, the slower we crawl.
-                   const brakeFactor = Math.max(0.04, Math.pow(minDistance / 1500, 1.5));
-                   appliedSpeed *= brakeFactor;
+                   if (dist > 0 && dist < minDistanceToThreat) minDistanceToThreat = dist;
                }
+           });
+           
+           trainsAhead.forEach(other => {
+               let dist = 0;
+               if (t.direction === 1) {
+                   dist = other.direction === 1 ? (other.x - 200) - t.x : other.x - t.x;
+               } else {
+                   dist = other.direction === 1 ? t.x - other.x : t.x - (other.x + 200);
+               }
+               if (dist > 0 && dist < minDistanceToThreat) {
+                   minDistanceToThreat = dist;
+               }
+               if (dist > 0 && other.direction !== t.direction && dist < minDistanceToOppositeTrain) {
+                   minDistanceToOppositeTrain = dist;
+               }
+           });
 
-               if (minDistance < 100) {
-                   // Hard stop right before hitting the hazard
-                   appliedSpeed = 0; 
-                   newStopUntil = now + 1000;
+           // Absolute Collision Prevention
+           if (minDistanceToThreat < 300) {
+               appliedSpeed = 0;
+           } else if (minDistanceToThreat < 1500) {
+               appliedSpeed *= (minDistanceToThreat - 300) / 1200;
+           }
+
+           // Right of Way Logic
+           let mustYield = false;
+           if (t.direction === -1 && minDistanceToOppositeTrain < 3000 && minDistanceToOppositeTrain <= minDistanceToThreat + 50) {
+               mustYield = true;
+           }
+
+           if (mustYield) {
+               if (minDistanceToOppositeTrain < 450) {
+                   // DEADLOCK EMERGENCY: If nose-to-nose, Westbound MUST reverse!
+                   appliedSpeed = -0.5;
+               } else if (targetSwitchX !== -1 && distToSwitch > -50 && distToSwitch < 600) {
+                   // SAFE YIELDING
+                   if (appliedSpeed > 0) appliedSpeed *= 0.05;
+                   if (distToSwitch < 100) appliedSpeed = 0; 
                }
            }
         }
 
-        if (appliedSpeed > 0) {
-          appliedSpeed *= physicsFactor;
+        // 5. Trigger Physical Switch if safe and reached
+        if (escapeIsSafe && newTargetLane === undefined) {
+            // Provide a 60-pixel activation window so trains that mathematically parked exactly on 
+            // the crossover (due to a 300px collision shield) can still trigger the switch.
+            const passedSwitch = (t.direction === 1 && t.x >= targetSwitchX && (t.x - 60.0) <= targetSwitchX) ||
+                                 (t.direction === -1 && t.x <= targetSwitchX && (t.x + 60.0) >= targetSwitchX);
+            if (passedSwitch) {
+                newTargetLane = proposedTargetLane;
+                newSwitchStartX = targetSwitchX;
+            }
         }
-        
-        // Terminal station progressive braking
-        let distToEnd = t.direction === 1 ? CANVAS_WIDTH - 300 - t.x : t.x - 300;
-        if (distToEnd < 1500 && distToEnd > 0) {
-            const endBrake = Math.max(0.01, Math.pow(distToEnd / 1500, 1.5));
-            appliedSpeed *= endBrake;
-        }
-        
-        let newX = t.x + t.direction * appliedSpeed;
-        
-        if (!newStopUntil && appliedSpeed > 0) {
-          for (let i = 0; i < STATIONS.length; i++) {
-            // Freight trains don't stop at stations
-            if (t.type === 'freight') continue;
-            // Express trains only stop at major terminals (index 0 - Tambaram)
-            if (t.type === 'express' && i !== 0) continue;
 
+        let targetSpeed = appliedSpeed;
+        
+        // Smooth Station Braking
+        if (!newStopUntil && targetSpeed > 0) {
+          let distToNextStation = LOOKAHEAD;
+          for (let i = 0; i < STATIONS.length; i++) {
+             const sX = 600 + i * STATION_SPACING;
+             const targetX = sX + (95 * t.direction);
+             const dist = t.direction === 1 ? (targetX - t.x) : (t.x - targetX);
+             if (dist > 0 && dist < distToNextStation) {
+                distToNextStation = dist;
+             }
+          }
+          if (distToNextStation < 600) {
+             const stationBrake = Math.max(0.15, Math.pow(distToNextStation / 600, 1.5));
+             targetSpeed *= stationBrake;
+          }
+        }
+
+        // Apply Momentum (currentSpeed)
+        let cur = t.currentSpeed !== undefined ? t.currentSpeed : 0;
+        
+        // Hard collision override
+        if (targetSpeed === 0) {
+            cur = 0;
+        } else {
+            if (cur < targetSpeed) {
+                cur += 0.001 * physicsFactor; // Very smooth, slow acceleration like real trains
+                if (cur > targetSpeed) cur = targetSpeed;
+            } else if (cur > targetSpeed) {
+                cur -= 0.01 * physicsFactor; // Smooth but assertive braking
+                if (cur < targetSpeed) cur = targetSpeed;
+            }
+        }
+
+        // ABSOLUTE ANTI-OVERLAP SHIELD (Omnidirectional)
+        // Prevents crashes if a train reverses into the train behind it, or if momentum allows clipping.
+        curr.forEach(other => {
+            if (other.id === t.id) return;
+            const otherIsSwitching = other.targetLane !== undefined && Math.abs(other.x - (other.switchStartX || 0)) < 600;
+            const inMyLane = other.baseLane === activeLane || other.targetLane === activeLane || (otherIsSwitching && other.baseLane === activeLane);
+            
+            if (inMyLane) {
+                const centerDist = Math.abs(t.x - other.x);
+                if (centerDist < 250) { 
+                    // We are physically touching or overlapping! Cut momentum if moving towards them.
+                    if (t.direction === 1) {
+                        if (cur > 0 && t.x < other.x) cur = 0;
+                        if (cur < 0 && t.x > other.x) cur = 0;
+                    } else {
+                        if (cur > 0 && t.x > other.x) cur = 0;
+                        if (cur < 0 && t.x < other.x) cur = 0;
+                    }
+                }
+            }
+        });
+
+        let actualApplied = cur * physicsFactor;
+        
+        // Final edge-of-world checks and terminal stops
+        let newX = t.x + t.direction * actualApplied;
+        
+        if (!newStopUntil && actualApplied > 0) {
+          for (let i = 0; i < STATIONS.length; i++) {
             const sX = 600 + i * STATION_SPACING;
-            if ((t.direction === 1 && t.x < sX && newX >= sX) ||
-                (t.direction === -1 && t.x > sX && newX <= sX)) {
-              newX = sX;
+            const targetX = sX + (95 * t.direction);
+
+            if ((t.direction === 1 && t.x < targetX && newX >= targetX) ||
+                (t.direction === -1 && t.x > targetX && newX <= targetX)) {
+              newX = targetX;
+              cur = 0; // Kill engine completely at stop
               const waitTime = 10000 / Math.max(1, userSpeedMultiplier); 
               newStopUntil = now + waitTime;
               break;
@@ -294,7 +335,6 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
           }
         }
 
-        // Terminal reverse! When trains reach the absolute edge, they stop, wait 6s, and depart in reverse
         if (newX > CANVAS_WIDTH - 300) {
             return {
                ...t,
@@ -302,6 +342,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
                direction: -1,
                baseLane: t.baseLane === -1 ? 1 : (t.baseLane === 1 ? -1 : 0),
                stopUntil: now + 6000,
+               currentSpeed: 0
             };
         }
         if (newX < 300) {
@@ -311,6 +352,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
                direction: 1,
                baseLane: t.baseLane === -1 ? 1 : (t.baseLane === 1 ? -1 : 0),
                stopUntil: now + 6000,
+               currentSpeed: 0
             };
         }
         
@@ -320,10 +362,10 @@ export const useTrainPhysics = (userSpeedMultiplier: number) => {
           stopUntil: newStopUntil,
           baseLane: currentBaseLane,
           targetLane: newTargetLane,
-          switchStartX: newSwitchStartX
+          switchStartX: newSwitchStartX,
+          currentSpeed: cur
         };
       });
-      // Sync without triggering unnecessary React renders to components not explicitly listening to trains
       useMaintenanceStore.getState().setTrains(nextTrains);
       return nextTrains;
     });

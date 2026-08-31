@@ -8,13 +8,18 @@ const ActiveBlockService = {
       department: row.department,
       date: row.block_date,
       fromTime: row.from_time,
-      toTime: row.to_time
+      toTime: row.to_time,
+      urgency: row.urgency || 'Critical'
     }));
   },
 
   async addBlock(data) {
     if (!data.id || !data.department || !data.date || !data.fromTime || !data.toTime) {
       throw new Error("Missing required fields");
+    }
+    // Set default urgency if not provided
+    if (!data.urgency) {
+      data.urgency = 'Critical';
     }
     return await ActiveBlockModel.create(data);
   },

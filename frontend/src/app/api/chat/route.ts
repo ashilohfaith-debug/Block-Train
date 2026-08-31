@@ -28,9 +28,13 @@ const TOOLS = [
           toTime: {
             type: "string",
             description: "The end time of the block in HH:MM format (24H)."
+          },
+          urgency: {
+            type: "string",
+            description: "The urgency level: 'Low', 'Medium', 'High', or 'Critical'."
           }
         },
-        required: ["id", "department", "date", "fromTime", "toTime"]
+        required: ["id", "department", "date", "fromTime", "toTime", "urgency"]
       }
     }
   }
@@ -64,7 +68,7 @@ YOUR CAPABILITIES & KNOWLEDGE:
 4. UI AWARENESS: You reside in a floating terminal window in the bottom right of the '/maintenance' page. If a block is scheduled successfully, you know it instantly appears in the Active Blocks dashboard and glows with a yellow hazard line on the map.
 
 RULES FOR SCHEDULING BLOCKS (CRITICAL):
-If the user wants to schedule a block, YOU MUST HAVE ALL 5 PIECES OF INFORMATION: Date, From Time (HH:MM), To Time (HH:MM), Department, and the EXACT Track ID. 
+If the user wants to schedule a block, YOU MUST HAVE ALL 6 PIECES OF INFORMATION: Date, From Time (HH:MM), To Time (HH:MM), Department, the EXACT Track ID, and Urgency (Low, Medium, High, Critical). 
 If the user does NOT provide the duration or any other field, DO NOT guess or hallucinate. Politely pause and ask them: "Please provide the missing details: [list missing things]". Only once you have everything, call the \`schedule_block\` tool.
 
 CURRENT LIVE TRAIN POSITIONS (Real-time telemetry):
@@ -129,6 +133,7 @@ Respond in a crisp, highly professional, slightly futuristic dispatch-coordinato
                   date: args.date,
                   fromTime: args.fromTime,
                   toTime: args.toTime,
+                  urgency: args.urgency,
                   audioUrl: audioUrl
                 })
               });
@@ -137,7 +142,7 @@ Respond in a crisp, highly professional, slightly futuristic dispatch-coordinato
             }
 
             return NextResponse.json({
-              reply: `SUCCESS: I have scheduled the maintenance block for **${args.department}** on track **${args.id}** from **${args.fromTime}** to **${args.toTime}** on **${args.date}**.\n\nThe track should now instantly light up with a yellow hazard line on the map! A Twilio automated dispatch SMS has also been triggered.`
+              reply: `SUCCESS: I have scheduled the **${args.urgency}** priority maintenance block for **${args.department}** on track **${args.id}** from **${args.fromTime}** to **${args.toTime}** on **${args.date}**.\n\nThe track should now instantly light up with a yellow hazard line on the map! A Twilio automated dispatch SMS has also been triggered.`
             });
           } else {
             return NextResponse.json({

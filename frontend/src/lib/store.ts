@@ -7,6 +7,7 @@ export interface Block {
   date: string;
   fromTime: string;
   toTime: string;
+  urgency?: string;
 }
 
 interface MaintenanceStore {
@@ -37,8 +38,17 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
       if (data.success) {
         const now = new Date();
         const activeOnly = data.blocks.filter((b: Block) => {
-          const start = new Date(`${b.date}T${b.fromTime}:00`);
-          const end = new Date(`${b.date}T${b.toTime}:00`);
+          let dateStr = b.date;
+          // If backend sent a UTC ISO string, convert it to local YYYY-MM-DD
+          if (b.date.includes('T')) {
+            const d = new Date(b.date);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            dateStr = `${year}-${month}-${day}`;
+          }
+          const start = new Date(`${dateStr}T${b.fromTime}:00`);
+          const end = new Date(`${dateStr}T${b.toTime}:00`);
           return now >= start && now <= end;
         });
         set({ activeBlocks: activeOnly });
@@ -51,11 +61,19 @@ export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
   addBlock: async (block) => {
     try {
       const now = new Date();
-      const start = new Date(`${block.date}T${block.fromTime}:00`);
-      const end = new Date(`${block.date}T${block.toTime}:00`);
+      let dateStr = block.date;
+      if (block.date.includes('T')) {
+        const d = new Date(block.date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        dateStr = `${year}-${month}-${day}`;
+      }
+      const start = new Date(`${dateStr}T${block.fromTime}:00`);
+      const end = new Date(`${dateStr}T${block.toTime}:00`);
       const isLive = now >= start && now <= end;
 
-      // Optimistic UI update only if the block is currently live
+      // Optimistic UI update only if it's currently within the time window
       if (isLive) {
         set((state) => ({ activeBlocks: [...state.activeBlocks.filter(b => b.id !== block.id), block] }));
       }

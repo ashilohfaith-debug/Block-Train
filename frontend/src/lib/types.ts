@@ -9,6 +9,7 @@ export interface Train {
   switchDirection: number; // Strictly 0 now, based on user request
   type: TrainType;
   speed: number;
+  currentSpeed?: number;
   stopUntil?: number;
   targetLane?: number;
   switchStartX?: number;
