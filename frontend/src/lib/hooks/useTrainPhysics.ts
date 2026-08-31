@@ -168,8 +168,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
         let threatLookaheadMin = lookaheadMin;
         let threatLookaheadMax = lookaheadMax;
         if (escapeIsSafe) {
-            if (t.direction === 1) threatLookaheadMax = targetSwitchX + 150;
-            else threatLookaheadMin = targetSwitchX - 150;
+            if (t.direction === 1) threatLookaheadMax = targetSwitchX;
+            else threatLookaheadMin = targetSwitchX;
         }
 
         const trainsAhead = curr.filter(other => {
@@ -187,8 +187,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
            (Math.max(threatLookaheadMin, z.minX) <= Math.min(threatLookaheadMax, z.maxX))
         );
 
-        const solidHazards = hazardsAhead.filter(z => z.urgency === 'High' || z.urgency === 'Critical');
-        const softHazards = hazardsAhead.filter(z => z.urgency === 'Low' || z.urgency === 'Medium');
+        const solidHazards = hazardsAhead; // ALL blocks are dangerous and stop the train
 
         // 4. Calculate Distance to Threat
         if (trainsAhead.length > 0 || solidHazards.length > 0) {
@@ -238,19 +237,6 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                    if (distToSwitch < 100) appliedSpeed = 0; 
                }
            }
-        }
-
-        // Apply Speed Restrictions for Low/Medium Urgency Blocks
-        const currentSoftHazards = hazardZones.filter(z => 
-            (z.urgency === 'Low' || z.urgency === 'Medium') && 
-            z.laneId === activeLane && 
-            t.x >= z.minX - 200 && t.x <= z.maxX + 200
-        );
-        
-        if (currentSoftHazards.length > 0 && appliedSpeed > 0) {
-            const worstUrgency = currentSoftHazards.some(z => z.urgency === 'Medium') ? 'Medium' : 'Low';
-            const speedCap = worstUrgency === 'Medium' ? 0.35 : 0.6;
-            appliedSpeed = Math.min(appliedSpeed, speedCap);
         }
 
         // 5. Trigger Physical Switch if safe and reached
