@@ -195,8 +195,14 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
            let minDistanceToOppositeTrain = Infinity;
            
            solidHazards.forEach(z => {
-               let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
-               if (dist > 0 && dist < minDistanceToThreat) minDistanceToThreat = dist;
+               const tMin = t.direction === 1 ? t.x - 200 : t.x;
+               const tMax = t.direction === 1 ? t.x : t.x + 200;
+               if (Math.max(tMin, z.minX) <= Math.min(tMax, z.maxX)) {
+                   minDistanceToThreat = 0; // INSTANT HALT if already inside hazard
+               } else {
+                   let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
+                   if (dist > 0 && dist < minDistanceToThreat) minDistanceToThreat = dist;
+               }
            });
            
            trainsAhead.forEach(other => {
