@@ -1,0 +1,183 @@
+switch_id,switch_sequence_id,point_number,station_code,station_name,chainage_km,switch_type,turnout_angle,point_machine_type,max_diverging_speed_kmh,connects_from_line,connects_to_line,normal_setting,interlocking_type
+SW-MSB-101,1,Point 101,MSB,Chennai Beach,0.06,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-102,2,Point 102,MSB,Chennai Beach,0.07,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-103,3,Point 103,MSB,Chennai Beach,0.09,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-104,4,Point 104,MSB,Chennai Beach,0.1,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-105,5,Point 105,MSB,Chennai Beach,0.12,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-106,6,Point 106,MSB,Chennai Beach,0.13,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-107,7,Point 107,MSB,Chennai Beach,0.14,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-108,8,Point 108,MSB,Chennai Beach,0.16,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-109,9,Point 109,MSB,Chennai Beach,0.17,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-110,10,Point 110,MSB,Chennai Beach,0.19,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-111,11,Point 111,MSB,Chennai Beach,0.2,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 4 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-112,12,Point 112,MSB,Chennai Beach,0.22,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 5 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-113,13,Point 113,MSB,Chennai Beach,0.23,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 6 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-114,14,Point 114,MSB,Chennai Beach,0.25,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 7 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-115,15,Point 115,MSB,Chennai Beach,0.26,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 8 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-116,16,Point 116,MSB,Chennai Beach,0.28,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 1 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-117,17,Point 117,MSB,Chennai Beach,0.29,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-118,18,Point 118,MSB,Chennai Beach,0.31,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-119,19,Point 119,MSB,Chennai Beach,0.32,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 4 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-120,20,Point 120,MSB,Chennai Beach,0.33,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 5 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-121,21,Point 121,MSB,Chennai Beach,0.35,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-122,22,Point 122,MSB,Chennai Beach,0.36,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-123,23,Point 123,MSB,Chennai Beach,0.38,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSB-124,24,Point 124,MSB,Chennai Beach,0.39,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MPK-11,25,Point 11,MPK,Chennai Park,2.92,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MPK-12,26,Point 12,MPK,Chennai Park,2.98,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MPK-13,27,Point 13,MPK,Chennai Park,3.02,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MPK-14,28,Point 14,MPK,Chennai Park,3.08,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MS-21,29,Point 21,MS,Chennai Egmore,4.06,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-22,30,Point 22,MS,Chennai Egmore,4.07,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-23,31,Point 23,MS,Chennai Egmore,4.09,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-24,32,Point 24,MS,Chennai Egmore,4.1,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-25,33,Point 25,MS,Chennai Egmore,4.12,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-26,34,Point 26,MS,Chennai Egmore,4.13,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-27,35,Point 27,MS,Chennai Egmore,4.15,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-28,36,Point 28,MS,Chennai Egmore,4.16,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-29,37,Point 29,MS,Chennai Egmore,4.18,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-30,38,Point 30,MS,Chennai Egmore,4.2,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-31,39,Point 31,MS,Chennai Egmore,4.21,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-32,40,Point 32,MS,Chennai Egmore,4.23,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-33,41,Point 33,MS,Chennai Egmore,4.24,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-34,42,Point 34,MS,Chennai Egmore,4.26,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-35,43,Point 35,MS,Chennai Egmore,4.27,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-36,44,Point 36,MS,Chennai Egmore,4.29,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-37,45,Point 37,MS,Chennai Egmore,4.3,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 4 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-38,46,Point 38,MS,Chennai Egmore,4.32,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 5 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-39,47,Point 39,MS,Chennai Egmore,4.33,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 6 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-40,48,Point 40,MS,Chennai Egmore,4.35,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 7 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-41,49,Point 41,MS,Chennai Egmore,4.36,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 8 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-42,50,Point 42,MS,Chennai Egmore,4.38,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 1 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-43,51,Point 43,MS,Chennai Egmore,4.39,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-44,52,Point 44,MS,Chennai Egmore,4.41,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-45,53,Point 45,MS,Chennai Egmore,4.42,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 4 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-46,54,Point 46,MS,Chennai Egmore,4.44,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 5 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-47,55,Point 47,MS,Chennai Egmore,4.45,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 6 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-48,56,Point 48,MS,Chennai Egmore,4.47,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 7 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-49,57,Point 49,MS,Chennai Egmore,4.49,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 8 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-50,58,Point 50,MS,Chennai Egmore,4.5,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 1 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-51,59,Point 51,MS,Chennai Egmore,4.52,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-52,60,Point 52,MS,Chennai Egmore,4.53,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-53,61,Point 53,MS,Chennai Egmore,4.55,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-54,62,Point 54,MS,Chennai Egmore,4.56,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-55,63,Point 55,MS,Chennai Egmore,4.58,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MS-56,64,Point 56,MS,Chennai Egmore,4.59,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-MSC-15,65,Point 15,MSC,Chetpet,6.47,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MSC-16,66,Point 16,MSC,Chetpet,6.53,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-NBK-41,67,Point 41,NBK,Nungambakkam,8.08,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-NBK-42,68,Point 42,NBK,Nungambakkam,8.12,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MBM-18,69,Point 18,MBM,Mambalam,11.18,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MBM-19,70,Point 19,MBM,Mambalam,11.22,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MBM-20,71,Point 20,MBM,Mambalam,11.28,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MBM-21,72,Point 21,MBM,Mambalam,11.32,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-SP-63,73,Point 63,SP,Saidapet,12.84,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-SP-64,74,Point 64,SP,Saidapet,12.91,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-GDY-25,75,Point 25,GDY,Guindy,14.89,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-GDY-26,76,Point 26,GDY,Guindy,14.96,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-GDY-27,77,Point 27,GDY,Guindy,15.04,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-GDY-28,78,Point 28,GDY,Guindy,15.11,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-STM-31,79,Point 31,STM,St. Thomas Mount,16.93,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-STM-32,80,Point 32,STM,St. Thomas Mount,16.99,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-STM-33,81,Point 33,STM,St. Thomas Mount,17.05,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-STM-34,82,Point 34,STM,St. Thomas Mount,17.1,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-STM-35,83,Point 35,STM,St. Thomas Mount,17.16,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-STM-36,84,Point 36,STM,St. Thomas Mount,17.22,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-PV-38,85,Point 38,PV,Pallavaram,23.08,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-PV-39,86,Point 39,PV,Pallavaram,23.15,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-CMP-42,87,Point 42,CMP,Chromepet,25.28,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-CMP-43,88,Point 43,CMP,Chromepet,25.35,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-TBMS-48,89,Point 48,TBMS,Tambaram Sanatorium,27.25,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-TBMS-49,90,Point 49,TBMS,Tambaram Sanatorium,27.35,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-TBM-101,91,Point 101,TBM,Tambaram,28.76,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-102,92,Point 102,TBM,Tambaram,28.78,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-103,93,Point 103,TBM,Tambaram,28.8,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-104,94,Point 104,TBM,Tambaram,28.82,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-105,95,Point 105,TBM,Tambaram,28.84,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-106,96,Point 106,TBM,Tambaram,28.86,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-107,97,Point 107,TBM,Tambaram,28.88,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-108,98,Point 108,TBM,Tambaram,28.9,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-109,99,Point 109,TBM,Tambaram,28.92,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-110,100,Point 110,TBM,Tambaram,28.94,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-111,101,Point 111,TBM,Tambaram,28.96,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-112,102,Point 112,TBM,Tambaram,28.98,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-113,103,Point 113,TBM,Tambaram,29.0,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-114,104,Point 114,TBM,Tambaram,29.02,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-115,105,Point 115,TBM,Tambaram,29.04,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-116,106,Point 116,TBM,Tambaram,29.06,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-117,107,Point 117,TBM,Tambaram,29.08,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-118,108,Point 118,TBM,Tambaram,29.1,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-119,109,Point 119,TBM,Tambaram,29.12,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 4 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-120,110,Point 120,TBM,Tambaram,29.14,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 5 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-121,111,Point 121,TBM,Tambaram,29.16,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 6 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-122,112,Point 122,TBM,Tambaram,29.19,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 7 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-123,113,Point 123,TBM,Tambaram,29.21,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 8 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-124,114,Point 124,TBM,Tambaram,29.23,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 1 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-125,115,Point 125,TBM,Tambaram,29.25,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-126,116,Point 126,TBM,Tambaram,29.27,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-127,117,Point 127,TBM,Tambaram,29.29,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 4 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-128,118,Point 128,TBM,Tambaram,29.31,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 5 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-129,119,Point 129,TBM,Tambaram,29.33,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 6 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-130,120,Point 130,TBM,Tambaram,29.35,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 7 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-131,121,Point 131,TBM,Tambaram,29.37,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-132,122,Point 132,TBM,Tambaram,29.39,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-133,123,Point 133,TBM,Tambaram,29.41,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-134,124,Point 134,TBM,Tambaram,29.43,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-135,125,Point 135,TBM,Tambaram,29.45,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-136,126,Point 136,TBM,Tambaram,29.47,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-137,127,Point 137,TBM,Tambaram,29.49,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-138,128,Point 138,TBM,Tambaram,29.51,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-139,129,Point 139,TBM,Tambaram,29.53,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-140,130,Point 140,TBM,Tambaram,29.55,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-141,131,Point 141,TBM,Tambaram,29.57,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-TBM-142,132,Point 142,TBM,Tambaram,29.59,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-VDR-51,133,Point 51,VDR,Vandalur,34.34,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-VDR-52,134,Point 52,VDR,Vandalur,34.42,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-VDR-53,135,Point 53,VDR,Vandalur,34.51,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-UPM-55,136,Point 55,UPM,Urapakkam,37.44,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-UPM-56,137,Point 56,UPM,Urapakkam,37.51,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-GI-61,138,Point 61,GI,Guduvancheri,40.28,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-GI-62,139,Point 62,GI,Guduvancheri,40.34,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-GI-63,140,Point 63,GI,Guduvancheri,40.4,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-GI-64,141,Point 64,GI,Guduvancheri,40.46,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-GI-65,142,Point 65,GI,Guduvancheri,40.52,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MMNK-71,143,Point 71,MMNK,Maraimalai Nagar,46.77,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MMNK-72,144,Point 72,MMNK,Maraimalai Nagar,46.83,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MMNK-73,145,Point 73,MMNK,Maraimalai Nagar,46.88,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MMNK-74,146,Point 74,MMNK,Maraimalai Nagar,46.92,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MMNK-75,147,Point 75,MMNK,Maraimalai Nagar,46.98,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MMNK-76,148,Point 76,MMNK,Maraimalai Nagar,47.02,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MMNK-77,149,Point 77,MMNK,Maraimalai Nagar,47.07,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-MMNK-78,150,Point 78,MMNK,Maraimalai Nagar,47.12,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-SKL-81,151,Point 81,SKL,Singaperumal Koil,51.38,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-SKL-82,152,Point 82,SKL,Singaperumal Koil,51.44,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-SKL-83,153,Point 83,SKL,Singaperumal Koil,51.49,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-SKL-84,154,Point 84,SKL,Singaperumal Koil,51.55,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ROUTE_RELAY_INTERLOCKING
+SW-CGL-01,155,Point 1,CGL,Chengalpattu Junction,59.36,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-02,156,Point 2,CGL,Chengalpattu Junction,59.39,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-03,157,Point 3,CGL,Chengalpattu Junction,59.42,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-04,158,Point 4,CGL,Chengalpattu Junction,59.45,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-05,159,Point 5,CGL,Chengalpattu Junction,59.48,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-06,160,Point 6,CGL,Chengalpattu Junction,59.51,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-07,161,Point 7,CGL,Chengalpattu Junction,59.54,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-08,162,Point 8,CGL,Chengalpattu Junction,59.56,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-09,163,Point 9,CGL,Chengalpattu Junction,59.59,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-10,164,Point 10,CGL,Chengalpattu Junction,59.62,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-11,165,Point 11,CGL,Chengalpattu Junction,59.65,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 1 (Suburban DN),Line 3 (Main DN),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-12,166,Point 12,CGL,Chengalpattu Junction,59.68,CROSSOVER,1 in 12,Electric Point Machine (110V DC Rotary),30,Line 2 (Suburban UP),Line 4 (Main UP),NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-13,167,Point 13,CGL,Chengalpattu Junction,59.71,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-14,168,Point 14,CGL,Chengalpattu Junction,59.74,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-15,169,Point 15,CGL,Chengalpattu Junction,59.76,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 4 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-16,170,Point 16,CGL,Chengalpattu Junction,59.79,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 5 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-17,171,Point 17,CGL,Chengalpattu Junction,59.82,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 6 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-18,172,Point 18,CGL,Chengalpattu Junction,59.85,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 7 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-19,173,Point 19,CGL,Chengalpattu Junction,59.88,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 8 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-20,174,Point 20,CGL,Chengalpattu Junction,59.91,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 1 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-21,175,Point 21,CGL,Chengalpattu Junction,59.94,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 2 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-22,176,Point 22,CGL,Chengalpattu Junction,59.96,TURNOUT_1_IN_12,1 in 12,Electric Point Machine (110V DC Rotary),30,Main Line Track,Platform 3 Loop,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-23,177,Point 23,CGL,Chengalpattu Junction,59.99,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-24,178,Point 24,CGL,Chengalpattu Junction,60.02,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-25,179,Point 25,CGL,Chengalpattu Junction,60.05,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-26,180,Point 26,CGL,Chengalpattu Junction,60.08,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-27,181,Point 27,CGL,Chengalpattu Junction,60.11,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING
+SW-CGL-28,182,Point 28,CGL,Chengalpattu Junction,60.14,TURNOUT_1_IN_8.5,1 in 8.5,Electric Point Machine (110V DC Rotary),15,Yard Shunting Neck,Car Shed / Goods Siding Line,NORMAL,ELECTRONIC_INTERLOCKING

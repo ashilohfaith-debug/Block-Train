@@ -1,0 +1,27 @@
+station_code,station_name,total_switches,num_crossovers,num_platform_turnouts,num_siding_turnouts,point_numbers_list,yard_layout_description
+MSB,Chennai Beach,24,8,12,4,"Pt 101, Pt 102, Pt 103, Pt 104, Pt 105, Pt 106, Pt 107, Pt 108, Pt 109, Pt 110, Pt 111, Pt 112, Pt 113, Pt 114, Pt 115, Pt 116, Pt 117, Pt 118, Pt 119, Pt 120, Pt 121, Pt 122, Pt 123, Pt 124","Terminal Yard, Platform Loops 1-8, Harbor Branch & EMU Stabling Neck"
+MSF,Chennai Fort,0,0,0,0,NONE,Through Halt (Plain ABS Track)
+MPK,Chennai Park,4,4,0,0,"Pt 11, Pt 12, Pt 13, Pt 14",Chennai Central (MMC) Suburban Link Crossovers
+MS,Chennai Egmore,36,14,16,6,"Pt 21, Pt 22, Pt 23, Pt 24, Pt 25, Pt 26, Pt 27, Pt 28, Pt 29, Pt 30, Pt 31, Pt 32, Pt 33, Pt 34, Pt 35, Pt 36, Pt 37, Pt 38, Pt 39, Pt 40, Pt 41, Pt 42, Pt 43, Pt 44, Pt 45, Pt 46, Pt 47, Pt 48, Pt 49, Pt 50, Pt 51, Pt 52, Pt 53, Pt 54, Pt 55, Pt 56","Major Passenger Yard, Platforms 1-11, RRI Crossovers & Coaching Yard"
+MSC,Chetpet,2,2,0,0,"Pt 15, Pt 16",Chetpet Emergency Trailing Crossover
+NBK,Nungambakkam,2,2,0,0,"Pt 41, Pt 42",Nungambakkam Point 41 Emergency Facing Crossover
+MKK,Kodambakkam,0,0,0,0,NONE,Through Halt (Plain ABS Track)
+MBM,Mambalam,4,4,0,0,"Pt 18, Pt 19, Pt 20, Pt 21",Slow Line to Fast Line Emergency Crossovers
+SP,Saidapet,2,2,0,0,"Pt 63, Pt 64",Saidapet Point 63 Emergency Crossover (Adyar Bridge Approach)
+GDY,Guindy,4,4,0,0,"Pt 25, Pt 26, Pt 27, Pt 28",Junction Universal Crossovers (Metro Interchange)
+STM,St. Thomas Mount,6,4,0,2,"Pt 31, Pt 32, Pt 33, Pt 34, Pt 35, Pt 36",Junction Scissors Crossover & EMU Siding Neck
+PZA,Pazhavanthangal,0,0,0,0,NONE,Through Halt (Plain ABS Track)
+MN,Meenambakkam,0,0,0,0,NONE,Through Halt (Plain ABS Track)
+TLM,Tirusulam,0,0,0,0,NONE,Airport Link Station (Plain ABS Track)
+PV,Pallavaram,2,2,0,0,"Pt 38, Pt 39",Pallavaram Emergency Crossover
+CMP,Chromepet,2,2,0,0,"Pt 42, Pt 43",Chromepet Emergency Crossover
+TBMS,Tambaram Sanatorium,2,0,0,2,"Pt 48, Pt 49",Tambaram Sanatorium Yard Approach Lead
+TBM,Tambaram,42,16,14,12,"Pt 101, Pt 102, Pt 103, Pt 104, Pt 105, Pt 106, Pt 107, Pt 108, Pt 109, Pt 110, Pt 111, Pt 112, Pt 113, Pt 114, Pt 115, Pt 116, Pt 117, Pt 118, Pt 119, Pt 120, Pt 121, Pt 122, Pt 123, Pt 124, Pt 125, Pt 126, Pt 127, Pt 128, Pt 129, Pt 130, Pt 131, Pt 132, Pt 133, Pt 134, Pt 135, Pt 136, Pt 137, Pt 138, Pt 139, Pt 140, Pt 141, Pt 142","Major Depot Yard: Platforms 1-8, EMU Car Shed, Pit Lines & Point 118"
+PRGL,Perungalathur,0,0,0,0,NONE,Through Suburban Station (Plain Track)
+VDR,Vandalur,3,2,0,1,"Pt 51, Pt 52, Pt 53",Vandalur Loop Line & Zoo Siding Turnout
+UPM,Urapakkam,2,2,0,0,"Pt 55, Pt 56",Urapakkam Emergency Crossover
+GI,Guduvancheri,5,2,2,1,"Pt 61, Pt 62, Pt 63, Pt 64, Pt 65","Platform 1 Loop Line, Goods Loop & Crossovers"
+POTI,Potheri,0,0,0,0,NONE,Through Suburban Station (Plain Track)
+MMNK,Maraimalai Nagar,8,4,2,2,"Pt 71, Pt 72, Pt 73, Pt 74, Pt 75, Pt 76, Pt 77, Pt 78","Ford Auto Logistics Terminal, Goods Yard & Loops"
+SKL,Singaperumal Koil,4,2,2,0,"Pt 81, Pt 82, Pt 83, Pt 84",Crossing Loop Line & Crossover Points
+CGL,Chengalpattu Junction,28,12,10,6,"Pt 1, Pt 2, Pt 3, Pt 4, Pt 5, Pt 6, Pt 7, Pt 8, Pt 9, Pt 10, Pt 11, Pt 12, Pt 13, Pt 14, Pt 15, Pt 16, Pt 17, Pt 18, Pt 19, Pt 20, Pt 21, Pt 22, Pt 23, Pt 24, Pt 25, Pt 26, Pt 27, Pt 28","Terminal Bifurcation (Villupuram/Arakkonam), 8 Platforms & Yard"

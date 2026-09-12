@@ -1,7 +1,7 @@
 -- ====================================================================
 -- PostgreSQL Schema for BlockTrain Railway Network & Restricting Variables
 -- Southern Railway South Line (Chennai Beach MSB to Chengalpattu CGL)
--- 26 Stations Corridor with Complete Signals & Level Crossings Infrastructure
+-- 26 Stations Corridor with Complete Signals, Crossings & Switches Infrastructure
 -- ====================================================================
 
 -- 1. Stations Master Table
@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS stations (
     distance_from_origin_km NUMERIC(6, 2) NOT NULL,    -- Cumulative chainage from MSB (0.00 to 59.84 km)
     baseline_run_time_minutes NUMERIC(5, 2) NOT NULL,  -- Pure transit run time (total route ~119 mins)
     signals_to_next_station INT NOT NULL DEFAULT 0,    -- Exact count of signals to next station
-    active_lcs_to_next_station INT NOT NULL DEFAULT 0  -- Count of level crossings to next station
+    active_lcs_to_next_station INT NOT NULL DEFAULT 0, -- Count of level crossings to next station
+    railroad_switches_count INT NOT NULL DEFAULT 0     -- Total switches / turnouts located at this station
 );
 
 -- 2. Railway Crossings Master (All 13 Level Crossings: LC-26 to LC-64)
@@ -68,8 +69,37 @@ CREATE TABLE IF NOT EXISTS station_signal_counts (
     avg_signal_spacing_m NUMERIC(6, 1) NOT NULL
 );
 
--- 5. Child Table: Signal Events
--- Captures dynamic aspect state changes and holding events
+-- 5. Railroad Switches Master (Inventory of all 182 Points & Crossings)
+CREATE TABLE IF NOT EXISTS railroad_switches_master (
+    switch_id VARCHAR(50) PRIMARY KEY,                 -- e.g. 'SW-SP-63', 'SW-TBM-118', 'SW-NBK-41'
+    switch_sequence_id INT NOT NULL,
+    point_number VARCHAR(30) NOT NULL,                 -- e.g. 'Point 63', 'Point 118'
+    station_code VARCHAR(10) NOT NULL REFERENCES stations(station_code),
+    station_name VARCHAR(100) NOT NULL,
+    chainage_km NUMERIC(6, 2) NOT NULL,
+    switch_type VARCHAR(50) NOT NULL,                  -- 'CROSSOVER', 'TURNOUT_1_IN_12', 'TURNOUT_1_IN_8.5'
+    turnout_angle VARCHAR(20) NOT NULL,                -- '1 in 12', '1 in 8.5'
+    point_machine_type VARCHAR(100) NOT NULL,          -- 'Electric Point Machine (110V DC Rotary)'
+    max_diverging_speed_kmh INT NOT NULL,              -- 30, 15, or 50 km/h
+    connects_from_line VARCHAR(100) NOT NULL,
+    connects_to_line VARCHAR(100) NOT NULL,
+    normal_setting VARCHAR(20) DEFAULT 'NORMAL',
+    interlocking_type VARCHAR(50) NOT NULL             -- 'ELECTRONIC_INTERLOCKING' or 'ROUTE_RELAY_INTERLOCKING'
+);
+
+-- 6. Station Switch Counts Table
+CREATE TABLE IF NOT EXISTS station_switch_counts (
+    station_code VARCHAR(10) PRIMARY KEY REFERENCES stations(station_code),
+    station_name VARCHAR(100) NOT NULL,
+    total_switches INT NOT NULL,
+    num_crossovers INT NOT NULL,
+    num_platform_turnouts INT NOT NULL,
+    num_siding_turnouts INT NOT NULL,
+    point_numbers_list TEXT NOT NULL,
+    yard_layout_description TEXT NOT NULL
+);
+
+-- 7. Child Table: Signal Events
 CREATE TABLE IF NOT EXISTS signals_events (
     event_id SERIAL PRIMARY KEY,
     signal_id VARCHAR(50) NOT NULL REFERENCES corridor_signals_master(signal_id) ON DELETE CASCADE,
@@ -84,8 +114,7 @@ CREATE TABLE IF NOT EXISTS signals_events (
     delay_minutes NUMERIC(5, 2) NOT NULL DEFAULT 0.00
 );
 
--- 6. Child Table: Railway Gate Openings (Level Crossings)
--- Captures dynamic gate openings and delays across active corridor gates
+-- 8. Child Table: Railway Gate Openings (Level Crossings)
 CREATE TABLE IF NOT EXISTS gate_openings (
     opening_id SERIAL PRIMARY KEY,
     crossing_code VARCHAR(20) NOT NULL REFERENCES railway_crossings_master(crossing_code) ON DELETE CASCADE,
@@ -101,7 +130,7 @@ CREATE TABLE IF NOT EXISTS gate_openings (
     delay_impact_minutes NUMERIC(5, 2) NOT NULL
 );
 
--- 7. Child Table: Track Maintenance (Civil / P-Way)
+-- 9. Child Table: Track Maintenance (Civil / P-Way)
 CREATE TABLE IF NOT EXISTS track_maintenance (
     block_id SERIAL PRIMARY KEY,
     station_id INT NOT NULL REFERENCES stations(station_id) ON DELETE CASCADE,
@@ -115,7 +144,7 @@ CREATE TABLE IF NOT EXISTS track_maintenance (
     speed_restriction_kmh INT DEFAULT 30
 );
 
--- 8. Child Table: Engineering Maintenance (Civil Structural)
+-- 10. Child Table: Engineering Maintenance (Civil Structural)
 CREATE TABLE IF NOT EXISTS engineering_maintenance (
     block_id SERIAL PRIMARY KEY,
     station_id INT NOT NULL REFERENCES stations(station_id) ON DELETE CASCADE,
@@ -127,7 +156,7 @@ CREATE TABLE IF NOT EXISTS engineering_maintenance (
     duration_minutes INT NOT NULL
 );
 
--- 9. Child Table: Traction Maintenance (Electrical / TRD)
+-- 11. Child Table: Traction Maintenance (Electrical / TRD)
 CREATE TABLE IF NOT EXISTS traction_maintenance (
     block_id SERIAL PRIMARY KEY,
     station_id INT NOT NULL REFERENCES stations(station_id) ON DELETE CASCADE,
@@ -141,7 +170,7 @@ CREATE TABLE IF NOT EXISTS traction_maintenance (
     power_block_de_energized BOOLEAN DEFAULT TRUE
 );
 
--- 10. Child Table: Accident & Incident Emergency Events
+-- 12. Child Table: Accident & Incident Emergency Events
 CREATE TABLE IF NOT EXISTS accident_incidents (
     accident_id SERIAL PRIMARY KEY,
     incident_timestamp TIMESTAMP NOT NULL,
@@ -162,6 +191,8 @@ CREATE INDEX IF NOT EXISTS idx_stations_code ON stations(station_code);
 CREATE INDEX IF NOT EXISTS idx_signals_chainage ON corridor_signals_master(chainage_km);
 CREATE INDEX IF NOT EXISTS idx_signals_section ON corridor_signals_master(section_from_station_code, section_to_station_code);
 CREATE INDEX IF NOT EXISTS idx_crossings_chainage ON railway_crossings_master(chainage_km);
+CREATE INDEX IF NOT EXISTS idx_switches_station ON railroad_switches_master(station_code);
+CREATE INDEX IF NOT EXISTS idx_switches_point ON railroad_switches_master(point_number);
 CREATE INDEX IF NOT EXISTS idx_signals_events_ts ON signals_events(event_timestamp);
 CREATE INDEX IF NOT EXISTS idx_gates_open_ts ON gate_openings(open_timestamp);
 CREATE INDEX IF NOT EXISTS idx_track_maint_time ON track_maintenance(start_time, end_time);
