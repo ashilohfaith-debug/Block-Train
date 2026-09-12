@@ -11,11 +11,11 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
   const activeBlocks = React.useMemo(() => blocks.map(b => b.id), [blocks]);
   
   React.useEffect(() => {
-    // Initial fetch handled elsewhere, but poll every 5 seconds
-    // to automatically remove blocks that just expired in real-time.
+    useMaintenanceStore.getState().hydrate();
+    fetchBlocks();
     const interval = setInterval(() => {
       fetchBlocks();
-    }, 1000);
+    }, 2000);
     return () => clearInterval(interval);
   }, [fetchBlocks]);
 

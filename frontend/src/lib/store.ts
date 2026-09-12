@@ -19,85 +19,134 @@ interface MaintenanceStore {
   fetchBlocks: () => Promise<void>;
   addBlock: (block: Block) => Promise<void>;
   removeBlock: (id: string) => Promise<void>;
+  applyAISchedule: (blocks: Block[]) => void;
+  clearAllBlocks: () => void;
+  hydrate: () => void;
 }
+
+const STORAGE_KEY = 'block_train_active_blocks';
+
+const loadSavedBlocks = (): Block[] => {
+  if (typeof window === 'undefined') return [];
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveBlocks = (blocks: Block[]) => {
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(blocks));
+    } catch (e) {
+      console.error('Failed to save blocks to localStorage:', e);
+    }
+  }
+};
 
 const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 const API_URL = `${backendUrl}/api/active_blocks`;
 
-export const useMaintenanceStore = create<MaintenanceStore>((set) => ({
+export const useMaintenanceStore = create<MaintenanceStore>((set, get) => ({
   activeBlocks: [],
   trains: [],
   dispatchAudioUrl: null,
   setTrains: (trains) => set({ trains }),
   setDispatchAudioUrl: (url) => set({ dispatchAudioUrl: url }),
   
+  hydrate: () => {
+    const local = loadSavedBlocks();
+    if (local.length > 0) {
+      set({ activeBlocks: local });
+    }
+  },
+  
   fetchBlocks: async () => {
     try {
       const res = await fetch(API_URL);
+      if (!res.ok) throw new Error('API unreachable');
       const data = await res.json();
-      if (data.success) {
-        const now = new Date();
-        const activeOnly = data.blocks.filter((b: Block) => {
-          let dateStr = b.date;
-          // If backend sent a UTC ISO string, convert it to local YYYY-MM-DD
-          if (b.date.includes('T')) {
-            const d = new Date(b.date);
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-            dateStr = `${year}-${month}-${day}`;
+      if (data.success && Array.isArray(data.blocks)) {
+        // Merge server blocks with locally preserved active blocks
+        set((state) => {
+          const current = [...state.activeBlocks];
+          for (const sb of data.blocks) {
+            if (!current.some((b) => b.id === sb.id)) {
+              current.push(sb);
+            }
           }
-          const start = new Date(`${dateStr}T${b.fromTime}:00`);
-          const end = new Date(`${dateStr}T${b.toTime}:00`);
-          return now >= start && now <= end;
+          saveBlocks(current);
+          return { activeBlocks: current };
         });
-        set({ activeBlocks: activeOnly });
       }
-    } catch (err) {
-      console.error('Failed to fetch blocks:', err);
+    } catch {
+      // If server unreachable, preserve local activeBlocks
+      const local = loadSavedBlocks();
+      if (local.length > 0 && get().activeBlocks.length === 0) {
+        set({ activeBlocks: local });
+      }
     }
   },
 
   addBlock: async (block) => {
-    try {
-      const now = new Date();
-      let dateStr = block.date;
-      if (block.date.includes('T')) {
-        const d = new Date(block.date);
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        dateStr = `${year}-${month}-${day}`;
-      }
-      const start = new Date(`${dateStr}T${block.fromTime}:00`);
-      const end = new Date(`${dateStr}T${block.toTime}:00`);
-      const isLive = now >= start && now <= end;
+    // Immediately add and persist block so it reflects on map in real time!
+    set((state) => {
+      const updated = [...state.activeBlocks.filter((b) => b.id !== block.id), block];
+      saveBlocks(updated);
+      return { activeBlocks: updated };
+    });
 
-      // Optimistic UI update only if it's currently within the time window
-      if (isLive) {
-        set((state) => ({ activeBlocks: [...state.activeBlocks.filter(b => b.id !== block.id), block] }));
-      }
-      
+    try {
       await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(block)
       });
-    } catch (err) {
-      console.error('Failed to add block:', err);
+    } catch {
+      // Backend optional
     }
   },
 
   removeBlock: async (id) => {
+    set((state) => {
+      const updated = state.activeBlocks.filter((b) => b.id !== id);
+      saveBlocks(updated);
+      return { activeBlocks: updated };
+    });
+
     try {
-      // Optimistic UI update
-      set((state) => ({ activeBlocks: state.activeBlocks.filter((b) => b.id !== id) }));
-      
       await fetch(`${API_URL}/${encodeURIComponent(id)}`, {
         method: 'DELETE'
       });
-    } catch (err) {
-      console.error('Failed to remove block:', err);
+    } catch {
+      // Backend optional
     }
+  },
+
+  applyAISchedule: (blocks) => {
+    set((state) => {
+      const existingMap = new Map(state.activeBlocks.map((b) => [b.id, b]));
+      for (const b of blocks) {
+        existingMap.set(b.id, b);
+      }
+      const combined = Array.from(existingMap.values());
+      saveBlocks(combined);
+      return { activeBlocks: combined };
+    });
+  },
+
+  clearAllBlocks: () => {
+    saveBlocks([]);
+    set({ activeBlocks: [] });
   }
 }));
+
+// Client-side auto-hydration on page load
+if (typeof window !== 'undefined') {
+  const initial = loadSavedBlocks();
+  if (initial.length > 0) {
+    useMaintenanceStore.setState({ activeBlocks: initial });
+  }
+}

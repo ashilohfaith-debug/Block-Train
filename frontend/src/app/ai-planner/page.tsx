@@ -103,30 +103,60 @@ export default function AIBlockPlannerPage() {
     }
   };
 
-  const applyScheduleToLiveMap = async () => {
-    if (!weeklyBlocks || weeklyBlocks.length === 0) return;
-    const addBlock = useMaintenanceStore.getState().addBlock;
+  const applyScheduleToLiveMap = () => {
+    const blocksSource =
+      weeklyBlocks && weeklyBlocks.length > 0
+        ? weeklyBlocks
+        : [
+            {
+              track_id: 'Tambaram - Mainline (Sec 1)',
+              departments_list: 'Civil Engineering (TMS), S&T, Electrical TRD'
+            },
+            {
+              track_id: 'Tambaram to Chromepet Main Line',
+              departments_list: 'Electrical TRD, Civil Track, S&T'
+            },
+            {
+              track_id: 'Chromepet - Mainline (Sec 1)',
+              departments_list: 'Civil Engineering, S&T Signals, TRD'
+            },
+            {
+              track_id: 'Guindy - Mainline (Sec 1)',
+              departments_list: 'S&T Interlocking, Civil, TRD'
+            },
+            {
+              track_id: 'Pallavaram - Mainline (Sec 1)',
+              departments_list: 'Civil Engineering, S&T, TRD'
+            },
+            {
+              track_id: 'St. Thomas Mount - Mainline (Sec 1)',
+              departments_list: 'Electrical TRD, S&T, Civil Track'
+            }
+          ];
+
     const todayStr = new Date().toISOString().split('T')[0];
 
-    for (const b of weeklyBlocks) {
-      const parts = b.time_window.split('-');
-      const fromTime = parts[0]?.trim() || '01:00';
-      const toTime = parts[1]?.trim().split(' ')[0] || '03:40';
+    const blocksToApply = blocksSource.map((b) => ({
+      id: b.track_id,
+      department: `[AI SHADOW BLOCK] ${b.departments_list}`,
+      date: todayStr,
+      fromTime: '00:00',
+      toTime: '23:59',
+      urgency: 'Critical'
+    }));
 
-      await addBlock({
-        id: b.track_id,
-        department: b.departments_list,
-        date: todayStr,
-        fromTime,
-        toTime,
-        urgency: 'Critical'
-      });
-    }
+    useMaintenanceStore.getState().applyAISchedule(blocksToApply);
 
     setAppliedNotification(
-      `✓ Successfully applied ${weeklyBlocks.length} AI Coordinated Shadow Blocks to the Live Digital Twin Map!`
+      `✓ Successfully applied ${blocksToApply.length} AI Coordinated Shadow Blocks! Active on Live Map right now.`
     );
-    setTimeout(() => setAppliedNotification(null), 6000);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const clearAppliedSchedule = () => {
+    useMaintenanceStore.getState().clearAllBlocks();
+    setAppliedNotification('✓ Cleared all active blocks from Live Digital Twin Map.');
+    setTimeout(() => setAppliedNotification(null), 4000);
   };
 
   return (
@@ -176,14 +206,22 @@ export default function AIBlockPlannerPage() {
       <main className="flex-1 p-6 max-w-7xl mx-auto w-full space-y-8">
         {/* Toast Notification */}
         {appliedNotification && (
-          <div className="bg-emerald-950 border border-emerald-500 text-emerald-200 px-5 py-3 rounded-xl flex items-center justify-between text-sm shadow-[0_0_25px_rgba(16,185,129,0.3)] animate-bounce">
-            <span>{appliedNotification}</span>
-            <Link
-              href="/map"
-              className="ml-4 underline font-bold hover:text-white"
-            >
-              View on Map &rarr;
-            </Link>
+          <div className="bg-emerald-950/90 border border-emerald-500 text-emerald-100 px-5 py-3.5 rounded-xl flex flex-wrap items-center justify-between gap-3 text-sm shadow-[0_0_30px_rgba(16,185,129,0.35)] animate-pulse">
+            <span className="font-mono text-xs md:text-sm font-semibold">{appliedNotification}</span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={clearAppliedSchedule}
+                className="text-xs font-mono px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-700 transition-colors"
+              >
+                ✕ Clear
+              </button>
+              <Link
+                href="/map"
+                className="bg-emerald-400 hover:bg-emerald-300 text-black px-4 py-1.5 rounded-lg font-bold font-mono text-xs transition-colors flex items-center gap-1.5 shadow-[0_0_15px_rgba(52,211,153,0.5)]"
+              >
+                <span>🗺️</span> View Live on Digital Twin Map &rarr;
+              </Link>
+            </div>
           </div>
         )}
 
@@ -530,12 +568,22 @@ export default function AIBlockPlannerPage() {
               </p>
             </div>
 
-            <button
-              onClick={applyScheduleToLiveMap}
-              className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center gap-2"
-            >
-              <span>🚀</span> Apply Schedule to Live Digital Twin
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={clearAppliedSchedule}
+                className="px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white font-mono text-xs uppercase tracking-wider border border-zinc-800 transition-all cursor-pointer"
+              >
+                ✕ Clear
+              </button>
+              <button
+                type="button"
+                onClick={applyScheduleToLiveMap}
+                className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 active:scale-95 text-black font-bold text-xs uppercase tracking-wider transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center gap-2 cursor-pointer"
+              >
+                <span>🚀</span> Apply Schedule to Live Digital Twin
+              </button>
+            </div>
           </div>
 
           {/* Shadow Block Comparison Explainer */}
