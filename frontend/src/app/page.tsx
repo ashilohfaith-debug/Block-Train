@@ -107,14 +107,46 @@ export default function LandingPage() {
       </div>
 
       {/* Links Grid */}
-      <div className="relative z-20 flex flex-col md:flex-row gap-8 w-full max-w-5xl px-8" style={{ perspective: '1000px' }}>
+      <div className="relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl px-6" style={{ perspective: '1000px' }}>
         
+        {/* AI Planner Link (PS 26027) */}
+        <Link 
+          href="/ai-planner"
+          className="group relative bg-[#050505] border border-zinc-900 p-7 hover:bg-black transition-all duration-300 shadow-2xl"
+          style={{
+            transform: `rotateY(${mousePosition.x * 4}deg) rotateX(${mousePosition.y * -4}deg)`,
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
+          
+          <div className="relative" style={{ transform: 'translateZ(20px)' }}>
+            <div className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest mb-1">
+              PS 26027 // AI CORE
+            </div>
+            <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-cyan-400 transition-colors">
+              AI Planner
+            </h2>
+            <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-cyan-400 group-hover:w-full transition-all duration-500" />
+            <p className="text-zinc-500 font-mono text-xs mb-10 leading-relaxed">
+              &gt; live ml triage &amp; mpi<br/>
+              &gt; shadow block bundling<br/>
+              &gt; 86.1% downtime saved
+            </p>
+            <div className="flex justify-between items-center text-xs font-mono font-bold tracking-widest text-zinc-700 group-hover:text-white transition-colors">
+              <span>LAUNCH_AI_MODEL</span>
+              <span className="text-cyan-400 font-black">[{'>'}]</span>
+            </div>
+          </div>
+        </Link>
+
         {/* Map Link */}
         <Link 
           href="/map"
-          className="group relative flex-1 bg-[#050505] border border-zinc-900 p-8 hover:bg-black transition-all duration-300 shadow-2xl"
+          className="group relative bg-[#050505] border border-zinc-900 p-7 hover:bg-black transition-all duration-300 shadow-2xl"
           style={{
-            transform: `rotateY(${mousePosition.x * 5}deg) rotateX(${mousePosition.y * -5}deg)`,
+            transform: `rotateY(${mousePosition.x * 4}deg) rotateX(${mousePosition.y * -4}deg)`,
             transformStyle: 'preserve-3d'
           }}
         >
@@ -122,11 +154,14 @@ export default function LandingPage() {
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-red-500 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
           
           <div className="relative" style={{ transform: 'translateZ(20px)' }}>
-            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-red-500 transition-colors">
+            <div className="text-[10px] font-mono text-red-400 uppercase tracking-widest mb-1">
+              FLEET &amp; SIGNALS
+            </div>
+            <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-red-500 transition-colors">
               Live Map
             </h2>
             <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-red-500 group-hover:w-full transition-all duration-500" />
-            <p className="text-zinc-500 font-mono text-sm mb-12">
+            <p className="text-zinc-500 font-mono text-xs mb-10 leading-relaxed">
               &gt; monitor active fleet<br/>
               &gt; real-time interlocking<br/>
               &gt; telemetry parsing
@@ -141,9 +176,9 @@ export default function LandingPage() {
         {/* Maintenance Link */}
         <Link 
           href="/maintenance"
-          className="group relative flex-1 bg-[#050505] border border-zinc-900 p-8 hover:bg-black transition-all duration-300 shadow-2xl"
+          className="group relative bg-[#050505] border border-zinc-900 p-7 hover:bg-black transition-all duration-300 shadow-2xl"
           style={{
-            transform: `rotateY(${mousePosition.x * 5}deg) rotateX(${mousePosition.y * -5}deg)`,
+            transform: `rotateY(${mousePosition.x * 4}deg) rotateX(${mousePosition.y * -4}deg)`,
             transformStyle: 'preserve-3d'
           }}
         >
@@ -151,11 +186,14 @@ export default function LandingPage() {
           <div className="absolute bottom-0 right-0 w-[1px] h-full bg-gradient-to-t from-transparent via-yellow-500 to-transparent scale-y-0 group-hover:scale-y-100 transition-transform duration-700" />
           
           <div className="relative" style={{ transform: 'translateZ(20px)' }}>
-            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-yellow-500 transition-colors">
+            <div className="text-[10px] font-mono text-yellow-400 uppercase tracking-widest mb-1">
+              TRACK CLOSURES
+            </div>
+            <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-yellow-500 transition-colors">
               Blocks
             </h2>
             <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-yellow-500 group-hover:w-full transition-all duration-500" />
-            <p className="text-zinc-500 font-mono text-sm mb-12">
+            <p className="text-zinc-500 font-mono text-xs mb-10 leading-relaxed">
               &gt; execute line blocks<br/>
               &gt; divert traffic flow<br/>
               &gt; maintenance override
@@ -170,9 +208,9 @@ export default function LandingPage() {
         {/* Workers Link */}
         <Link 
           href="/workers"
-          className="group relative flex-1 bg-[#050505] border border-zinc-900 p-8 hover:bg-black transition-all duration-300 shadow-2xl"
+          className="group relative bg-[#050505] border border-zinc-900 p-7 hover:bg-black transition-all duration-300 shadow-2xl"
           style={{
-            transform: `rotateY(${mousePosition.x * -5}deg) rotateX(${mousePosition.y * -5}deg)`,
+            transform: `rotateY(${mousePosition.x * -4}deg) rotateX(${mousePosition.y * -4}deg)`,
             transformStyle: 'preserve-3d'
           }}
         >
@@ -180,11 +218,14 @@ export default function LandingPage() {
           <div className="absolute bottom-0 left-0 w-[1px] h-full bg-gradient-to-t from-transparent via-emerald-500 to-transparent scale-y-0 group-hover:scale-y-100 transition-transform duration-700" />
           
           <div className="relative" style={{ transform: 'translateZ(20px)' }}>
-            <h2 className="text-4xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-emerald-400 transition-colors">
+            <div className="text-[10px] font-mono text-emerald-400 uppercase tracking-widest mb-1">
+              FIELD CREWS
+            </div>
+            <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-emerald-400 transition-colors">
               Workers
             </h2>
             <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-emerald-400 group-hover:w-full transition-all duration-500" />
-            <p className="text-zinc-500 font-mono text-sm mb-12">
+            <p className="text-zinc-500 font-mono text-xs mb-10 leading-relaxed">
               &gt; automated dispatch<br/>
               &gt; telecom bridging<br/>
               &gt; personnel routing

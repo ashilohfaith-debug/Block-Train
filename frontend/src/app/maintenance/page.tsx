@@ -11,6 +11,9 @@ import { VoiceRecorder } from '../../components/audio/VoiceRecorder';
 
 export default function MaintenancePage() {
   const [selectedTrack, setSelectedTrack] = useState<string | null>(null);
+  const [evaluatingAi, setEvaluatingAi] = useState(false);
+  const [aiDecision, setAiDecision] = useState<any>(null);
+  const [formUrgency, setFormUrgency] = useState('Critical');
   const addBlock = useMaintenanceStore((state) => state.addBlock);
   const activeBlocks = useMaintenanceStore((state) => state.activeBlocks);
   const removeBlock = useMaintenanceStore((state) => state.removeBlock);
@@ -18,6 +21,40 @@ export default function MaintenancePage() {
   React.useEffect(() => {
     useMaintenanceStore.getState().fetchBlocks();
   }, []);
+
+  const evaluateWithAi = async () => {
+    setEvaluatingAi(true);
+    try {
+      const station = selectedTrack?.split(' ')[0] || 'TBM';
+      const res = await fetch('/api/ai-decision', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          department: 'Track Maintenance (Civil)',
+          station_code: station,
+          safety_risk_score: 9,
+          overdue_days: 22
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAiDecision(data);
+        const mappedUrgency =
+          data.urgency_level === 'CRITICAL_EMERGENCY'
+            ? 'Critical'
+            : data.urgency_level === 'HIGH_PRIORITY'
+            ? 'High'
+            : data.urgency_level === 'MEDIUM_PLANNED'
+            ? 'Medium'
+            : 'Low';
+        setFormUrgency(mappedUrgency);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setEvaluatingAi(false);
+    }
+  };
 
   const times = Array.from({ length: 48 }, (_, i) => {
     const h = Math.floor(i / 2).toString().padStart(2, '0');
@@ -36,9 +73,14 @@ export default function MaintenancePage() {
         <div className="text-zinc-100 font-bold tracking-tight text-3xl pointer-events-auto">
           Block<span className="text-zinc-500 font-medium">Train</span>
         </div>
-        <Link href="/" className="group flex items-center text-zinc-400 font-mono text-[11px] tracking-widest hover:text-zinc-200 transition-colors pointer-events-auto bg-zinc-900/80 px-4 py-2 rounded-full border border-zinc-800 backdrop-blur-md">
-          <span className="mr-2 transition-transform duration-500 group-hover:-translate-x-1">&larr;</span> SYSTEM HUB
-        </Link>
+        <div className="flex items-center gap-3 pointer-events-auto">
+          <Link href="/ai-planner" className="group flex items-center text-cyan-400 font-mono text-[11px] tracking-widest hover:text-cyan-200 transition-colors bg-cyan-950/80 px-4 py-2 rounded-full border border-cyan-800 backdrop-blur-md shadow-[0_0_15px_rgba(34,211,238,0.2)]">
+            <span className="mr-2">⚡</span> AI PLANNER (PS 26027)
+          </Link>
+          <Link href="/" className="group flex items-center text-zinc-400 font-mono text-[11px] tracking-widest hover:text-zinc-200 transition-colors bg-zinc-900/80 px-4 py-2 rounded-full border border-zinc-800 backdrop-blur-md">
+            <span className="mr-2 transition-transform duration-500 group-hover:-translate-x-1">&larr;</span> SYSTEM HUB
+          </Link>
+        </div>
       </div>
       
 
@@ -186,8 +228,39 @@ export default function MaintenancePage() {
                     </div>
 
                     <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-zinc-500 mb-2 font-bold">Urgency</label>
-                      <select name="urgency" className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-300 outline-none focus:border-amber-500 transition-colors">
+                      <div className="flex justify-between items-center mb-2">
+                        <label className="text-[11px] uppercase tracking-wider text-zinc-500 font-bold">Urgency Classification</label>
+                        <button
+                          type="button"
+                          onClick={evaluateWithAi}
+                          disabled={evaluatingAi}
+                          className="text-[10px] font-mono px-2.5 py-1 rounded bg-cyan-950 text-cyan-400 border border-cyan-800/60 hover:bg-cyan-900 transition-colors flex items-center gap-1.5"
+                        >
+                          {evaluatingAi ? 'Evaluating...' : '⚡ Auto-Evaluate with AI'}
+                        </button>
+                      </div>
+
+                      {aiDecision && (
+                        <div className="mb-3 p-3 bg-cyan-950/40 border border-cyan-800/60 rounded-lg text-xs font-mono">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="text-cyan-400 font-bold">AI Recommendation:</span>
+                            <span className="text-white font-bold">{aiDecision.urgency_level} (MPI: {aiDecision.predicted_mpi})</span>
+                          </div>
+                          <p className="text-[11px] text-zinc-300 leading-tight mb-1">
+                            {aiDecision.action_recommendation}
+                          </p>
+                          <div className="text-[10px] text-emerald-400">
+                            ✓ Suggested Window: {aiDecision.shadow_block_decision.window}
+                          </div>
+                        </div>
+                      )}
+
+                      <select
+                        name="urgency"
+                        value={formUrgency}
+                        onChange={(e) => setFormUrgency(e.target.value)}
+                        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-300 outline-none focus:border-amber-500 transition-colors"
+                      >
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
                         <option value="High">High</option>
