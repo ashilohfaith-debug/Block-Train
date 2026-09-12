@@ -1,3 +1,4 @@
-block_id,station_id,station_code,work_type,start_time,end_time,duration_minutes,speed_restriction_kmh
-1,16,STA_P,PLAIN_TRACK_TAMPING,2026-09-15 01:30:00,2026-09-15 03:30:00,120,30
-2,21,STA_U,BALLAST_CLEANING,2026-09-15 11:00:00,2026-09-15 13:00:00,120,20
+block_id,station_id,station_code,station_name,work_type,equipment_used,start_time,end_time,duration_minutes,speed_restriction_kmh
+1,16,CMP,Chromepet,CSM_TAMPING_PACKING,Plasser & Theurer CSM 09-32,2026-09-15 01:30:00,2026-09-15 03:30:00,120,30
+2,21,UPM,Urapakkam,BCM_BALLAST_CLEANING,BCM RM-80 Ballast Cleaner,2026-09-15 11:00:00,2026-09-15 13:00:00,120,20
+3,25,SKL,Singaperumal Koil,USFD_RAIL_TESTING,Ultrasonic Flaw Detection Trolley,2026-09-15 14:00:00,2026-09-15 15:30:00,90,45

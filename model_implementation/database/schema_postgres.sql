@@ -6,12 +6,13 @@
 -- 1. Stations Master Table
 CREATE TABLE IF NOT EXISTS stations (
     station_id SERIAL PRIMARY KEY,
-    station_code VARCHAR(10) NOT NULL UNIQUE,       -- e.g. 'STA_A', 'STA_D'
-    station_name VARCHAR(100) NOT NULL,             -- e.g. 'Station A (Chennai Beach)'
+    station_code VARCHAR(10) NOT NULL UNIQUE,       -- e.g. 'MSB', 'MS', 'TBM', 'CGL'
+    station_letter_code VARCHAR(10) NOT NULL UNIQUE, -- e.g. 'STA_A' to 'STA_Z'
+    station_name VARCHAR(100) NOT NULL,             -- e.g. 'Chennai Beach', 'Chennai Egmore'
     is_junction BOOLEAN DEFAULT FALSE,              -- TRUE for 4 junctions (Egmore, Guindy, St. Thomas Mount, Tambaram)
     dwell_time_seconds INT NOT NULL,                -- 30s normal, 60s junction
     inter_station_distance_km NUMERIC(5, 2) NOT NULL, -- Distance from previous station
-    distance_from_origin_km NUMERIC(6, 2) NOT NULL, -- Cumulative distance from Station A
+    distance_from_origin_km NUMERIC(6, 2) NOT NULL, -- Cumulative distance from Chennai Beach (up to 59.84 km)
     baseline_run_time_minutes NUMERIC(5, 2) NOT NULL -- Pure transit time without disruptions
 );
 
