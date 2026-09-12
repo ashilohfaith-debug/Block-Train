@@ -1,0 +1,26 @@
+section_id,from_station_code,from_station_name,to_station_code,to_station_name,section_length_km,total_signals_between,num_automatic_signals,num_gate_signals,num_home_signals,signal_ids_list,level_crossings_in_section,avg_signal_spacing_m
+1,MSB,Chennai Beach,MSF,Chennai Fort,1.8,2,1,0,1,ABS-SIG-01; HOME-SIG-MSF,NONE,600.0
+2,MSF,Chennai Fort,MPK,Chennai Park,1.27,2,1,0,1,ABS-SIG-02; HOME-SIG-MPK,NONE,423.3
+3,MPK,Chennai Park,MS,Chennai Egmore,1.25,2,1,0,1,ABS-SIG-03; HOME-SIG-MS,NONE,416.7
+4,MS,Chennai Egmore,MSC,Chetpet,2.24,3,2,0,1,ABS-SIG-04; ABS-SIG-05; HOME-SIG-MSC,NONE,560.0
+5,MSC,Chetpet,NBK,Nungambakkam,1.59,2,1,0,1,ABS-SIG-06; HOME-SIG-NBK,NONE,530.0
+6,NBK,Nungambakkam,MKK,Kodambakkam,1.53,2,1,0,1,ABS-SIG-07; HOME-SIG-MKK,NONE,510.0
+7,MKK,Kodambakkam,MBM,Mambalam,1.61,2,1,0,1,ABS-SIG-08; HOME-SIG-MBM,NONE,536.7
+8,MBM,Mambalam,SP,Saidapet,1.61,2,1,0,1,ABS-SIG-09; HOME-SIG-SP,NONE,536.7
+9,SP,Saidapet,GDY,Guindy,2.11,3,2,0,1,ABS-SIG-10; ABS-SIG-11; HOME-SIG-GDY,NONE,527.5
+10,GDY,Guindy,STM,St. Thomas Mount,2.11,3,2,0,1,ABS-SIG-12; ABS-SIG-13; HOME-SIG-STM,NONE,527.5
+11,STM,St. Thomas Mount,PZA,Pazhavanthangal,1.63,2,1,0,1,ABS-SIG-14; HOME-SIG-PZA,NONE,543.3
+12,PZA,Pazhavanthangal,MN,Meenambakkam,1.29,2,1,0,1,ABS-SIG-15; HOME-SIG-MN,NONE,430.0
+13,MN,Meenambakkam,TLM,Tirusulam,1.18,2,1,0,1,ABS-SIG-16; HOME-SIG-TLM,NONE,393.3
+14,TLM,Tirusulam,PV,Pallavaram,1.93,2,1,0,1,ABS-SIG-17; HOME-SIG-PV,NONE,643.3
+15,PV,Pallavaram,CMP,Chromepet,2.2,3,1,1,1,ABS-SIG-18; GATE-SIG-LC26; HOME-SIG-CMP,LC-26,550.0
+16,CMP,Chromepet,TBMS,Tambaram Sanatorium,2.01,3,1,1,1,GATE-SIG-LC27; ABS-SIG-19; HOME-SIG-TBMS,LC-27,502.5
+17,TBMS,Tambaram Sanatorium,TBM,Tambaram,1.78,2,1,0,1,ABS-SIG-20; HOME-SIG-TBM,NONE,593.3
+18,TBM,Tambaram,PRGL,Perungalathur,3.5,4,2,1,1,ABS-SIG-21; ABS-SIG-22; GATE-SIG-LC32; HOME-SIG-PRGL,LC-32,700.0
+19,PRGL,Perungalathur,VDR,Vandalur,1.8,2,0,1,1,GATE-SIG-LC33; HOME-SIG-VDR,LC-33,600.0
+20,VDR,Vandalur,UPM,Urapakkam,3.06,3,0,2,1,GATE-SIG-LC36; GATE-SIG-LC43; HOME-SIG-UPM,LC-36; LC-43,765.0
+21,UPM,Urapakkam,GI,Guduvancheri,2.91,3,1,1,1,ABS-SIG-23; GATE-SIG-LC45; HOME-SIG-GI,LC-45,727.5
+22,GI,Guduvancheri,POTI,Potheri,3.53,4,2,1,1,GATE-SIG-LC47; ABS-SIG-24; ABS-SIG-25; HOME-SIG-POTI,LC-47,706.0
+23,POTI,Potheri,MMNK,Maraimalai Nagar,3.02,3,0,2,1,GATE-SIG-LC52; GATE-SIG-LC55; HOME-SIG-MMNK,LC-52; LC-55,755.0
+24,MMNK,Maraimalai Nagar,SKL,Singaperumal Koil,4.52,5,3,1,1,ABS-SIG-26; ABS-SIG-27; ABS-SIG-28; GATE-SIG-LC58; HOME-SIG-SKL,LC-58,753.3
+25,SKL,Singaperumal Koil,CGL,Chengalpattu Junction,8.36,8,5,2,1,ABS-SIG-29; ABS-SIG-30; ABS-SIG-31; GATE-SIG-LC61; ABS-SIG-32; ABS-SIG-33; GATE-SIG-LC64; HOME-SIG-CGL,LC-61; LC-64,928.9

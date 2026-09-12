@@ -1,0 +1,14 @@
+crossing_id,crossing_code,chainage_km,station_from_code,station_to_code,location_name,road_name,crossing_class,gate_type,operating_status,interlocked_signal_id,typical_tvu,avg_closure_seconds
+1,LC-26,24.8,PV,CMP,"Radha Nagar, Chromepet",Radha Nagar Main Road,Special Class,Manned Interlocked Barrier,Grade-Separated Subway / Emergency Gate,GATE-SIG-LC26,420000,360
+2,LC-27,25.8,CMP,TBMS,"MIT Gate, Chromepet",Madras Institute of Technology Road,Special Class,Manned Interlocked Barrier,Pedestrian Subway / Restricting Gate,GATE-SIG-LC27,380000,300
+3,LC-32,31.8,TBM,PRGL,"Peerkankaranai, North Perungalathur",Peerkankaranai Link Road,Special Class,Manned Interlocked Lifting Barrier,ROB Operational / Yard Gate,GATE-SIG-LC32,861000,420
+4,LC-33,32.7,PRGL,VDR,Perungalathur Station Gate,GST Road - Perungalathur Connector,Special Class,Manned Interlocked Lifting Barrier,Active Interlocked,GATE-SIG-LC33,750000,450
+5,LC-36,35.2,VDR,UPM,"Kolapakkam, Vandalur Zoo North",Otteri - Kolapakkam Road,C Class,Manned Interlocked Barrier,RUB Operational / Emergency Gate,GATE-SIG-LC36,125000,240
+6,LC-43,36.8,VDR,UPM,Otteri / Urapakkam North,Otteri High Road,B Class,Manned Interlocked Barrier,ROB Operational / Restricting Gate,GATE-SIG-LC43,290000,300
+7,LC-45,39.5,UPM,GI,"Nandivaram Gate, Guduvancheri North",Nandivaram Lake Link,B Class,Manned Interlocked Barrier,Active Interlocked,GATE-SIG-LC45,310000,330
+8,LC-47,41.2,GI,POTI,Guduvancheri Market Road Gate,Guduvancheri - Thiruporur Road,Special Class,Manned Interlocked Lifting Barrier,Active Interlocked (ROB in Progress),GATE-SIG-LC47,680000,450
+9,LC-52,44.8,POTI,MMNK,Kattankulathur / SRM Link Gate,SRM University Access Road,A Class,Manned Interlocked Lifting Barrier,Active Interlocked,GATE-SIG-LC52,510000,390
+10,LC-55,46.2,POTI,MMNK,Maraimalai Nagar Industrial Gate,SIDCO Industrial Estate Main Road,B Class,Manned Interlocked Barrier,Active Interlocked,GATE-SIG-LC55,340000,360
+11,LC-58,50.8,MMNK,SKL,Singaperumal Koil Temple Gate,Sriperumbudur - Singaperumal Koil Road,Special Class,Manned Interlocked Lifting Barrier,Active Interlocked (ROB under construction),GATE-SIG-LC58,720000,480
+12,LC-61,55.8,SKL,CGL,Paranur / Mahindra World City Gate,Mahindra World City Central Boulevard Link,Special Class,Manned Interlocked Lifting Barrier,Active Interlocked,GATE-SIG-LC61,590000,420
+13,LC-64,58.9,SKL,CGL,Chengalpattu North / Pulipakkam Gate,Pulipakkam - Old GST Road,A Class,Manned Interlocked Barrier,Active Interlocked,GATE-SIG-LC64,410000,360

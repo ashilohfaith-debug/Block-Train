@@ -1,79 +1,79 @@
-scenario_id,scenario_name,train_id,station_id,station_code,station_letter_code,station_name,is_junction,distance_km,scheduled_arrival_mins,signal_delay_mins,gate_delay_mins,maintenance_delay_mins,accident_delay_mins,actual_arrival_mins,total_delay_mins,is_delayed_binary,dataset_split
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,1,MSB,STA_A,Chennai Beach,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,2,MSF,STA_B,Chennai Fort,0,1.8,3.5,0.0,0.0,0.0,0.0,4.0,0.5,0,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,3,MPK,STA_C,Chennai Park,0,3.07,6.5,0.0,0.0,0.0,0.0,7.0,0.5,0,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,4,MS,STA_D,Chennai Egmore,1,4.32,9.5,0.0,0.0,0.0,0.0,10.0,0.5,0,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,5,MSC,STA_E,Chetpet,0,6.56,14.5,0.0,0.0,0.0,0.0,15.0,0.5,0,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,6,NBK,STA_F,Nungambakkam,0,8.15,18.0,2.9,0.0,0.0,0.0,21.4,3.4,0,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,7,MKK,STA_G,Kodambakkam,0,9.68,21.5,2.44,0.0,0.0,0.0,27.34,5.84,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,8,MBM,STA_H,Mambalam,0,11.29,25.2,0.0,0.0,0.0,0.0,31.04,5.84,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,9,SP,STA_I,Saidapet,0,12.9,28.9,0.0,0.0,0.0,0.0,34.74,5.84,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,10,GDY,STA_J,Guindy,1,15.01,33.4,0.0,0.0,0.0,0.0,39.24,5.84,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,11,STM,STA_K,St. Thomas Mount,1,17.12,38.4,0.0,0.0,0.0,0.0,44.24,5.84,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,12,PZA,STA_L,Pazhavanthangal,0,18.75,42.6,0.0,0.0,0.0,0.0,48.44,5.84,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,13,MN,STA_M,Meenambakkam,0,20.04,45.6,0.0,0.0,0.0,0.0,51.44,5.84,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,14,TLM,STA_N,Tirusulam,0,21.22,48.4,1.44,0.0,0.0,0.0,55.68,7.28,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,15,PV,STA_O,Pallavaram,0,23.15,52.7,0.0,4.04,0.0,0.0,64.02,11.32,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,16,CMP,STA_P,Chromepet,0,25.35,57.4,0.0,0.0,0.0,0.0,68.72,11.32,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,17,TBMS,STA_Q,Tambaram Sanatorium,0,27.36,61.9,0.0,0.0,0.0,0.0,73.22,11.32,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,18,TBM,STA_R,Tambaram,1,29.14,66.2,0.0,0.0,0.0,0.0,77.52,11.32,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,19,PRGL,STA_S,Perungalathur,0,32.64,72.7,0.0,2.88,0.0,0.0,86.9,14.2,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,20,VDR,STA_T,Vandalur,0,34.44,76.7,1.39,0.0,0.0,0.0,92.29,15.59,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,21,UPM,STA_U,Urapakkam,0,37.5,82.2,2.07,0.0,0.0,0.0,99.86,17.66,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,22,GI,STA_V,Guduvancheri,0,40.41,87.5,1.43,0.0,0.0,0.0,106.59,19.09,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,23,POTI,STA_W,Potheri,0,43.94,93.5,0.0,0.0,0.0,0.0,112.59,19.09,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,24,MMNK,STA_X,Maraimalai Nagar,0,46.96,99.0,0.0,0.0,0.0,0.0,118.09,19.09,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,25,SKL,STA_Y,Singaperumal Koil,0,51.48,106.5,0.0,2.68,0.0,0.0,128.27,21.77,1,VALIDATION
-6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,26,CGL,STA_Z,Chengalpattu Junction,0,59.84,119.0,1.36,3.87,0.0,0.0,146.0,27.0,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,1,MSB,STA_A,Chennai Beach,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,2,MSF,STA_B,Chennai Fort,0,1.8,3.5,0.0,0.0,0.0,0.0,4.0,0.5,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,3,MPK,STA_C,Chennai Park,0,3.07,6.5,0.0,0.0,0.0,0.0,7.0,0.5,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,4,MS,STA_D,Chennai Egmore,1,4.32,9.5,0.0,0.0,0.0,0.0,10.0,0.5,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,5,MSC,STA_E,Chetpet,0,6.56,14.5,2.74,0.0,0.0,0.0,17.74,3.24,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,6,NBK,STA_F,Nungambakkam,0,8.15,18.0,0.0,0.0,0.0,0.0,21.24,3.24,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,7,MKK,STA_G,Kodambakkam,0,9.68,21.5,0.0,0.0,0.0,0.0,24.74,3.24,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,8,MBM,STA_H,Mambalam,0,11.29,25.2,0.0,0.0,0.0,0.0,28.44,3.24,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,9,SP,STA_I,Saidapet,0,12.9,28.9,0.0,0.0,0.0,0.0,32.14,3.24,0,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,10,GDY,STA_J,Guindy,1,15.01,33.4,0.0,0.0,7.11,0.0,43.75,10.35,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,11,STM,STA_K,St. Thomas Mount,1,17.12,38.4,2.88,0.0,8.87,0.0,60.5,22.1,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,12,PZA,STA_L,Pazhavanthangal,0,18.75,42.6,0.0,0.0,8.4,0.0,73.1,30.5,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,13,MN,STA_M,Meenambakkam,0,20.04,45.6,2.26,0.0,6.32,0.0,84.68,39.08,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,14,TLM,STA_N,Tirusulam,0,21.22,48.4,2.13,0.0,7.82,0.0,97.43,49.03,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,15,PV,STA_O,Pallavaram,0,23.15,52.7,0.0,4.68,9.64,0.0,116.05,63.35,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,16,CMP,STA_P,Chromepet,0,25.35,57.4,0.0,3.83,8.7,0.0,133.28,75.88,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,17,TBMS,STA_Q,Tambaram Sanatorium,0,27.36,61.9,0.0,0.0,11.94,0.0,149.72,87.82,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,18,TBM,STA_R,Tambaram,1,29.14,66.2,0.0,0.0,9.73,0.0,163.75,97.55,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,19,PRGL,STA_S,Perungalathur,0,32.64,72.7,0.0,0.0,11.69,0.0,181.94,109.24,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,20,VDR,STA_T,Vandalur,0,34.44,76.7,1.42,0.0,9.96,0.0,197.32,120.62,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,21,UPM,STA_U,Urapakkam,0,37.5,82.2,1.35,2.01,8.7,0.0,214.88,132.68,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,22,GI,STA_V,Guduvancheri,0,40.41,87.5,0.0,2.81,10.24,0.0,233.23,145.73,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,23,POTI,STA_W,Potheri,0,43.94,93.5,0.0,0.0,8.72,0.0,247.95,154.45,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,24,MMNK,STA_X,Maraimalai Nagar,0,46.96,99.0,0.0,0.0,10.73,0.0,264.18,165.18,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,25,SKL,STA_Y,Singaperumal Koil,0,51.48,106.5,0.0,0.0,11.6,0.0,283.28,176.78,1,VALIDATION
-7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,26,CGL,STA_Z,Chengalpattu Junction,0,59.84,119.0,0.0,0.0,9.89,0.0,305.67,186.67,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,1,MSB,STA_A,Chennai Beach,0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,2,MSF,STA_B,Chennai Fort,0,1.8,3.5,0.0,0.0,0.0,0.0,4.0,0.5,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,3,MPK,STA_C,Chennai Park,0,3.07,6.5,1.33,0.0,0.0,0.0,8.33,1.83,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,4,MS,STA_D,Chennai Egmore,1,4.32,9.5,0.0,0.0,0.0,0.0,11.33,1.83,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,5,MSC,STA_E,Chetpet,0,6.56,14.5,0.0,0.0,0.0,0.0,16.33,1.83,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,6,NBK,STA_F,Nungambakkam,0,8.15,18.0,0.0,0.0,0.0,0.0,19.83,1.83,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,7,MKK,STA_G,Kodambakkam,0,9.68,21.5,0.0,0.0,0.0,0.0,23.33,1.83,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,8,MBM,STA_H,Mambalam,0,11.29,25.2,2.38,0.0,0.0,0.0,29.41,4.21,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,9,SP,STA_I,Saidapet,0,12.9,28.9,0.0,0.0,0.0,0.0,33.11,4.21,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,10,GDY,STA_J,Guindy,1,15.01,33.4,0.0,0.0,0.0,0.0,37.61,4.21,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,11,STM,STA_K,St. Thomas Mount,1,17.12,38.4,0.0,0.0,0.0,0.0,42.61,4.21,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,12,PZA,STA_L,Pazhavanthangal,0,18.75,42.6,0.0,0.0,0.0,0.0,46.81,4.21,0,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,13,MN,STA_M,Meenambakkam,0,20.04,45.6,1.08,0.0,0.0,0.0,50.89,5.29,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,14,TLM,STA_N,Tirusulam,0,21.22,48.4,0.0,0.0,0.0,0.0,53.69,5.29,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,15,PV,STA_O,Pallavaram,0,23.15,52.7,0.0,2.32,0.0,0.0,60.31,7.61,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,16,CMP,STA_P,Chromepet,0,25.35,57.4,0.0,0.0,0.0,0.0,65.01,7.61,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,17,TBMS,STA_Q,Tambaram Sanatorium,0,27.36,61.9,0.0,0.0,0.0,0.0,69.51,7.61,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,18,TBM,STA_R,Tambaram,1,29.14,66.2,0.0,0.0,0.0,45.0,118.81,52.61,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,19,PRGL,STA_S,Perungalathur,0,32.64,72.7,0.0,2.14,0.0,0.0,127.45,54.75,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,20,VDR,STA_T,Vandalur,0,34.44,76.7,0.0,0.0,0.0,0.0,131.45,54.75,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,21,UPM,STA_U,Urapakkam,0,37.5,82.2,0.0,0.0,0.0,0.0,136.95,54.75,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,22,GI,STA_V,Guduvancheri,0,40.41,87.5,0.0,4.05,0.0,0.0,146.3,58.8,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,23,POTI,STA_W,Potheri,0,43.94,93.5,0.0,0.0,0.0,0.0,152.3,58.8,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,24,MMNK,STA_X,Maraimalai Nagar,0,46.96,99.0,0.0,3.22,0.0,0.0,161.02,62.02,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,25,SKL,STA_Y,Singaperumal Koil,0,51.48,106.5,0.0,0.0,0.0,0.0,168.52,62.02,1,VALIDATION
-8,Afternoon Yard Incident at Tambaram,SR-EMU-08,26,CGL,STA_Z,Chengalpattu Junction,0,59.84,119.0,0.0,4.43,0.0,0.0,185.45,66.45,1,VALIDATION
+scenario_id,scenario_name,train_id,station_id,station_code,station_letter_code,station_name,is_junction,distance_km,scheduled_arrival_mins,signals_in_section,lcs_in_section,signal_delay_mins,gate_delay_mins,maintenance_delay_mins,accident_delay_mins,actual_arrival_mins,total_delay_mins,is_delayed_binary,dataset_split
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,1,MSB,STA_A,Chennai Beach,0,0.0,0.0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,2,MSF,STA_B,Chennai Fort,0,1.8,3.5,2,0,0.0,0.0,0.0,0.0,4.0,0.5,0,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,3,MPK,STA_C,Chennai Park,0,3.07,6.5,2,0,0.0,0.0,0.0,0.0,7.0,0.5,0,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,4,MS,STA_D,Chennai Egmore,1,4.32,9.5,2,0,0.0,0.0,0.0,0.0,10.0,0.5,0,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,5,MSC,STA_E,Chetpet,0,6.56,14.5,3,0,2.95,0.0,0.0,0.0,17.95,3.45,0,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,6,NBK,STA_F,Nungambakkam,0,8.15,18.0,2,0,0.0,0.0,0.0,0.0,21.45,3.45,0,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,7,MKK,STA_G,Kodambakkam,0,9.68,21.5,2,0,2.9,0.0,0.0,0.0,27.85,6.35,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,8,MBM,STA_H,Mambalam,0,11.29,25.2,2,0,0.0,0.0,0.0,0.0,31.55,6.35,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,9,SP,STA_I,Saidapet,0,12.9,28.9,2,0,0.0,0.0,0.0,0.0,35.25,6.35,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,10,GDY,STA_J,Guindy,1,15.01,33.4,3,0,2.94,0.0,0.0,0.0,42.69,9.29,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,11,STM,STA_K,St. Thomas Mount,1,17.12,38.4,3,0,3.25,0.0,0.0,0.0,50.94,12.54,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,12,PZA,STA_L,Pazhavanthangal,0,18.75,42.6,2,0,0.0,0.0,0.0,0.0,55.14,12.54,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,13,MN,STA_M,Meenambakkam,0,20.04,45.6,2,0,3.08,0.0,0.0,0.0,61.22,15.62,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,14,TLM,STA_N,Tirusulam,0,21.22,48.4,2,0,2.08,0.0,0.0,0.0,66.1,17.7,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,15,PV,STA_O,Pallavaram,0,23.15,52.7,2,0,0.0,0.0,0.0,0.0,70.4,17.7,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,16,CMP,STA_P,Chromepet,0,25.35,57.4,3,1,1.11,0.0,0.0,0.0,76.21,18.81,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,17,TBMS,STA_Q,Tambaram Sanatorium,0,27.36,61.9,3,1,1.59,0.0,0.0,0.0,82.3,20.4,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,18,TBM,STA_R,Tambaram,1,29.14,66.2,2,0,0.0,0.0,0.0,0.0,86.6,20.4,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,19,PRGL,STA_S,Perungalathur,0,32.64,72.7,4,1,0.0,0.0,0.0,0.0,93.1,20.4,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,20,VDR,STA_T,Vandalur,0,34.44,76.7,2,1,0.98,0.0,0.0,0.0,98.08,21.38,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,21,UPM,STA_U,Urapakkam,0,37.5,82.2,3,2,2.91,8.55,0.0,0.0,115.04,32.84,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,22,GI,STA_V,Guduvancheri,0,40.41,87.5,3,1,0.0,0.0,0.0,0.0,120.34,32.84,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,23,POTI,STA_W,Potheri,0,43.94,93.5,4,1,3.34,2.66,0.0,0.0,132.34,38.84,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,24,MMNK,STA_X,Maraimalai Nagar,0,46.96,99.0,3,2,0.0,7.49,0.0,0.0,145.33,46.33,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,25,SKL,STA_Y,Singaperumal Koil,0,51.48,106.5,5,1,2.79,0.0,0.0,0.0,155.62,49.12,1,VALIDATION
+6,Evening Peak Gate Congestion (GST Road),SR-EMU-06,26,CGL,STA_Z,Chengalpattu Junction,0,59.84,119.0,8,2,0.0,8.22,0.0,0.0,176.34,57.34,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,1,MSB,STA_A,Chennai Beach,0,0.0,0.0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,2,MSF,STA_B,Chennai Fort,0,1.8,3.5,2,0,1.56,0.0,0.0,0.0,5.56,2.06,0,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,3,MPK,STA_C,Chennai Park,0,3.07,6.5,2,0,1.42,0.0,0.0,0.0,9.98,3.48,0,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,4,MS,STA_D,Chennai Egmore,1,4.32,9.5,2,0,2.25,0.0,0.0,0.0,15.23,5.73,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,5,MSC,STA_E,Chetpet,0,6.56,14.5,3,0,0.0,0.0,0.0,0.0,20.23,5.73,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,6,NBK,STA_F,Nungambakkam,0,8.15,18.0,2,0,1.48,0.0,0.0,0.0,25.21,7.21,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,7,MKK,STA_G,Kodambakkam,0,9.68,21.5,2,0,0.0,0.0,0.0,0.0,28.71,7.21,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,8,MBM,STA_H,Mambalam,0,11.29,25.2,2,0,0.0,0.0,0.0,0.0,32.41,7.21,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,9,SP,STA_I,Saidapet,0,12.9,28.9,2,0,0.0,0.0,0.0,0.0,36.11,7.21,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,10,GDY,STA_J,Guindy,1,15.01,33.4,3,0,0.0,0.0,7.7,0.0,48.31,14.91,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,11,STM,STA_K,St. Thomas Mount,1,17.12,38.4,3,0,1.54,0.0,7.36,0.0,62.21,23.81,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,12,PZA,STA_L,Pazhavanthangal,0,18.75,42.6,2,0,0.99,0.0,9.2,0.0,76.6,34.0,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,13,MN,STA_M,Meenambakkam,0,20.04,45.6,2,0,3.3,0.0,9.32,0.0,92.22,46.62,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,14,TLM,STA_N,Tirusulam,0,21.22,48.4,2,0,0.0,0.0,6.76,0.0,101.78,53.38,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,15,PV,STA_O,Pallavaram,0,23.15,52.7,2,0,0.0,0.0,8.95,0.0,115.03,62.33,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,16,CMP,STA_P,Chromepet,0,25.35,57.4,3,1,0.0,0.0,8.82,0.0,128.55,71.15,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,17,TBMS,STA_Q,Tambaram Sanatorium,0,27.36,61.9,3,1,1.52,4.82,8.87,0.0,148.26,86.36,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,18,TBM,STA_R,Tambaram,1,29.14,66.2,2,0,0.0,0.0,8.4,0.0,160.96,94.76,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,19,PRGL,STA_S,Perungalathur,0,32.64,72.7,4,1,2.88,2.45,9.38,0.0,182.17,109.47,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,20,VDR,STA_T,Vandalur,0,34.44,76.7,2,1,0.0,0.0,6.71,0.0,192.88,116.18,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,21,UPM,STA_U,Urapakkam,0,37.5,82.2,3,2,0.0,8.74,7.35,0.0,214.47,132.27,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,22,GI,STA_V,Guduvancheri,0,40.41,87.5,3,1,0.0,0.0,8.66,0.0,228.43,140.93,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,23,POTI,STA_W,Potheri,0,43.94,93.5,4,1,0.0,0.0,7.83,0.0,242.26,148.76,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,24,MMNK,STA_X,Maraimalai Nagar,0,46.96,99.0,3,2,0.0,8.44,11.69,0.0,267.89,168.89,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,25,SKL,STA_Y,Singaperumal Koil,0,51.48,106.5,5,1,1.83,0.0,6.94,0.0,284.16,177.66,1,VALIDATION
+7,Night Integrated Mega Block (Civil+OHE),SR-EMU-07,26,CGL,STA_Z,Chengalpattu Junction,0,59.84,119.0,8,2,1.71,6.7,9.56,0.0,314.63,195.63,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,1,MSB,STA_A,Chennai Beach,0,0.0,0.0,0,0,0.0,0.0,0.0,0.0,0.0,0.0,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,2,MSF,STA_B,Chennai Fort,0,1.8,3.5,2,0,1.52,0.0,0.0,0.0,5.52,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,3,MPK,STA_C,Chennai Park,0,3.07,6.5,2,0,0.0,0.0,0.0,0.0,8.52,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,4,MS,STA_D,Chennai Egmore,1,4.32,9.5,2,0,0.0,0.0,0.0,0.0,11.52,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,5,MSC,STA_E,Chetpet,0,6.56,14.5,3,0,0.0,0.0,0.0,0.0,16.52,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,6,NBK,STA_F,Nungambakkam,0,8.15,18.0,2,0,0.0,0.0,0.0,0.0,20.02,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,7,MKK,STA_G,Kodambakkam,0,9.68,21.5,2,0,0.0,0.0,0.0,0.0,23.52,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,8,MBM,STA_H,Mambalam,0,11.29,25.2,2,0,0.0,0.0,0.0,0.0,27.22,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,9,SP,STA_I,Saidapet,0,12.9,28.9,2,0,0.0,0.0,0.0,0.0,30.92,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,10,GDY,STA_J,Guindy,1,15.01,33.4,3,0,0.0,0.0,0.0,0.0,35.42,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,11,STM,STA_K,St. Thomas Mount,1,17.12,38.4,3,0,0.0,0.0,0.0,0.0,40.42,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,12,PZA,STA_L,Pazhavanthangal,0,18.75,42.6,2,0,0.0,0.0,0.0,0.0,44.62,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,13,MN,STA_M,Meenambakkam,0,20.04,45.6,2,0,0.0,0.0,0.0,0.0,47.62,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,14,TLM,STA_N,Tirusulam,0,21.22,48.4,2,0,0.0,0.0,0.0,0.0,50.42,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,15,PV,STA_O,Pallavaram,0,23.15,52.7,2,0,0.0,0.0,0.0,0.0,54.72,2.02,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,16,CMP,STA_P,Chromepet,0,25.35,57.4,3,1,0.0,2.5,0.0,0.0,61.92,4.52,0,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,17,TBMS,STA_Q,Tambaram Sanatorium,0,27.36,61.9,3,1,2.99,0.0,0.0,0.0,69.41,7.51,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,18,TBM,STA_R,Tambaram,1,29.14,66.2,2,0,1.26,0.0,0.0,45.0,119.97,53.77,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,19,PRGL,STA_S,Perungalathur,0,32.64,72.7,4,1,0.0,0.0,0.0,0.0,126.47,53.77,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,20,VDR,STA_T,Vandalur,0,34.44,76.7,2,1,0.0,0.0,0.0,0.0,130.47,53.77,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,21,UPM,STA_U,Urapakkam,0,37.5,82.2,3,2,0.0,4.24,0.0,0.0,140.21,58.01,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,22,GI,STA_V,Guduvancheri,0,40.41,87.5,3,1,1.88,2.27,0.0,0.0,149.66,62.16,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,23,POTI,STA_W,Potheri,0,43.94,93.5,4,1,0.0,0.0,0.0,0.0,155.66,62.16,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,24,MMNK,STA_X,Maraimalai Nagar,0,46.96,99.0,3,2,0.0,0.0,0.0,0.0,161.16,62.16,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,25,SKL,STA_Y,Singaperumal Koil,0,51.48,106.5,5,1,0.0,0.0,0.0,0.0,168.66,62.16,1,VALIDATION
+8,Afternoon Yard Incident at Tambaram,SR-EMU-08,26,CGL,STA_Z,Chengalpattu Junction,0,59.84,119.0,8,2,1.58,0.0,0.0,0.0,182.74,63.74,1,VALIDATION
