@@ -187,6 +187,116 @@ CREATE TABLE IF NOT EXISTS accident_incidents (
     estimated_clearing_delay_minutes NUMERIC(5, 2) NOT NULL
 );
 
+-- ====================================================================
+-- AI-POWERED AUTOMATIC BLOCK PLANNING ENGINE (PS 26027 TABLES)
+-- ====================================================================
+
+-- 13. Track Management System (TMS) Engineering Defects Repository
+CREATE TABLE IF NOT EXISTS tms_track_defects (
+    defect_id VARCHAR(30) PRIMARY KEY,                 -- 'TMS-DEF-0001'
+    department VARCHAR(50) DEFAULT 'ENGINEERING_CIVIL',
+    system_source VARCHAR(20) DEFAULT 'TMS',
+    station_code VARCHAR(10) NOT NULL REFERENCES stations(station_code),
+    station_name VARCHAR(100) NOT NULL,
+    chainage_km NUMERIC(6, 2) NOT NULL,
+    track_id VARCHAR(50) NOT NULL,
+    defect_category VARCHAR(100) NOT NULL,             -- 'IMR_ULTRASONIC_FLAW', 'RAIL_FRACTURE_RISK', 'TRACK_GEOMETRY_BAD_TGI'
+    defect_description TEXT,
+    asset_age_years NUMERIC(4, 1),
+    overdue_days INT NOT NULL DEFAULT 0,
+    gmt_traffic_load NUMERIC(5, 1),                    -- Gross Million Tonnes
+    speed_restriction_kmh INT DEFAULT 0,
+    has_active_tsr INT DEFAULT 0,
+    estimated_repair_hours NUMERIC(4, 1) NOT NULL,
+    machinery_required VARCHAR(100),                   -- 'CSM_09_32_TAMPER', 'BALLAST_CLEANER_BCM'
+    safety_risk_score INT NOT NULL,                    -- 1 to 10 scale
+    target_mpi_score NUMERIC(5, 1) NOT NULL,           -- Maintenance Priority Index (0 to 100)
+    urgency_level VARCHAR(50) NOT NULL                -- 'CRITICAL_EMERGENCY', 'HIGH_PRIORITY', 'MEDIUM_PLANNED', 'ROUTINE_CYCLE'
+);
+
+-- 14. Signalling Maintenance & Management System (SMMS) Defects Repository
+CREATE TABLE IF NOT EXISTS smms_signal_defects (
+    defect_id VARCHAR(30) PRIMARY KEY,                 -- 'SMMS-DEF-0001'
+    department VARCHAR(50) DEFAULT 'S_AND_T',
+    system_source VARCHAR(20) DEFAULT 'SMMS',
+    station_code VARCHAR(10) NOT NULL REFERENCES stations(station_code),
+    station_name VARCHAR(100) NOT NULL,
+    chainage_km NUMERIC(6, 2) NOT NULL,
+    asset_id VARCHAR(50) NOT NULL,                     -- 'POINT-118', 'POINT-63', 'SIG-MS-42'
+    asset_type VARCHAR(50) NOT NULL,                   -- 'POINT_MACHINE', 'ABS_SIGNAL_POST', 'DIGITAL_AXLE_COUNTER'
+    defect_category VARCHAR(100) NOT NULL,
+    defect_description TEXT,
+    asset_age_years NUMERIC(4, 1),
+    overdue_days INT NOT NULL DEFAULT 0,
+    operating_cycles_thousands NUMERIC(6, 1),
+    estimated_repair_hours NUMERIC(4, 1) NOT NULL,
+    safety_risk_score INT NOT NULL,
+    target_mpi_score NUMERIC(5, 1) NOT NULL,
+    urgency_level VARCHAR(50) NOT NULL
+);
+
+-- 15. Traction Distribution Management System (TDMS) Defects Repository
+CREATE TABLE IF NOT EXISTS tdms_traction_defects (
+    defect_id VARCHAR(30) PRIMARY KEY,                 -- 'TDMS-DEF-0001'
+    department VARCHAR(50) DEFAULT 'ELECTRICAL_TRD',
+    system_source VARCHAR(20) DEFAULT 'TDMS',
+    station_code VARCHAR(10) NOT NULL REFERENCES stations(station_code),
+    station_name VARCHAR(100) NOT NULL,
+    chainage_km NUMERIC(6, 2) NOT NULL,
+    track_id VARCHAR(50) NOT NULL,
+    defect_category VARCHAR(100) NOT NULL,             -- 'CONTACT_WIRE_CONDEMNING_WEAR', 'INSULATOR_FLASHOVER_RISK'
+    defect_description TEXT,
+    asset_age_years NUMERIC(4, 1),
+    overdue_days INT NOT NULL DEFAULT 0,
+    hotspot_temp_celsius NUMERIC(5, 1),
+    estimated_repair_hours NUMERIC(4, 1) NOT NULL,
+    power_block_required INT DEFAULT 1,
+    tower_wagon_required INT DEFAULT 0,
+    safety_risk_score INT NOT NULL,
+    target_mpi_score NUMERIC(5, 1) NOT NULL,
+    urgency_level VARCHAR(50) NOT NULL
+);
+
+-- 16. Control Office Application (COA) Timetables & Available Corridor Slots
+CREATE TABLE IF NOT EXISTS coa_corridor_timetables (
+    block_slot_id VARCHAR(30) PRIMARY KEY,             -- 'COA-SLOT-0001'
+    corridor_zone VARCHAR(50) NOT NULL,                -- 'ZONE_A_MSB_MS', 'ZONE_B_MS_TBM', 'ZONE_C_TBM_CGL'
+    from_station_code VARCHAR(10) NOT NULL REFERENCES stations(station_code),
+    to_station_code VARCHAR(10) NOT NULL REFERENCES stations(station_code),
+    track_id VARCHAR(50) NOT NULL,
+    slot_type VARCHAR(50) NOT NULL,                    -- 'NIGHT_CORRIDOR_VALLEY', 'MIDDAY_OFFPEAK_VALLEY', 'SUNDAY_MEGA_BLOCK'
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    available_duration_minutes INT NOT NULL,
+    lead_train_before VARCHAR(50),
+    following_train_after VARCHAR(50),
+    train_delay_risk_level VARCHAR(20) NOT NULL,
+    is_allocated INT DEFAULT 0
+);
+
+-- 17. AI Optimized Multi-Department Weekly Block Plan
+CREATE TABLE IF NOT EXISTS weekly_block_schedules (
+    block_plan_id VARCHAR(30) PRIMARY KEY,             -- 'W-BLK-001'
+    slot_id VARCHAR(30) NOT NULL REFERENCES coa_corridor_timetables(block_slot_id),
+    corridor_zone VARCHAR(50) NOT NULL,
+    station_code VARCHAR(10) NOT NULL REFERENCES stations(station_code),
+    chainage_km NUMERIC(6, 2) NOT NULL,
+    track_id VARCHAR(50) NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    available_slot_hours NUMERIC(4, 2) NOT NULL,
+    allocated_block_hours NUMERIC(4, 2) NOT NULL,
+    uncoordinated_baseline_hours NUMERIC(4, 2) NOT NULL,
+    hours_saved_by_coordination NUMERIC(4, 2) NOT NULL,
+    is_multi_department_joint INT DEFAULT 1,
+    departments_count INT NOT NULL,
+    departments_list TEXT,
+    tasks_count INT NOT NULL,
+    defect_ids TEXT,
+    work_summary TEXT,
+    conflict_free_verified INT DEFAULT 1
+);
+
 -- Indexes for lightning-fast queries during simulation & machine learning retrieval
 CREATE INDEX IF NOT EXISTS idx_stations_code ON stations(station_code);
 CREATE INDEX IF NOT EXISTS idx_signals_chainage ON corridor_signals_master(chainage_km);
@@ -199,3 +309,8 @@ CREATE INDEX IF NOT EXISTS idx_gates_open_ts ON gate_openings(open_timestamp);
 CREATE INDEX IF NOT EXISTS idx_track_maint_time ON track_maintenance(start_time, end_time);
 CREATE INDEX IF NOT EXISTS idx_traction_maint_time ON traction_maintenance(start_time, end_time);
 CREATE INDEX IF NOT EXISTS idx_accidents_time ON accident_incidents(incident_timestamp);
+CREATE INDEX IF NOT EXISTS idx_tms_mpi ON tms_track_defects(target_mpi_score);
+CREATE INDEX IF NOT EXISTS idx_smms_mpi ON smms_signal_defects(target_mpi_score);
+CREATE INDEX IF NOT EXISTS idx_tdms_mpi ON tdms_traction_defects(target_mpi_score);
+CREATE INDEX IF NOT EXISTS idx_coa_start ON coa_corridor_timetables(start_time);
+CREATE INDEX IF NOT EXISTS idx_weekly_blocks_station ON weekly_block_schedules(station_code);

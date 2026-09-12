@@ -1,0 +1,14 @@
+{
+    "total_work_orders_processed": 770,
+    "weekly_urgent_tasks_scheduled": 193,
+    "weekly_blocks_formed": 46,
+    "multi_department_joint_blocks_count": 35,
+    "multi_department_coordination_rate_pct": 76.1,
+    "uncoordinated_downtime_hours": 480.0,
+    "optimized_coordinated_downtime_hours": 115.0,
+    "net_track_downtime_hours_saved": 365.0,
+    "downtime_reduction_pct": 76.0,
+    "asset_availability_baseline_manual_pct": 28.57,
+    "asset_availability_ai_optimized_pct": 82.89,
+    "train_collisions_or_conflicts": 0
+}
