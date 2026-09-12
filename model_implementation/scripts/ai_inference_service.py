@@ -229,12 +229,12 @@ class AIInferenceHandler(BaseHTTPRequestHandler):
 def run_server(port=5001):
     server_address = ("127.0.0.1", port)
     httpd = ThreadingHTTPServer(server_address, AIInferenceHandler)
-    print(f"==================================================================")
-    print(f"🚀 AI INFERENCE ENGINE RUNNING ON http://127.0.0.1:{port}")
-    print(f"   • POST /predict-priority  -> Live ML Decision Engine")
-    print(f"   • GET  /weekly-plan       -> Shadow Blocks & 86.06% Downtime KPIs")
-    print(f"   • GET  /health            -> System Status")
-    print(f"==================================================================")
+    print("==================================================================")
+    print(f"[START] AI INFERENCE ENGINE RUNNING ON http://127.0.0.1:{port}")
+    print("  -> POST /predict-priority : Live ML Decision Engine")
+    print("  -> GET  /weekly-plan      : Shadow Blocks & 86.06% Downtime KPIs")
+    print("  -> GET  /health           : System Status & Diagnostics")
+    print("==================================================================")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
