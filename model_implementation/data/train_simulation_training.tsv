@@ -1,0 +1,131 @@
+scenario_id	scenario_name	train_id	station_id	station_code	station_name	is_junction	distance_km	scheduled_arrival_mins	signal_delay_mins	gate_delay_mins	maintenance_delay_mins	accident_delay_mins	actual_arrival_mins	total_delay_mins	is_delayed_binary	dataset_split
+1	Early Morning Clean Run	EXP-2026-SC01	1	STA_A	Station A (Chennai Beach)	0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	2	STA_B	Station B (Chennai Fort)	0	1.8	3.5	0.0	0.0	0.0	0.0	4.0	0.5	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	3	STA_C	Station C (Chennai Park)	0	3.0	6.5	0.0	0.0	0.0	0.0	7.0	0.5	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	4	STA_D	Station D (Chennai Egmore)	1	5.1	11.5	0.0	2.55	0.0	0.0	14.55	3.05	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	5	STA_E	Station E (Chetpet)	0	6.7	15.7	0.0	0.0	0.0	0.0	18.75	3.05	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	6	STA_F	Station F (Nungambakkam)	0	8.6	20.0	0.0	0.0	0.0	0.0	23.05	3.05	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	7	STA_G	Station G (Kodambakkam)	0	10.0	23.3	0.0	0.0	0.0	0.0	26.35	3.05	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	8	STA_H	Station H (Mambalam)	0	11.7	27.3	0.0	0.0	0.0	0.0	30.35	3.05	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	9	STA_I	Station I (Saidapet)	0	13.7	31.8	1.38	0.0	0.0	0.0	36.23	4.43	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	10	STA_J	Station J (Guindy)	1	16.1	37.3	0.0	0.0	0.0	0.0	41.73	4.43	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	11	STA_K	Station K (St. Thomas Mount)	1	18.3	43.1	0.0	0.0	0.0	0.0	47.53	4.43	0	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	12	STA_L	Station L (Pazhavanthangal)	0	19.8	47.1	0.0	2.19	0.0	0.0	53.72	6.62	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	13	STA_M	Station M (Meenambakkam)	0	21.1	50.2	0.0	0.0	0.0	0.0	56.82	6.62	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	14	STA_N	Station N (Tirusulam)	0	22.3	53.1	0.0	0.0	0.0	0.0	59.72	6.62	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	15	STA_O	Station O (Pallavaram)	0	24.8	58.8	0.0	0.0	0.0	0.0	65.42	6.62	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	16	STA_P	Station P (Chromepet)	0	27.1	64.1	0.0	2.8	0.0	0.0	73.52	9.42	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	17	STA_Q	Station Q (Tambaram Sanatorium)	0	29.0	68.5	0.0	0.0	0.0	0.0	77.92	9.42	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	18	STA_R	Station R (Tambaram)	1	32.1	75.5	0.94	0.0	0.0	0.0	85.86	10.36	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	19	STA_S	Station S (Perungalathur)	0	35.3	82.5	0.0	0.0	0.0	0.0	92.86	10.36	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	20	STA_T	Station T (Vandalur)	0	38.1	88.5	0.0	0.0	0.0	0.0	98.86	10.36	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	21	STA_U	Station U (Urapakkam)	0	41.6	95.8	0.0	0.0	0.0	0.0	106.16	10.36	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	22	STA_V	Station V (Guduvancheri)	0	44.6	102.1	0.0	0.0	0.0	0.0	112.46	10.36	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	23	STA_W	Station W (Potheri)	0	47.3	107.8	0.0	0.0	0.0	0.0	118.16	10.36	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	24	STA_X	Station X (Kattangulathur)	0	49.4	112.5	0.0	0.0	0.0	0.0	122.86	10.36	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	25	STA_Y	Station Y (Maraimalai Nagar)	0	52.8	119.5	0.0	0.0	0.0	0.0	129.86	10.36	1	TRAIN
+1	Early Morning Clean Run	EXP-2026-SC01	26	STA_Z	Station Z (Chengalpattu)	0	58.0	129.0	0.0	0.0	0.0	0.0	139.36	10.36	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	1	STA_A	Station A (Chennai Beach)	0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	2	STA_B	Station B (Chennai Fort)	0	1.8	3.5	2.8	0.0	0.0	0.0	6.8	3.3	0	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	3	STA_C	Station C (Chennai Park)	0	3.0	6.5	0.0	0.0	0.0	0.0	9.8	3.3	0	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	4	STA_D	Station D (Chennai Egmore)	1	5.1	11.5	0.0	4.44	0.0	0.0	19.24	7.74	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	5	STA_E	Station E (Chetpet)	0	6.7	15.7	0.0	0.0	0.0	0.0	23.44	7.74	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	6	STA_F	Station F (Nungambakkam)	0	8.6	20.0	2.33	0.0	0.0	0.0	30.07	10.07	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	7	STA_G	Station G (Kodambakkam)	0	10.0	23.3	0.0	0.0	0.0	0.0	33.37	10.07	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	8	STA_H	Station H (Mambalam)	0	11.7	27.3	0.0	3.99	0.0	0.0	41.36	14.06	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	9	STA_I	Station I (Saidapet)	0	13.7	31.8	0.0	0.0	0.0	0.0	45.86	14.06	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	10	STA_J	Station J (Guindy)	1	16.1	37.3	0.0	0.0	0.0	0.0	51.36	14.06	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	11	STA_K	Station K (St. Thomas Mount)	1	18.3	43.1	0.0	0.0	0.0	0.0	57.16	14.06	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	12	STA_L	Station L (Pazhavanthangal)	0	19.8	47.1	2.57	0.0	0.0	0.0	63.73	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	13	STA_M	Station M (Meenambakkam)	0	21.1	50.2	0.0	0.0	0.0	0.0	66.83	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	14	STA_N	Station N (Tirusulam)	0	22.3	53.1	0.0	0.0	0.0	0.0	69.73	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	15	STA_O	Station O (Pallavaram)	0	24.8	58.8	0.0	0.0	0.0	0.0	75.43	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	16	STA_P	Station P (Chromepet)	0	27.1	64.1	0.0	0.0	0.0	0.0	80.73	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	17	STA_Q	Station Q (Tambaram Sanatorium)	0	29.0	68.5	0.0	0.0	0.0	0.0	85.13	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	18	STA_R	Station R (Tambaram)	1	32.1	75.5	0.0	0.0	0.0	0.0	92.13	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	19	STA_S	Station S (Perungalathur)	0	35.3	82.5	0.0	0.0	0.0	0.0	99.13	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	20	STA_T	Station T (Vandalur)	0	38.1	88.5	0.0	0.0	0.0	0.0	105.13	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	21	STA_U	Station U (Urapakkam)	0	41.6	95.8	0.0	0.0	0.0	0.0	112.43	16.63	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	22	STA_V	Station V (Guduvancheri)	0	44.6	102.1	2.9	3.09	0.0	0.0	124.72	22.62	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	23	STA_W	Station W (Potheri)	0	47.3	107.8	0.0	0.0	0.0	0.0	130.42	22.62	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	24	STA_X	Station X (Kattangulathur)	0	49.4	112.5	1.09	0.0	0.0	0.0	136.21	23.71	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	25	STA_Y	Station Y (Maraimalai Nagar)	0	52.8	119.5	0.0	0.0	0.0	0.0	143.21	23.71	1	TRAIN
+2	Morning Peak Rush	EXP-2026-SC02	26	STA_Z	Station Z (Chengalpattu)	0	58.0	129.0	0.0	0.0	0.0	0.0	152.71	23.71	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	1	STA_A	Station A (Chennai Beach)	0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	2	STA_B	Station B (Chennai Fort)	0	1.8	3.5	0.0	0.0	0.0	0.0	4.0	0.5	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	3	STA_C	Station C (Chennai Park)	0	3.0	6.5	0.0	0.0	0.0	0.0	7.0	0.5	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	4	STA_D	Station D (Chennai Egmore)	1	5.1	11.5	0.0	0.0	0.0	0.0	12.0	0.5	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	5	STA_E	Station E (Chetpet)	0	6.7	15.7	0.0	0.0	0.0	0.0	16.2	0.5	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	6	STA_F	Station F (Nungambakkam)	0	8.6	20.0	0.0	0.0	0.0	0.0	20.5	0.5	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	7	STA_G	Station G (Kodambakkam)	0	10.0	23.3	2.38	0.0	0.0	0.0	26.18	2.88	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	8	STA_H	Station H (Mambalam)	0	11.7	27.3	0.0	0.0	0.0	0.0	30.18	2.88	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	9	STA_I	Station I (Saidapet)	0	13.7	31.8	0.0	0.0	0.0	0.0	34.68	2.88	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	10	STA_J	Station J (Guindy)	1	16.1	37.3	0.0	0.0	0.0	0.0	40.18	2.88	0	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	11	STA_K	Station K (St. Thomas Mount)	1	18.3	43.1	2.61	0.0	0.0	0.0	48.59	5.49	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	12	STA_L	Station L (Pazhavanthangal)	0	19.8	47.1	0.0	0.0	0.0	0.0	52.59	5.49	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	13	STA_M	Station M (Meenambakkam)	0	21.1	50.2	0.0	0.0	0.0	0.0	55.69	5.49	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	14	STA_N	Station N (Tirusulam)	0	22.3	53.1	0.0	0.0	0.0	0.0	58.59	5.49	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	15	STA_O	Station O (Pallavaram)	0	24.8	58.8	1.27	0.0	0.0	0.0	65.56	6.76	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	16	STA_P	Station P (Chromepet)	0	27.1	64.1	0.0	0.0	0.0	0.0	70.86	6.76	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	17	STA_Q	Station Q (Tambaram Sanatorium)	0	29.0	68.5	0.0	0.0	0.0	0.0	75.26	6.76	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	18	STA_R	Station R (Tambaram)	1	32.1	75.5	0.0	0.0	0.0	0.0	82.26	6.76	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	19	STA_S	Station S (Perungalathur)	0	35.3	82.5	0.0	0.0	0.0	0.0	89.26	6.76	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	20	STA_T	Station T (Vandalur)	0	38.1	88.5	0.0	0.0	0.0	0.0	95.26	6.76	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	21	STA_U	Station U (Urapakkam)	0	41.6	95.8	0.0	0.0	10.99	0.0	113.55	17.75	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	22	STA_V	Station V (Guduvancheri)	0	44.6	102.1	0.0	0.0	9.11	0.0	128.96	26.86	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	23	STA_W	Station W (Potheri)	0	47.3	107.8	0.0	0.0	11.15	0.0	145.81	38.01	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	24	STA_X	Station X (Kattangulathur)	0	49.4	112.5	0.0	0.0	13.88	0.0	164.39	51.89	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	25	STA_Y	Station Y (Maraimalai Nagar)	0	52.8	119.5	0.0	0.0	13.44	0.0	184.83	65.33	1	TRAIN
+3	Midday Civil Maintenance Active	EXP-2026-SC03	26	STA_Z	Station Z (Chengalpattu)	0	58.0	129.0	0.0	0.0	9.67	0.0	204.0	75.0	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	1	STA_A	Station A (Chennai Beach)	0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0.0	0	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	2	STA_B	Station B (Chennai Fort)	0	1.8	3.5	0.0	0.0	0.0	0.0	4.0	0.5	0	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	3	STA_C	Station C (Chennai Park)	0	3.0	6.5	1.67	0.0	0.0	0.0	8.67	2.17	0	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	4	STA_D	Station D (Chennai Egmore)	1	5.1	11.5	0.0	2.53	0.0	0.0	16.2	4.7	0	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	5	STA_E	Station E (Chetpet)	0	6.7	15.7	0.0	0.0	0.0	0.0	20.4	4.7	0	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	6	STA_F	Station F (Nungambakkam)	0	8.6	20.0	1.43	0.0	0.0	0.0	26.13	6.13	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	7	STA_G	Station G (Kodambakkam)	0	10.0	23.3	0.0	0.0	0.0	0.0	29.43	6.13	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	8	STA_H	Station H (Mambalam)	0	11.7	27.3	0.0	0.0	0.0	0.0	33.43	6.13	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	9	STA_I	Station I (Saidapet)	0	13.7	31.8	2.67	0.0	0.0	0.0	40.6	8.8	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	10	STA_J	Station J (Guindy)	1	16.1	37.3	0.0	0.0	0.0	0.0	46.1	8.8	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	11	STA_K	Station K (St. Thomas Mount)	1	18.3	43.1	0.0	0.0	0.0	0.0	51.9	8.8	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	12	STA_L	Station L (Pazhavanthangal)	0	19.8	47.1	0.0	5.08	0.0	0.0	60.98	13.88	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	13	STA_M	Station M (Meenambakkam)	0	21.1	50.2	0.0	0.0	0.0	0.0	64.08	13.88	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	14	STA_N	Station N (Tirusulam)	0	22.3	53.1	0.0	0.0	0.0	0.0	66.98	13.88	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	15	STA_O	Station O (Pallavaram)	0	24.8	58.8	0.0	0.0	0.0	0.0	72.68	13.88	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	16	STA_P	Station P (Chromepet)	0	27.1	64.1	0.0	5.12	0.0	0.0	83.1	19.0	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	17	STA_Q	Station Q (Tambaram Sanatorium)	0	29.0	68.5	0.0	0.0	14.31	0.0	101.81	33.31	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	18	STA_R	Station R (Tambaram)	1	32.1	75.5	0.0	0.0	16.4	0.0	125.21	49.71	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	19	STA_S	Station S (Perungalathur)	0	35.3	82.5	0.0	0.0	13.91	0.0	146.12	63.62	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	20	STA_T	Station T (Vandalur)	0	38.1	88.5	0.0	0.0	13.11	0.0	165.23	76.73	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	21	STA_U	Station U (Urapakkam)	0	41.6	95.8	0.0	0.0	16.39	0.0	188.92	93.12	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	22	STA_V	Station V (Guduvancheri)	0	44.6	102.1	0.0	0.0	17.36	0.0	212.58	110.48	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	23	STA_W	Station W (Potheri)	0	47.3	107.8	0.0	0.0	14.27	0.0	232.55	124.75	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	24	STA_X	Station X (Kattangulathur)	0	49.4	112.5	0.0	0.0	14.74	0.0	251.99	139.49	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	25	STA_Y	Station Y (Maraimalai Nagar)	0	52.8	119.5	0.0	0.0	10.67	0.0	269.66	150.16	1	TRAIN
+4	Afternoon Traction Power Block	EXP-2026-SC04	26	STA_Z	Station Z (Chengalpattu)	0	58.0	129.0	0.0	0.0	16.93	0.0	296.09	167.09	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	1	STA_A	Station A (Chennai Beach)	0	0.0	0.0	1.52	0.0	0.0	0.0	0.0	0.0	0	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	2	STA_B	Station B (Chennai Fort)	0	1.8	3.5	0.0	0.0	0.0	0.0	4.0	0.5	0	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	3	STA_C	Station C (Chennai Park)	0	3.0	6.5	0.0	0.0	0.0	0.0	7.0	0.5	0	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	4	STA_D	Station D (Chennai Egmore)	1	5.1	11.5	0.0	0.0	0.0	0.0	12.0	0.5	0	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	5	STA_E	Station E (Chetpet)	0	6.7	15.7	0.0	0.0	0.0	0.0	16.2	0.5	0	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	6	STA_F	Station F (Nungambakkam)	0	8.6	20.0	0.0	0.0	0.0	0.0	20.5	0.5	0	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	7	STA_G	Station G (Kodambakkam)	0	10.0	23.3	0.0	0.0	0.0	0.0	23.8	0.5	0	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	8	STA_H	Station H (Mambalam)	0	11.7	27.3	0.0	0.0	0.0	0.0	27.8	0.5	0	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	9	STA_I	Station I (Saidapet)	0	13.7	31.8	0.0	0.0	0.0	35.0	67.3	35.5	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	10	STA_J	Station J (Guindy)	1	16.1	37.3	2.9	0.0	0.0	0.0	75.7	38.4	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	11	STA_K	Station K (St. Thomas Mount)	1	18.3	43.1	1.14	0.0	0.0	0.0	82.64	39.54	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	12	STA_L	Station L (Pazhavanthangal)	0	19.8	47.1	0.0	2.11	0.0	0.0	88.75	41.65	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	13	STA_M	Station M (Meenambakkam)	0	21.1	50.2	2.68	0.0	0.0	0.0	94.53	44.33	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	14	STA_N	Station N (Tirusulam)	0	22.3	53.1	0.0	0.0	0.0	0.0	97.43	44.33	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	15	STA_O	Station O (Pallavaram)	0	24.8	58.8	1.95	0.0	0.0	0.0	105.08	46.28	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	16	STA_P	Station P (Chromepet)	0	27.1	64.1	2.9	0.0	0.0	0.0	113.28	49.18	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	17	STA_Q	Station Q (Tambaram Sanatorium)	0	29.0	68.5	0.0	0.0	0.0	0.0	117.68	49.18	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	18	STA_R	Station R (Tambaram)	1	32.1	75.5	0.0	0.0	0.0	0.0	124.68	49.18	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	19	STA_S	Station S (Perungalathur)	0	35.3	82.5	0.0	0.0	0.0	0.0	131.68	49.18	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	20	STA_T	Station T (Vandalur)	0	38.1	88.5	0.0	0.0	0.0	0.0	137.68	49.18	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	21	STA_U	Station U (Urapakkam)	0	41.6	95.8	0.0	0.0	0.0	0.0	144.98	49.18	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	22	STA_V	Station V (Guduvancheri)	0	44.6	102.1	1.62	0.0	0.0	0.0	152.9	50.8	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	23	STA_W	Station W (Potheri)	0	47.3	107.8	0.0	0.0	0.0	0.0	158.6	50.8	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	24	STA_X	Station X (Kattangulathur)	0	49.4	112.5	0.0	0.0	0.0	0.0	163.3	50.8	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	25	STA_Y	Station Y (Maraimalai Nagar)	0	52.8	119.5	0.0	0.0	0.0	0.0	170.3	50.8	1	TRAIN
+5	Morning Critical Accident at Point 63	EXP-2026-SC05	26	STA_Z	Station Z (Chengalpattu)	0	58.0	129.0	0.0	0.0	0.0	0.0	179.8	50.8	1	TRAIN
