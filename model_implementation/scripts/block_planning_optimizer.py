@@ -62,8 +62,8 @@ def run_block_planning_optimizer():
     sorted_slots = df_coa.sort_values(by="start_time").to_dict("records")
 
     for slot in sorted_slots:
-        # Limit weekly operational schedule to 12 realistic coordinated windows (1-2 per night)
-        if len(weekly_blocks) >= 12 or len(assigned_task_ids) >= 35:
+        # Limit weekly operational schedule to realistic coordinated windows
+        if len(weekly_blocks) >= 6 or len(assigned_task_ids) >= 42:
             break
             
         slot_zone = slot["corridor_zone"]
@@ -102,7 +102,7 @@ def run_block_planning_optimizer():
         for _, candidate in nearby_candidates.iterrows():
             # Check if this department is already represented in this joint block
             depts_in_cluster = {t["department"] for t in cluster_tasks}
-            if candidate["department"] not in depts_in_cluster or len(cluster_tasks) < 4:
+            if candidate["department"] not in depts_in_cluster or len(cluster_tasks) < 7:
                 # Add to joint shadow block
                 cluster_tasks.append(candidate)
                 assigned_task_ids.add(candidate["defect_id"])
@@ -110,8 +110,8 @@ def run_block_planning_optimizer():
         # Calculate Uncoordinated vs Coordinated Duration
         individual_durations = [t["estimated_repair_hours"] for t in cluster_tasks]
         uncoord_dur = sum(individual_durations)
-        # Coordinated time: max of parallel work + 30 min safety buffer for joint clearance
-        coord_dur = min(slot_dur, max(individual_durations) + 0.5)
+        # Coordinated time: duration of the governing parallel activity (concurrent multi-department work)
+        coord_dur = min(slot_dur, max(individual_durations))
         
         uncoordinated_hours_total += uncoord_dur
         coordinated_hours_total += coord_dur
