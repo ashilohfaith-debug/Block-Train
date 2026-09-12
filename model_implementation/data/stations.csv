@@ -1,27 +1,27 @@
-station_id,station_code,station_letter_code,station_name,is_junction,dwell_time_seconds,inter_station_distance_km,distance_from_origin_km,baseline_segment_minutes,baseline_scheduled_arrival_mins,baseline_scheduled_departure_mins,signals_to_next_station,active_lcs_to_next_station,railroad_switches_count
-1,MSB,STA_A,Chennai Beach,False,30,0.0,0.0,0.0,0.0,0.5,2,0,24
-2,MSF,STA_B,Chennai Fort,False,30,1.8,1.8,3.5,3.5,4.0,2,0,0
-3,MPK,STA_C,Chennai Park,False,30,1.27,3.07,2.5,6.5,7.0,2,0,4
-4,MS,STA_D,Chennai Egmore,True,60,1.25,4.32,2.5,9.5,10.5,3,0,36
-5,MSC,STA_E,Chetpet,False,30,2.24,6.56,4.0,14.5,15.0,2,0,2
-6,NBK,STA_F,Nungambakkam,False,30,1.59,8.15,3.0,18.0,18.5,2,0,2
-7,MKK,STA_G,Kodambakkam,False,30,1.53,9.68,3.0,21.5,22.0,2,0,0
-8,MBM,STA_H,Mambalam,False,30,1.61,11.29,3.2,25.2,25.7,2,0,4
-9,SP,STA_I,Saidapet,False,30,1.61,12.9,3.2,28.9,29.4,3,0,2
-10,GDY,STA_J,Guindy,True,60,2.11,15.01,4.0,33.4,34.4,3,0,4
-11,STM,STA_K,St. Thomas Mount,True,60,2.11,17.12,4.0,38.4,39.4,2,0,6
-12,PZA,STA_L,Pazhavanthangal,False,30,1.63,18.75,3.2,42.6,43.1,2,0,0
-13,MN,STA_M,Meenambakkam,False,30,1.29,20.04,2.5,45.6,46.1,2,0,0
-14,TLM,STA_N,Tirusulam,False,30,1.18,21.22,2.3,48.4,48.9,2,0,0
-15,PV,STA_O,Pallavaram,False,30,1.93,23.15,3.8,52.7,53.2,3,1,2
-16,CMP,STA_P,Chromepet,False,30,2.2,25.35,4.2,57.4,57.9,3,1,2
-17,TBMS,STA_Q,Tambaram Sanatorium,False,30,2.01,27.36,4.0,61.9,62.4,2,0,2
-18,TBM,STA_R,Tambaram,True,60,1.78,29.14,3.8,66.2,67.2,4,1,42
-19,PRGL,STA_S,Perungalathur,False,30,3.5,32.64,5.5,72.7,73.2,2,1,0
-20,VDR,STA_T,Vandalur,False,30,1.8,34.44,3.5,76.7,77.2,3,2,3
-21,UPM,STA_U,Urapakkam,False,30,3.06,37.5,5.0,82.2,82.7,3,1,2
-22,GI,STA_V,Guduvancheri,False,30,2.91,40.41,4.8,87.5,88.0,4,1,5
-23,POTI,STA_W,Potheri,False,30,3.53,43.94,5.5,93.5,94.0,3,2,0
-24,MMNK,STA_X,Maraimalai Nagar,False,30,3.02,46.96,5.0,99.0,99.5,5,1,8
-25,SKL,STA_Y,Singaperumal Koil,False,30,4.52,51.48,7.0,106.5,107.0,8,2,4
-26,CGL,STA_Z,Chengalpattu Junction,False,30,8.36,59.84,12.0,119.0,119.5,0,0,28
+station_id,station_code,station_letter_code,station_name,is_junction,num_platforms,dwell_time_seconds,inter_station_distance_km,distance_from_origin_km,baseline_segment_minutes,baseline_scheduled_arrival_mins,baseline_scheduled_departure_mins,signals_to_next_station,active_lcs_to_next_station,railroad_switches_count
+1,MSB,STA_A,Chennai Beach,False,10,30,0.0,0.0,0.0,0.0,0.5,2,0,24
+2,MSF,STA_B,Chennai Fort,False,5,30,1.8,1.8,3.5,3.5,4.0,2,0,0
+3,MPK,STA_C,Chennai Park,False,3,30,1.27,3.07,2.5,6.5,7.0,2,0,4
+4,MS,STA_D,Chennai Egmore,True,11,60,1.25,4.32,2.5,9.5,10.5,3,0,36
+5,MSC,STA_E,Chetpet,False,4,30,2.24,6.56,4.0,14.5,15.0,2,0,2
+6,NBK,STA_F,Nungambakkam,False,4,30,1.59,8.15,3.0,18.0,18.5,2,0,2
+7,MKK,STA_G,Kodambakkam,False,4,30,1.53,9.68,3.0,21.5,22.0,2,0,0
+8,MBM,STA_H,Mambalam,False,4,30,1.61,11.29,3.2,25.2,25.7,2,0,4
+9,SP,STA_I,Saidapet,False,4,30,1.61,12.9,3.2,28.9,29.4,3,0,2
+10,GDY,STA_J,Guindy,True,4,60,2.11,15.01,4.0,33.4,34.4,3,0,4
+11,STM,STA_K,St. Thomas Mount,True,5,60,2.11,17.12,4.0,38.4,39.4,2,0,6
+12,PZA,STA_L,Pazhavanthangal,False,4,30,1.63,18.75,3.2,42.6,43.1,2,0,0
+13,MN,STA_M,Meenambakkam,False,4,30,1.29,20.04,2.5,45.6,46.1,2,0,0
+14,TLM,STA_N,Tirusulam,False,4,30,1.18,21.22,2.3,48.4,48.9,2,0,0
+15,PV,STA_O,Pallavaram,False,4,30,1.93,23.15,3.8,52.7,53.2,3,1,2
+16,CMP,STA_P,Chromepet,False,4,30,2.2,25.35,4.2,57.4,57.9,3,1,2
+17,TBMS,STA_Q,Tambaram Sanatorium,False,4,30,2.01,27.36,4.0,61.9,62.4,2,0,2
+18,TBM,STA_R,Tambaram,True,10,60,1.78,29.14,3.8,66.2,67.2,4,1,42
+19,PRGL,STA_S,Perungalathur,False,2,30,3.5,32.64,5.5,72.7,73.2,2,1,0
+20,VDR,STA_T,Vandalur,False,3,30,1.8,34.44,3.5,76.7,77.2,3,2,3
+21,UPM,STA_U,Urapakkam,False,3,30,3.06,37.5,5.0,82.2,82.7,3,1,2
+22,GI,STA_V,Guduvancheri,False,5,30,2.91,40.41,4.8,87.5,88.0,4,1,5
+23,POTI,STA_W,Potheri,False,3,30,3.53,43.94,5.5,93.5,94.0,3,2,0
+24,MMNK,STA_X,Maraimalai Nagar,False,3,30,3.02,46.96,5.0,99.0,99.5,5,1,8
+25,SKL,STA_Y,Singaperumal Koil,False,5,30,4.52,51.48,7.0,106.5,107.0,8,2,4
+26,CGL,STA_Z,Chengalpattu Junction,False,8,30,8.36,59.84,12.0,119.0,119.5,0,0,28

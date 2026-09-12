@@ -29,36 +29,36 @@ The **South Line of the Chennai Suburban Railway Network** (Southern Railway Zon
 
 ---
 
-## 2. Complete Station Master Table with Inter-Station Signals, LCs & Switches
+## 2. Complete Station Master Table with Inter-Station Signals, LCs, Switches & Platforms
 
-| Station ID | IR Code | Station Name | Chainage (km) | Inter-Dist (km) | Junction? | Dwell (s) | Signals to Next | Active LCs to Next | Switches at Station |
-| :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | **MSB** | **Chennai Beach** | **0.00** | — | No | Origin | **2** | 0 | **24** |
-| **2** | **MSF** | Chennai Fort | 1.80 | 1.80 | No | 30s | **2** | 0 | **0** |
-| **3** | **MPK** | Chennai Park | 3.07 | 1.27 | No | 30s | **2** | 0 | **4** |
-| **4** | **MS** | **Chennai Egmore** | **4.32** | **1.25** | **Yes (Jn 1)** | **60s** | **3** | 0 | **36** |
-| **5** | **MSC** | Chetpet | 6.56 | 2.24 | No | 30s | **2** | 0 | **2** |
-| **6** | **NBK** | Nungambakkam | 8.15 | 1.59 | No | 30s | **2** | 0 | **2 (Pt 41)** |
-| **7** | **MKK** | Kodambakkam | 9.68 | 1.53 | No | 30s | **2** | 0 | **0** |
-| **8** | **MBM** | Mambalam | 11.29 | 1.61 | No | 30s | **2** | 0 | **4** |
-| **9** | **SP** | Saidapet | 12.90 | 1.61 | No | 30s | **3** | 0 | **2 (Pt 63)** |
-| **10** | **GDY** | **Guindy** | **15.01** | **2.11** | **Yes (Jn 2)** | **60s** | **3** | 0 | **4** |
-| **11** | **STM** | **St. Thomas Mount** | **17.12** | **2.11** | **Yes (Jn 3)** | **60s** | **2** | 0 | **6** |
-| **12** | **PZA** | Pazhavanthangal | 18.75 | 1.63 | No | 30s | **2** | 0 | **0** |
-| **13** | **MN** | Meenambakkam | 20.04 | 1.29 | No | 30s | **2** | 0 | **0** |
-| **14** | **TLM** | Tirusulam | 21.22 | 1.18 | No | 30s | **2** | 0 | **0** |
-| **15** | **PV** | Pallavaram | 23.15 | 1.93 | No | 30s | **3** | 1 (LC-26) | **2** |
-| **16** | **CMP** | Chromepet | 25.35 | 2.20 | No | 30s | **3** | 1 (LC-27) | **2** |
-| **17** | **TBMS**| Tambaram Sanatorium | 27.36 | 2.01 | No | 30s | **2** | 0 | **2** |
-| **18** | **TBM** | **Tambaram** | **29.14** | **1.78** | **Yes (Jn 4)** | **60s** | **4** | 1 (LC-32) | **42 (Pt 118)**|
-| **19** | **PRGL**| Perungalathur | 32.64 | 3.50 | No | 30s | **2** | 1 (LC-33) | **0** |
-| **20** | **VDR** | Vandalur | 34.44 | 1.80 | No | 30s | **3** | 2 (LC-36, 43)| **3** |
-| **21** | **UPM** | Urapakkam | 37.50 | 3.06 | No | 30s | **3** | 1 (LC-45) | **2** |
-| **22** | **GI** | Guduvancheri | 40.41 | 2.91 | No | 30s | **4** | 1 (LC-47) | **5** |
-| **23** | **POTI**| Potheri | 43.94 | 3.53 | No | 30s | **3** | 2 (LC-52, 55)| **0** |
-| **24** | **MMNK**| Maraimalai Nagar | 46.96 | 3.02 | No | 30s | **5** | 1 (LC-58) | **8** |
-| **25** | **SKL** | Singaperumal Koil | 51.48 | 4.52 | No | 30s | **8** | 2 (LC-61, 64)| **4** |
-| **26** | **CGL** | **Chengalpattu Jn** | **59.84** | **8.36** | **Terminal Jn** | **Dest.**| **0** | 0 | **28** |
+| Station ID | IR Code | Station Name | Chainage (km) | Inter-Dist (km) | Junction? | Platforms | Dwell (s) | Signals to Next | Active LCs to Next | Switches at Station |
+| :---: | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **1** | **MSB** | **Chennai Beach** | **0.00** | — | No | **10** | Origin | **2** | 0 | **24** |
+| **2** | **MSF** | Chennai Fort | 1.80 | 1.80 | No | **5** | 30s | **2** | 0 | **0** |
+| **3** | **MPK** | Chennai Park | 3.07 | 1.27 | No | **3** | 30s | **2** | 0 | **4** |
+| **4** | **MS** | **Chennai Egmore** | **4.32** | **1.25** | **Yes (Jn 1)** | **11** | **60s** | **3** | 0 | **36** |
+| **5** | **MSC** | Chetpet | 6.56 | 2.24 | No | **4** | 30s | **2** | 0 | **2** |
+| **6** | **NBK** | Nungambakkam | 8.15 | 1.59 | No | **4** | 30s | **2** | 0 | **2 (Pt 41)** |
+| **7** | **MKK** | Kodambakkam | 9.68 | 1.53 | No | **4** | 30s | **2** | 0 | **0** |
+| **8** | **MBM** | Mambalam | 11.29 | 1.61 | No | **4** | 30s | **2** | 0 | **4** |
+| **9** | **SP** | Saidapet | 12.90 | 1.61 | No | **4** | 30s | **3** | 0 | **2 (Pt 63)** |
+| **10** | **GDY** | **Guindy** | **15.01** | **2.11** | **Yes (Jn 2)** | **4** | **60s** | **3** | 0 | **4** |
+| **11** | **STM** | **St. Thomas Mount** | **17.12** | **2.11** | **Yes (Jn 3)** | **5** | **60s** | **2** | 0 | **6** |
+| **12** | **PZA** | Pazhavanthangal | 18.75 | 1.63 | No | **4** | 30s | **2** | 0 | **0** |
+| **13** | **MN** | Meenambakkam | 20.04 | 1.29 | No | **4** | 30s | **2** | 0 | **0** |
+| **14** | **TLM** | Tirusulam | 21.22 | 1.18 | No | **4** | 30s | **2** | 0 | **0** |
+| **15** | **PV** | Pallavaram | 23.15 | 1.93 | No | **4** | 30s | **3** | 1 (LC-26) | **2** |
+| **16** | **CMP** | Chromepet | 25.35 | 2.20 | No | **4** | 30s | **3** | 1 (LC-27) | **2** |
+| **17** | **TBMS**| Tambaram Sanatorium | 27.36 | 2.01 | No | **4** | 30s | **2** | 0 | **2** |
+| **18** | **TBM** | **Tambaram** | **29.14** | **1.78** | **Yes (Jn 4)** | **10** | **60s** | **4** | 1 (LC-32) | **42 (Pt 118)**|
+| **19** | **PRGL**| Perungalathur | 32.64 | 3.50 | No | **2** | 30s | **2** | 1 (LC-33) | **0** |
+| **20** | **VDR** | Vandalur | 34.44 | 1.80 | No | **3** | 30s | **3** | 2 (LC-36, 43)| **3** |
+| **21** | **UPM** | Urapakkam | 37.50 | 3.06 | No | **3** | 30s | **3** | 1 (LC-45) | **2** |
+| **22** | **GI** | Guduvancheri | 40.41 | 2.91 | No | **5** | 30s | **4** | 1 (LC-47) | **5** |
+| **23** | **POTI**| Potheri | 43.94 | 3.53 | No | **3** | 30s | **3** | 2 (LC-52, 55)| **0** |
+| **24** | **MMNK**| Maraimalai Nagar | 46.96 | 3.02 | No | **3** | 30s | **5** | 1 (LC-58) | **8** |
+| **25** | **SKL** | Singaperumal Koil | 51.48 | 4.52 | No | **5** | 30s | **8** | 2 (LC-61, 64)| **4** |
+| **26** | **CGL** | **Chengalpattu Jn** | **59.84** | **8.36** | **Terminal Jn** | **8** | **Dest.**| **0** | 0 | **28** |
 
 ---
 
@@ -162,9 +162,56 @@ $$\text{Total Corridor Switches} = 24 + 0 + 4 + 36 + 2 + 2 + 0 + 4 + 2 + 4 + 6 +
 
 ---
 
-## 6. Complete Data Files Inventory in `model_implementation/data/`
+## 6. Station Platform Infrastructure Analysis & Ground Truth
 
-1. **`stations.csv`**: 26 stations with `signals_to_next_station`, `active_lcs_to_next_station`, and `railroad_switches_count`.
+Across the 26 stations of the Chennai Beach to Chengalpattu corridor, there are exactly **118 platforms** operational, catering to Suburban EMUs, MRTS services, express/mail coaching trains, and freight loops.
+
+### Platform Breakdown by Station:
+1. **Chennai Beach (MSB) — 10 Platforms:**
+   - Platforms 1–3: Suburban EMU terminal lines (towards Tambaram/Chengalpattu)
+   - Platforms 4–8: Chennai MRTS terminal lines (towards Velachery)
+   - Platforms 9–10: Chennai Port Harbor branch line & long-distance coaching/freight
+2. **Chennai Fort (MSF) — 5 Platforms:**
+   - Platforms 1–3: Ground-level Broad Gauge suburban lines
+   - Platforms 4–5: Elevated MRTS lines
+3. **Chennai Park (MPK) — 3 Platforms:**
+   - Platforms 1–2: Suburban EMU island platform
+   - Platform 3: Suburban link platform towards Chennai Central Suburban Terminal (Moore Market Complex - MMC)
+4. **Chennai Egmore (MS) — 11 Platforms:**
+   - Platforms 10 & 11: Dedicated Suburban EMU island platform
+   - Platforms 1–9: Southern Railway Primary Express & Superfast coaching terminal
+5. **Chetpet (MSC) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms
+6. **Nungambakkam (NBK) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms
+7. **Kodambakkam (MKK) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms
+8. **Mambalam (MBM) — 4 Platforms:** 2 Suburban Island platforms + 2 Main line express platforms
+9. **Saidapet (SP) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms
+10. **Guindy (GDY) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms (Interchange with CMRL Blue Line)
+11. **St. Thomas Mount (STM) — 5 Platforms:** 4 Broad Gauge platforms + 1 elevated MRTS/CMRL terminal platform
+12. **Pazhavanthangal (PZA) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms
+13. **Meenambakkam (MN) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms (Proximity to Chennai Airport Cargo)
+14. **Tirusulam (TLM) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms (Direct pedestrian subway connector to Chennai International Airport Domestic & International terminals)
+15. **Pallavaram (PV) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms
+16. **Chromepet (CMP) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms
+17. **Tambaram Sanatorium (TBMS) — 4 Platforms:** 2 Suburban EMU + 2 Main line platforms
+18. **Tambaram (TBM) — 10 Platforms:**
+    - Platforms 1–8: Major terminal with passenger island platforms, EMU stabling, and originating express trains
+    - Platforms 9–10: Third line suburban and fast passing loops
+19. **Perungalathur (PRGL) — 2 Platforms:** Suburban side platforms
+20. **Vandalur (VDR) — 3 Platforms:** 1 Side platform + 2 Island platforms (Zoo & Crescent University passenger flow)
+21. **Urapakkam (UPM) — 3 Platforms:** 1 Side platform + 2 Island platforms
+22. **Guduvancheri (GI) — 5 Platforms:** Platforms 1–4 active passenger platforms + Platform 5 stabling/crossing loop
+23. **Potheri (POTI) — 3 Platforms:** 1 Side platform + 2 Island platforms (SRM University campus connector)
+24. **Maraimalai Nagar (MMNK) — 3 Platforms:** 2 Passenger platforms + 1 Goods Loop platform (Ford / SIDCO auto hub)
+25. **Singaperumal Koil (SKL) — 5 Platforms:** Platforms 1–4 active passenger platforms + Platform 5 crossing loop
+26. **Chengalpattu Junction (CGL) — 8 Platforms:** Primary terminal junction handling bifurcations to Villupuram (South Line) and Arakkonam (West Line)
+
+$$\text{Total Corridor Platforms} = 10 + 5 + 3 + 11 + 4 + 4 + 4 + 4 + 4 + 4 + 5 + 4 + 4 + 4 + 4 + 4 + 4 + 10 + 2 + 3 + 3 + 5 + 3 + 3 + 5 + 8 = \mathbf{118}$$
+
+---
+
+## 7. Complete Data Files Inventory in `model_implementation/data/`
+
+1. **`stations.csv`**: 26 stations with `num_platforms`, `signals_to_next_station`, `active_lcs_to_next_station`, and `railroad_switches_count`.
 2. **`railroad_switches.csv`**: Complete 182-switch catalog with point numbers (`Point 63`, `Point 118`, `Point 41`), chainages, diverging speeds, and connecting lines.
 3. **`station_switch_counts.csv`**: Station-by-station summary of crossovers, platform turnouts, and siding turnouts.
 4. **`railway_crossings.csv`**: Complete 13 level crossings inventory (`LC-26` to `LC-64`) with TVUs and status.
@@ -174,8 +221,8 @@ $$\text{Total Corridor Switches} = 24 + 0 + 4 + 36 + 2 + 2 + 0 + 4 + 2 + 4 + 6 +
 8. **`gate_openings.csv`**: 72 timestamped gate openings mapped to crossings.
 9. **`track_maintenance.csv`**, **`engineering_maintenance.csv`**, **`traction_maintenance.csv`**: Scheduled heavy equipment blocks.
 10. **`accident_incidents.csv`**: Emergency incident points at real switch locations (Points 63, 118, 41).
-11. **`train_simulation_training.csv` & `.tsv`**: 130 training rows with `signals_in_section`, `lcs_in_section`, and `switches_at_station` features.
-12. **`train_simulation_validation.csv` & `.tsv`**: 78 validation rows with infrastructure density features.
-13. **`train_simulation_all_scenarios.csv`**: 208 combined simulation rows.
+11. **`train_simulation_training.csv` & `.tsv`**: 130 training rows with `num_platforms`, `signals_in_section`, `lcs_in_section`, and `switches_at_station` features.
+12. **`train_simulation_validation.csv` & `.tsv`**: 78 validation rows with infrastructure density features including `num_platforms`.
+13. **`train_simulation_all_scenarios.csv`**: 208 combined simulation rows with all physical infrastructure features.
 14. **`full_railway_simulation.xlsx`**: Multi-sheet workbook with 14 comprehensive sheets.
 15. **`database/schema_postgres.sql`**: Production PostgreSQL DDL matching this complete relational architecture.

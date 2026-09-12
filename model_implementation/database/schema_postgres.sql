@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS stations (
     station_letter_code VARCHAR(10) NOT NULL UNIQUE,    -- 'STA_A' to 'STA_Z'
     station_name VARCHAR(100) NOT NULL,                -- 'Chennai Beach', 'Tambaram', etc.
     is_junction BOOLEAN DEFAULT FALSE,                 -- TRUE for 4 junctions (MS, GDY, STM, TBM)
+    num_platforms INT NOT NULL DEFAULT 2,              -- Real platform count (e.g. MSB: 10, MS: 11, TBM: 10, CGL: 8)
     dwell_time_seconds INT NOT NULL,                   -- 30s normal, 60s junction
     inter_station_distance_km NUMERIC(5, 2) NOT NULL,  -- Distance from previous station
     distance_from_origin_km NUMERIC(6, 2) NOT NULL,    -- Cumulative chainage from MSB (0.00 to 59.84 km)

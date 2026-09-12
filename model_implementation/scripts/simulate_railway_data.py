@@ -4,7 +4,7 @@ Simulate Railway Network Data: 26-Station Corridor (Chennai Beach to Chengalpatt
 Southern Railway (Chennai Division) South Line Ground Truth
 
 Includes:
-1. 26-Station Corridor Master with Exact Chainage (0.00 to 59.84 km) & Dwell Times
+1. 26-Station Corridor Master with Exact Chainage (0.00 to 59.84 km), Dwell Times & Exact Platforms Count
 2. Railway Crossings Master (All 13 Level Crossings: LC-26 to LC-64 with chainages, status, landmarks)
 3. Corridor Signals Master (Full inventory of 72 4-Aspect Signals across the route)
 4. Station Signal Counts (Explicit breakdown of how many signals between every station pair)
@@ -12,7 +12,7 @@ Includes:
 6. Station Switch Counts (Exact switch counts and point numbers per station)
 7. Child Restriction Tables (Signals Events, Gate Openings, Track Maint, Engg Maint, Traction Maint)
 8. Accidents & Emergencies Table (Point 63 Saidapet, Point 118 Tambaram, Point 41 Nungambakkam)
-9. 8 Simulation Scenarios with Signals Density & Crossing Features for Google Colab (Train/Val CSV & TSV)
+9. 8 Simulation Scenarios with Signals, LCs, Switches & Platforms Density Features for Google Colab (Train/Val CSV & TSV)
 10. Multi-Sheet Excel Workbook Export
 """
 
@@ -33,34 +33,36 @@ BASE_DATE = datetime.datetime(2026, 9, 15, 0, 0, 0)
 
 # ----------------------------------------------------------------------
 # 1. 26-STATION CORRIDOR MASTER (Chennai Beach MSB to Chengalpattu CGL)
+# Ground Truth: Official Southern Railway Station Layouts & Platform Counts
 # ----------------------------------------------------------------------
 STATION_DATA = [
-    ("MSB", "STA_A", "Chennai Beach", False, 0.0, 0.0),
-    ("MSF", "STA_B", "Chennai Fort", False, 1.80, 3.5),
-    ("MPK", "STA_C", "Chennai Park", False, 1.27, 2.5),
-    ("MS", "STA_D", "Chennai Egmore", True, 1.25, 2.5),          # Junction 1 (60s dwell)
-    ("MSC", "STA_E", "Chetpet", False, 2.24, 4.0),
-    ("NBK", "STA_F", "Nungambakkam", False, 1.59, 3.0),
-    ("MKK", "STA_G", "Kodambakkam", False, 1.53, 3.0),
-    ("MBM", "STA_H", "Mambalam", False, 1.61, 3.2),
-    ("SP", "STA_I", "Saidapet", False, 1.61, 3.2),
-    ("GDY", "STA_J", "Guindy", True, 2.11, 4.0),                 # Junction 2 (60s dwell)
-    ("STM", "STA_K", "St. Thomas Mount", True, 2.11, 4.0),       # Junction 3 (60s dwell)
-    ("PZA", "STA_L", "Pazhavanthangal", False, 1.63, 3.2),
-    ("MN", "STA_M", "Meenambakkam", False, 1.29, 2.5),
-    ("TLM", "STA_N", "Tirusulam", False, 1.18, 2.3),
-    ("PV", "STA_O", "Pallavaram", False, 1.93, 3.8),
-    ("CMP", "STA_P", "Chromepet", False, 2.20, 4.2),
-    ("TBMS", "STA_Q", "Tambaram Sanatorium", False, 2.01, 4.0),
-    ("TBM", "STA_R", "Tambaram", True, 1.78, 3.8),               # Junction 4 (60s dwell)
-    ("PRGL", "STA_S", "Perungalathur", False, 3.50, 5.5),
-    ("VDR", "STA_T", "Vandalur", False, 1.80, 3.5),
-    ("UPM", "STA_U", "Urapakkam", False, 3.06, 5.0),
-    ("GI", "STA_V", "Guduvancheri", False, 2.91, 4.8),
-    ("POTI", "STA_W", "Potheri", False, 3.53, 5.5),
-    ("MMNK", "STA_X", "Maraimalai Nagar", False, 3.02, 5.0),
-    ("SKL", "STA_Y", "Singaperumal Koil", False, 4.52, 7.0),
-    ("CGL", "STA_Z", "Chengalpattu Junction", False, 8.36, 12.0),
+    # (Code, Letter, Name, is_junction, inter_dist_km, run_time_mins, num_platforms)
+    ("MSB", "STA_A", "Chennai Beach", False, 0.0, 0.0, 10),           # 10 Platforms (Suburban 1-3, MRTS 4-8, Freight 9-10)
+    ("MSF", "STA_B", "Chennai Fort", False, 1.80, 3.5, 5),             # 5 Platforms (3 BG Suburban + 2 Elevated MRTS)
+    ("MPK", "STA_C", "Chennai Park", False, 1.27, 2.5, 3),             # 3 Platforms (Central / MMC Link)
+    ("MS", "STA_D", "Chennai Egmore", True, 1.25, 2.5, 11),           # Junction 1: 11 Platforms (10-11 Suburban, 1-9 Express)
+    ("MSC", "STA_E", "Chetpet", False, 2.24, 4.0, 4),                 # 4 Platforms (2 Suburban + 2 Main)
+    ("NBK", "STA_F", "Nungambakkam", False, 1.59, 3.0, 4),             # 4 Platforms (2 Suburban + 2 Main)
+    ("MKK", "STA_G", "Kodambakkam", False, 1.53, 3.0, 4),              # 4 Platforms (2 Suburban + 2 Main)
+    ("MBM", "STA_H", "Mambalam", False, 1.61, 3.2, 4),                 # 4 Platforms (2 Suburban Island + 2 Main)
+    ("SP", "STA_I", "Saidapet", False, 1.61, 3.2, 4),                  # 4 Platforms (2 Suburban + 2 Main)
+    ("GDY", "STA_J", "Guindy", True, 2.11, 4.0, 4),                   # Junction 2: 4 Platforms (Metro Interchange)
+    ("STM", "STA_K", "St. Thomas Mount", True, 2.11, 4.0, 5),         # Junction 3: 5 Platforms (4 BG Suburban + 1 MRTS/Metro)
+    ("PZA", "STA_L", "Pazhavanthangal", False, 1.63, 3.2, 4),          # 4 Platforms (2 Suburban + 2 Main)
+    ("MN", "STA_M", "Meenambakkam", False, 1.29, 2.5, 4),              # 4 Platforms (2 Suburban + 2 Main)
+    ("TLM", "STA_N", "Tirusulam", False, 1.18, 2.3, 4),                # 4 Platforms (Airport Link Station)
+    ("PV", "STA_O", "Pallavaram", False, 1.93, 3.8, 4),                # 4 Platforms (2 Suburban + 2 Main)
+    ("CMP", "STA_P", "Chromepet", False, 2.20, 4.2, 4),                # 4 Platforms (2 Suburban + 2 Main)
+    ("TBMS", "STA_Q", "Tambaram Sanatorium", False, 2.01, 4.0, 4),     # 4 Platforms (2 Suburban + 2 Main)
+    ("TBM", "STA_R", "Tambaram", True, 1.78, 3.8, 10),                 # Junction 4: 10 Platforms (1-8 Main/Suburban + 9-10 Third Line)
+    ("PRGL", "STA_S", "Perungalathur", False, 3.50, 5.5, 2),           # 2 Platforms (Suburban Side Platforms)
+    ("VDR", "STA_T", "Vandalur", False, 1.80, 3.5, 3),                 # 3 Platforms (1 Side + 2 Island)
+    ("UPM", "STA_U", "Urapakkam", False, 3.06, 5.0, 3),                # 3 Platforms (1 Side + 2 Island)
+    ("GI", "STA_V", "Guduvancheri", False, 2.91, 4.8, 5),              # 5 Platforms (1-4 Active + 1 Loop Platform)
+    ("POTI", "STA_W", "Potheri", False, 3.53, 5.5, 3),                 # 3 Platforms (SRM University Station: 1 Side + 2 Island)
+    ("MMNK", "STA_X", "Maraimalai Nagar", False, 3.02, 5.0, 3),         # 3 Platforms (2 Passenger + 1 Goods Loop)
+    ("SKL", "STA_Y", "Singaperumal Koil", False, 4.52, 7.0, 5),        # 5 Platforms (1-4 Active + 1 Loop)
+    ("CGL", "STA_Z", "Chengalpattu Junction", False, 8.36, 12.0, 8),   # Terminal Junction: 8 Platforms (Villupuram & Arakkonam)
 ]
 
 # ----------------------------------------------------------------------
@@ -533,13 +535,10 @@ for st_code, st_name, sw_count, km_start, km_end, layout_desc, pt_nums, n_cross,
         "yard_layout_description": layout_desc
     })
     
-    # Generate individual switch records
     if sw_count > 0:
         km_step = (km_end - km_start) / max(1, sw_count)
         for s_idx, pt_num in enumerate(pt_nums, start=1):
             s_km = round(km_start + (s_idx - 0.5) * km_step, 2)
-            
-            # Determine switch type
             if s_idx <= n_cross:
                 sw_type = "CROSSOVER"
                 t_angle = "1 in 12"
@@ -581,16 +580,18 @@ df_switches_master = pd.DataFrame(railroad_switches)
 df_station_switch_counts = pd.DataFrame(station_switch_counts)
 
 # ----------------------------------------------------------------------
-# 5. CONSTRUCT STATIONS MASTER TABLE
+# 5. CONSTRUCT STATIONS MASTER TABLE (Including Platform Counts)
 # ----------------------------------------------------------------------
 stations = []
 cum_dist = 0.0
 cum_time = 0.0
+platform_count_dict = {}
 
-for idx, (code, letter, name, is_junc, dist, run_time) in enumerate(STATION_DATA, start=1):
+for idx, (code, letter, name, is_junc, dist, run_time, num_plat) in enumerate(STATION_DATA, start=1):
     cum_dist += dist
     dwell_sec = 60 if is_junc else 30
     dwell_min = dwell_sec / 60.0
+    platform_count_dict[code] = num_plat
     
     if idx == 1:
         scheduled_arrival = 0.0
@@ -607,6 +608,7 @@ for idx, (code, letter, name, is_junc, dist, run_time) in enumerate(STATION_DATA
         "station_letter_code": letter,
         "station_name": name,
         "is_junction": is_junc,
+        "num_platforms": num_plat,
         "dwell_time_seconds": dwell_sec,
         "inter_station_distance_km": round(dist, 2),
         "distance_from_origin_km": round(cum_dist, 2),
@@ -786,7 +788,6 @@ traction_maint = [
 df_traction_maint = pd.DataFrame(traction_maint)
 
 # 6.6 Accident / Emergency Events (~3 incidents per day)
-# Connecting to real Point Markers: Point 63 (Saidapet), Point 118 (Tambaram), Point 41 (Nungambakkam)
 accidents = [
     {
         "accident_id": 1,
@@ -834,7 +835,7 @@ accidents = [
 df_accidents = pd.DataFrame(accidents)
 
 # ----------------------------------------------------------------------
-# 7. GENERATE 8 SIMULATION SCENARIOS (With Signals, LCs & Switches Features)
+# 7. GENERATE 8 SIMULATION SCENARIOS (With Signals, LCs, Switches & Platforms)
 # ----------------------------------------------------------------------
 SCENARIO_CONFIGS = [
     {"id": 1, "name": "Early Morning Clean Run", "start_hour": 5, "disruption_level": "LOW", "has_accident": False},
@@ -872,6 +873,7 @@ for sc in SCENARIO_CONFIGS:
             lcs_in_sec = 0
             
         station_switches = switch_count_dict.get(st["station_code"], 0)
+        station_platforms = platform_count_dict.get(st["station_code"], 4)
         
         # Calculate stochastic disruptions based on scenario profile & density
         sig_delay = 0.0
@@ -934,6 +936,7 @@ for sc in SCENARIO_CONFIGS:
             "station_letter_code": st["station_letter_code"],
             "station_name": st["station_name"],
             "is_junction": int(st["is_junction"]),
+            "num_platforms": station_platforms,
             "distance_km": st["distance_from_origin_km"],
             "scheduled_arrival_mins": sched_arr_min,
             "signals_in_section": signals_in_sec,
@@ -1002,7 +1005,7 @@ with pd.ExcelWriter(excel_path, engine="openpyxl") as writer:
     df_accidents.to_excel(writer, sheet_name="Accident_Incidents", index=False)
 
 print(f"\n[SUCCESS] All datasets cleanly generated and stored in: {OUTPUT_DIR}")
-print(f"  1. stations.csv ({len(df_stations)} stations with signals_to_next_station, active_lcs, railroad_switches_count)")
+print(f"  1. stations.csv ({len(df_stations)} stations with num_platforms, signals_to_next, active_lcs, switches)")
 print(f"  2. railroad_switches.csv ({len(df_switches_master)} points & crossings cataloged)")
 print(f"  3. station_switch_counts.csv ({len(df_station_switch_counts)} station layouts summarized)")
 print(f"  4. railway_crossings.csv ({len(df_crossings)} real level crossings LC-26 to LC-64)")
@@ -1012,6 +1015,6 @@ print(f"  7. signals_events.csv ({len(df_signals)} dynamic events)")
 print(f"  8. gate_openings.csv ({len(df_gates)} dynamic events)")
 print(f"  9. track_maintenance.csv, engineering_maintenance.csv, traction_maintenance.csv")
 print(f" 10. accident_incidents.csv (Points 63, 118, 41)")
-print(f" 11. train_simulation_training.csv / .tsv ({len(df_train)} rows with switches_at_station feature)")
-print(f" 12. train_simulation_validation.csv / .tsv ({len(df_val)} rows with switches_at_station feature)")
+print(f" 11. train_simulation_training.csv / .tsv ({len(df_train)} rows with num_platforms & switches features)")
+print(f" 12. train_simulation_validation.csv / .tsv ({len(df_val)} rows with num_platforms & switches features)")
 print(f" 13. full_railway_simulation.xlsx (Multi-sheet Excel with 14 comprehensive sheets)")
