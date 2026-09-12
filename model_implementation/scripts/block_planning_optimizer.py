@@ -62,7 +62,8 @@ def run_block_planning_optimizer():
     sorted_slots = df_coa.sort_values(by="start_time").to_dict("records")
 
     for slot in sorted_slots:
-        if len(assigned_task_ids) >= len(weekly_pool):
+        # Limit weekly operational schedule to 12 realistic coordinated windows (1-2 per night)
+        if len(weekly_blocks) >= 12 or len(assigned_task_ids) >= 35:
             break
             
         slot_zone = slot["corridor_zone"]
@@ -207,24 +208,31 @@ def run_block_planning_optimizer():
     # ------------------------------------------------------------------
     # 5. COMPUTE REAL-WORLD OPERATIONAL METRICS & ASSET AVAILABILITY
     # ------------------------------------------------------------------
+    # Railway Engineering Context:
+    # A standard calendar week has 168.0 clock hours (7 days * 24 hours).
+    # Across our 4 parallel corridor lines, total track capacity = 4 * 168 = 672.0 Track-Hours.
+    # Block possession time is measured in cumulative Track-Hours.
+    
+    corridor_total_track_hours = 672.0
+    clock_hours_in_week = 168.0
+    
     hours_saved = uncoordinated_hours_total - coordinated_hours_total
     savings_pct = (hours_saved / max(1, uncoordinated_hours_total)) * 100.0
-    
-    # 24/7 Total Corridor Track Hours in a week across 4 main tracks = 4 * 168 = 672 track-hours
-    corridor_total_track_hours = 672.0
     
     availability_baseline = round(((corridor_total_track_hours - uncoordinated_hours_total) / corridor_total_track_hours) * 100.0, 2)
     availability_optimized = round(((corridor_total_track_hours - coordinated_hours_total) / corridor_total_track_hours) * 100.0, 2)
 
     kpis = {
+        "calendar_clock_hours_in_week": clock_hours_in_week,
+        "corridor_total_track_hours_capacity": corridor_total_track_hours,
         "total_work_orders_processed": len(df_tasks),
         "weekly_urgent_tasks_scheduled": len(assigned_task_ids),
         "weekly_blocks_formed": len(df_weekly_blocks),
         "multi_department_joint_blocks_count": int(df_weekly_blocks["is_multi_department_joint"].sum()),
         "multi_department_coordination_rate_pct": round((df_weekly_blocks["is_multi_department_joint"].sum() / len(df_weekly_blocks)) * 100.0, 1),
-        "uncoordinated_downtime_hours": round(uncoordinated_hours_total, 1),
-        "optimized_coordinated_downtime_hours": round(coordinated_hours_total, 1),
-        "net_track_downtime_hours_saved": round(hours_saved, 1),
+        "uncoordinated_downtime_track_hours": round(uncoordinated_hours_total, 1),
+        "optimized_coordinated_downtime_track_hours": round(coordinated_hours_total, 1),
+        "net_track_possession_hours_saved": round(hours_saved, 1),
         "downtime_reduction_pct": round(savings_pct, 1),
         "asset_availability_baseline_manual_pct": availability_baseline,
         "asset_availability_ai_optimized_pct": availability_optimized,
@@ -238,10 +246,12 @@ def run_block_planning_optimizer():
     print("\n" + "=" * 75)
     print("KEY PERFORMANCE INDICATORS (PS 26027 EVALUATION METRICS)")
     print("=" * 75)
+    print(f"  • Calendar Clock Hours in Week                    : {clock_hours_in_week} hrs (7 days x 24h)")
+    print(f"  • 4-Track Corridor Capacity                       : {corridor_total_track_hours} track-hours/week")
     print(f"  • Multi-Department Shadow Block Coordination Rate : {kpis['multi_department_coordination_rate_pct']}%")
-    print(f"  • Uncoordinated Manual Downtime Demand           : {kpis['uncoordinated_downtime_hours']} hrs")
-    print(f"  • Optimized AI-Coordinated Downtime              : {kpis['optimized_coordinated_downtime_hours']} hrs")
-    print(f"  • Net Line Downtime Saved for Train Operations   : {kpis['net_track_downtime_hours_saved']} hrs ({kpis['downtime_reduction_pct']}% reduction)")
+    print(f"  • Uncoordinated Manual Block Demand               : {kpis['uncoordinated_downtime_track_hours']} track-hours")
+    print(f"  • Optimized AI-Coordinated Line Block Closure     : {kpis['optimized_coordinated_downtime_track_hours']} track-hours")
+    print(f"  • Net Line Possession Hours Saved for Trains      : {kpis['net_track_possession_hours_saved']} track-hours ({kpis['downtime_reduction_pct']}% reduction)")
     print(f"  • Infrastructure Asset Availability (Baseline)   : {kpis['asset_availability_baseline_manual_pct']}%")
     print(f"  • Infrastructure Asset Availability (AI Opt)     : {kpis['asset_availability_ai_optimized_pct']}%")
     print(f"  • Train Timetable Clashes Avoided                : 100% Zero Conflicts")
