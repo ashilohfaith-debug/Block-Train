@@ -27,10 +27,12 @@ CREATE TABLE IF NOT EXISTS signals_events (
 );
 
 -- 3. Child Table: Railway Gate Openings (Level Crossings)
--- Captures LC gate openings for road traffic (~2 times/hour across corridor)
+-- Captures real Southern Railway LC gate openings (~2 times/hour across active corridor gates)
 CREATE TABLE IF NOT EXISTS gate_openings (
     opening_id SERIAL PRIMARY KEY,
-    gate_code VARCHAR(20) NOT NULL,                 -- e.g. 'LC-14', 'LC-22'
+    gate_code VARCHAR(20) NOT NULL,                 -- e.g. 'LC-26', 'LC-33', 'LC-43'
+    location_name VARCHAR(100),                     -- e.g. 'Chromepet (Radha Nagar)', 'Perungalathur'
+    kilometer_marker NUMERIC(5, 2),                 -- e.g. 24.80, 32.20
     between_station_from INT NOT NULL REFERENCES stations(station_id) ON DELETE CASCADE,
     between_station_to INT NOT NULL REFERENCES stations(station_id) ON DELETE CASCADE,
     open_timestamp TIMESTAMP NOT NULL,

@@ -116,17 +116,19 @@ for i in range(1, 49):
 df_signals = pd.DataFrame(signals)
 
 # 2.2 Gate Openings (~72 openings per day across level crossings)
-# Simulates LC gates opened for road traffic (4 to 8 minutes each)
-gates = []
+# Real Southern Railway Level Crossings on Chennai South Corridor
 GATE_LOCATIONS = [
-    ("LC-01", 3, 4),   # Park - Egmore
-    ("LC-02", 7, 8),   # Kodambakkam - Mambalam
-    ("LC-03", 11, 12), # St. Thomas Mount - Pazhavanthangal
-    ("LC-04", 15, 16), # Pallavaram - Chromepet
-    ("LC-05", 19, 20), # Perungalathur - Vandalur
-    ("LC-06", 21, 22), # Urapakkam - Guduvancheri
+    ("LC-26", "Chromepet (Radha Nagar)", 24.8, 15, 16),      # Pallavaram - Chromepet
+    ("LC-27", "Chromepet (MIT Gate)", 25.8, 16, 17),          # Chromepet - Tambaram Sanatorium
+    ("LC-33", "Perungalathur (Peerkankaranai)", 32.2, 18, 19), # Tambaram - Perungalathur
+    ("LC-43", "Vandalur - Urapakkam (Otteri)", 36.8, 20, 21), # Vandalur - Urapakkam
+    ("LC-47", "Guduvancheri (Market Road)", 41.2, 21, 22),     # Urapakkam - Guduvancheri
+    ("LC-52", "Potheri (SRM University Link)", 44.8, 23, 24), # Potheri - Kattangulathur
+    ("LC-58", "Singaperumal Koil (Temple Gate)", 52.3, 25, 26),# Maraimalai Nagar - Singaperumal Koil
+    ("LC-61", "Paranur (Mahindra World City)", 56.4, 26, 26),  # Singaperumal Koil - Chengalpattu
 ]
 
+gates = []
 for i in range(1, 73):
     hour = (i - 1) * (24 / 72)
     minute = random.randint(0, 15)
@@ -134,11 +136,13 @@ for i in range(1, 73):
     open_time = BASE_DATE + datetime.timedelta(hours=hour, minutes=minute, seconds=sec)
     duration_sec = random.randint(240, 480) # 4 to 8 minutes
     close_time = open_time + datetime.timedelta(seconds=duration_sec)
-    gate_code, st_from, st_to = random.choice(GATE_LOCATIONS)
+    gate_code, loc_name, km_marker, st_from, st_to = random.choice(GATE_LOCATIONS)
     
     gates.append({
         "opening_id": i,
         "gate_code": gate_code,
+        "location_name": loc_name,
+        "kilometer_marker": km_marker,
         "between_station_from": st_from,
         "between_station_to": st_to,
         "station_pair": f"{df_stations.loc[st_from-1, 'station_code']} - {df_stations.loc[st_to-1, 'station_code']}",
@@ -313,8 +317,8 @@ for sc in SCENARIO_CONFIGS:
         elif random.random() < 0.10:
             sig_delay = round(random.uniform(0.5, 1.5), 2)
             
-        # 2. Gate stochastic check (at LC stations)
-        if s_id in [4, 8, 12, 16, 20, 22]:
+        # 2. Gate stochastic check (at real LC gate stations: Pallavaram, Chromepet, Sanatorium, Perungalathur, Urapakkam, Guduvancheri, Kattangulathur, Singaperumal Koil)
+        if s_id in [15, 16, 17, 19, 21, 22, 24, 26]:
             if sc["disruption_level"] in ["MEDIUM", "HIGH", "EXTREME"]:
                 if random.random() < 0.40:
                     gate_delay = round(random.uniform(2.0, 5.5), 2)
