@@ -262,9 +262,10 @@ export async function POST(request: Request) {
         asset_availability: '97.59%'
       }
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Internal error';
     return NextResponse.json(
-      { success: false, error: error.message || 'Internal error' },
+      { success: false, error: message },
       { status: 500 }
     );
   }

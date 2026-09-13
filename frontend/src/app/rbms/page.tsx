@@ -562,6 +562,12 @@ export default function RBMSPage() {
             <span className="mr-1.5 animate-pulse text-emerald-400">🤖</span> Sync AI Blocks
           </button>
           <Link
+            href="/workers"
+            className="group flex items-center text-emerald-400 font-mono text-xs tracking-wider hover:text-emerald-200 transition-colors bg-emerald-950/80 px-3.5 py-1.5 rounded-full border border-emerald-800/80 backdrop-blur-md"
+          >
+            <span className="mr-1.5">👷</span> Workers
+          </Link>
+          <Link
             href="/maintenance"
             className="group flex items-center text-zinc-400 font-mono text-xs tracking-wider hover:text-white transition-colors bg-zinc-900/80 px-3.5 py-1.5 rounded-full border border-zinc-800 backdrop-blur-md"
           >

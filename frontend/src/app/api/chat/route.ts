@@ -42,7 +42,7 @@ const TOOLS = [
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const body = await request.json().catch(() => ({}));
     const messages = Array.isArray(body.messages) 
       ? body.messages 
       : (body.message ? [{ role: 'user', content: String(body.message) }] : [{ role: 'user', content: 'Status check' }]);
@@ -53,10 +53,10 @@ export async function POST(request: Request) {
     // Convert trains to a readable string context
     let trainsContext = "No live trains available.";
     if (trains && trains.length > 0) {
-      trainsContext = trains.map((t: any) => {
+      trainsContext = trains.map((t: { direction?: number; stopUntil?: number; speed?: number; id?: string; name?: string; x?: number }) => {
         const dir = t.direction === 1 ? "Up" : "Down";
-        const state = t.stopUntil ? "STOPPED" : t.speed > 0 ? `MOVING (${t.speed}x)` : "IDLE";
-        return `- ${t.id} (${t.name}): x=${Math.round(t.x)} [${dir} line], State: ${state}`;
+        const state = t.stopUntil ? "STOPPED" : (t.speed ?? 0) > 0 ? `MOVING (${t.speed}x)` : "IDLE";
+        return `- ${t.id ?? 'Train'} (${t.name ?? 'Unit'}): x=${Math.round(t.x ?? 0)} [${dir} line], State: ${state}`;
       }).join("\n");
     }
 
@@ -84,7 +84,7 @@ If the user asks where a train is, use the telemetry above to answer.
 Respond in a crisp, highly professional, slightly futuristic dispatch-coordinator tone. Be concise and confident.`
     };
 
-    const apiMessages = [systemMessage, ...messages.map((m: any) => ({ role: m.role, content: m.content }))];
+    const apiMessages = [systemMessage, ...messages.map((m: { role?: string; content?: string }) => ({ role: m.role || 'user', content: m.content || '' }))];
 
     const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -102,7 +102,7 @@ Respond in a crisp, highly professional, slightly futuristic dispatch-coordinato
     });
 
     if (!res.ok) {
-      const lastUserMsg = messages.filter((m: any) => m.role === 'user').slice(-1)[0]?.content || '';
+      const lastUserMsg = messages.filter((m: { role?: string; content?: string }) => m.role === 'user').slice(-1)[0]?.content || '';
       return NextResponse.json({
         reply: `[MAS Control / RBMS Dispatch]: Acknowledged query regarding "${lastUserMsg}". Real-time digital twin monitoring indicates 17 active train movements across Chennai Beach (MSB) to Chengalpattu (CGL). Automatic interlocking and ABS block signaling are operating normally. For maintenance block booking, please specify Date, Start Time, End Time, Department, and Track Section.`
       });
@@ -156,7 +156,7 @@ Respond in a crisp, highly professional, slightly futuristic dispatch-coordinato
               reply: `Error: The database rejected the block request.`
             });
           }
-        } catch (dbErr) {
+        } catch {
           return NextResponse.json({
             reply: `Error: Could not connect to the database to schedule the block.`
           });

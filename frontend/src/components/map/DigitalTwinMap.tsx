@@ -1,5 +1,5 @@
 import React from 'react';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
+import { TransformWrapper, TransformComponent, ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 import { StaticInfrastructure } from '../track/StaticInfrastructure';
 import { SignalLayer } from '../track/SignalLayer';
 import { LiveTrains } from '../train/LiveTrains';
@@ -12,7 +12,7 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
   const fetchBlocks = useMaintenanceStore((state) => state.fetchBlocks);
   const activeBlocks = React.useMemo(() => blocks.map(b => b.id), [blocks]);
   
-  const transformRef = React.useRef<any>(null);
+  const transformRef = React.useRef<ReactZoomPanPinchRef | null>(null);
   const [currentStationIdx, setCurrentStationIdx] = React.useState(0);
 
   React.useEffect(() => {

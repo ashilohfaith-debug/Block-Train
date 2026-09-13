@@ -11,7 +11,7 @@ export const VoiceRecorder = () => {
   const audioChunksRef = useRef<Blob[]>([]);
   
   // Save audio url to store so Chatbot can send it
-  const setDispatchAudioUrl = useMaintenanceStore((state: any) => state.setDispatchAudioUrl);
+  const setDispatchAudioUrl = useMaintenanceStore((state) => state.setDispatchAudioUrl);
 
   const startRecording = async () => {
     try {

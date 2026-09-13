@@ -36,6 +36,12 @@ export const DashboardHUD = ({ time }: { time: string }) => {
         >
           DISPATCH
         </Link>
+        <Link
+          href="/workers"
+          className="pointer-events-auto text-emerald-300 hover:text-emerald-100 font-mono text-xs uppercase tracking-widest bg-emerald-950/80 hover:bg-emerald-900/90 px-3.5 py-1.5 rounded-full border border-emerald-800/80 w-fit backdrop-blur-md shadow-xl flex items-center gap-1.5 transition-colors"
+        >
+          <span>👷</span> WORKERS
+        </Link>
       </div>
       
     </div>

@@ -39,7 +39,7 @@ export default function LoginPage() {
       } else {
         setError(data.error?.message || "Invalid credentials");
       }
-    } catch (err) {
+    } catch {
       setError("Server connection failed. Is the API running?");
     }
     setLoading(false);

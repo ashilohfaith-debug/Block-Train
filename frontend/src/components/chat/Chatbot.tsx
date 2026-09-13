@@ -58,7 +58,7 @@ export const Chatbot = () => {
       } else {
         setMessages([...newMessages, { role: 'assistant', content: 'Sorry, I encountered an error communicating with the server.' }]);
       }
-    } catch (err) {
+    } catch {
       setMessages([...newMessages, { role: 'assistant', content: 'Sorry, network error.' }]);
     } finally {
       setIsLoading(false);
