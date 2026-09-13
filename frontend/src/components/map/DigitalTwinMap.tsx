@@ -1,6 +1,7 @@
 import React from 'react';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { StaticInfrastructure } from '../track/StaticInfrastructure';
+import { SignalLayer } from '../track/SignalLayer';
 import { LiveTrains } from '../train/LiveTrains';
 import { useMaintenanceStore } from '../../lib/store';
 import { CANVAS_WIDTH, CANVAS_HEIGHT, STATIONS } from '../../lib/stations';
@@ -121,9 +122,32 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
                   <stop offset="50%" stopColor="#fef08a" stopOpacity="0.4" />
                   <stop offset="100%" stopColor="#fef08a" stopOpacity="0" />
                 </linearGradient>
+                {/* 4-Aspect Signal Glow Filters */}
+                <filter id="signal-glow-red" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="signal-glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="signal-glow-green" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
               
               <StaticInfrastructure interactive={interactive} onTrackClick={onTrackClick} blockedBlocks={activeBlocks} />
+              <SignalLayer />
               {!hideTrains && <LiveTrains speedMultiplier={speedMultiplier} />}
             </svg>
           </TransformComponent>
