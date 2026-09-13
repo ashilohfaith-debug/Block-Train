@@ -74,6 +74,9 @@ export default function MaintenancePage() {
           Block<span className="text-zinc-500 font-medium">Train</span>
         </div>
         <div className="flex items-center gap-3 pointer-events-auto">
+          <Link href="/rbms" className="group flex items-center text-amber-400 font-mono text-[11px] tracking-widest hover:text-amber-200 transition-colors bg-amber-950/80 px-4 py-2 rounded-full border border-amber-800 backdrop-blur-md shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+            <span className="mr-2">📅</span> RBMS SUITE (SR)
+          </Link>
           <Link href="/ai-planner" className="group flex items-center text-cyan-400 font-mono text-[11px] tracking-widest hover:text-cyan-200 transition-colors bg-cyan-950/80 px-4 py-2 rounded-full border border-cyan-800 backdrop-blur-md shadow-[0_0_15px_rgba(34,211,238,0.2)]">
             <span className="mr-2">⚡</span> AI PLANNER (PS 26027)
           </Link>

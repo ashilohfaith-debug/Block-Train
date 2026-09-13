@@ -107,12 +107,44 @@ export default function LandingPage() {
       </div>
 
       {/* Links Grid */}
-      <div className="relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl px-6" style={{ perspective: '1000px' }}>
+      <div className="relative z-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 w-full max-w-7xl px-6" style={{ perspective: '1000px' }}>
         
+        {/* RBMS Suite Link */}
+        <Link 
+          href="/rbms"
+          className="group relative bg-[#050505] border border-amber-900/40 p-6 hover:bg-black transition-all duration-300 shadow-2xl"
+          style={{
+            transform: `rotateY(${mousePosition.x * 4}deg) rotateX(${mousePosition.y * -4}deg)`,
+            transformStyle: 'preserve-3d'
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
+          
+          <div className="relative" style={{ transform: 'translateZ(20px)' }}>
+            <div className="text-[10px] font-mono text-amber-400 uppercase tracking-widest mb-1 font-bold">
+              SOUTHERN RAILWAY // RBP
+            </div>
+            <h2 className="text-2xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-amber-400 transition-colors">
+              RBMS Suite
+            </h2>
+            <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-amber-400 group-hover:w-full transition-all duration-500" />
+            <p className="text-zinc-500 font-mono text-xs mb-8 leading-relaxed">
+              &gt; 14-day rolling schedule<br/>
+              &gt; joint vetting &amp; requisition<br/>
+              &gt; controller desk &amp; burst alert
+            </p>
+            <div className="flex justify-between items-center text-xs font-mono font-bold tracking-widest text-zinc-700 group-hover:text-white transition-colors">
+              <span>ENTER_RBMS</span>
+              <span className="text-amber-400 font-black">[{'>'}]</span>
+            </div>
+          </div>
+        </Link>
+
         {/* AI Planner Link (PS 26027) */}
         <Link 
           href="/ai-planner"
-          className="group relative bg-[#050505] border border-zinc-900 p-7 hover:bg-black transition-all duration-300 shadow-2xl"
+          className="group relative bg-[#050505] border border-zinc-900 p-6 hover:bg-black transition-all duration-300 shadow-2xl"
           style={{
             transform: `rotateY(${mousePosition.x * 4}deg) rotateX(${mousePosition.y * -4}deg)`,
             transformStyle: 'preserve-3d'
@@ -125,11 +157,11 @@ export default function LandingPage() {
             <div className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest mb-1">
               PS 26027 // AI CORE
             </div>
-            <h2 className="text-3xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-cyan-400 transition-colors">
+            <h2 className="text-2xl font-black uppercase tracking-tighter mb-4 text-white group-hover:text-cyan-400 transition-colors">
               AI Planner
             </h2>
             <div className="h-[2px] w-12 bg-zinc-800 mb-6 group-hover:bg-cyan-400 group-hover:w-full transition-all duration-500" />
-            <p className="text-zinc-500 font-mono text-xs mb-10 leading-relaxed">
+            <p className="text-zinc-500 font-mono text-xs mb-8 leading-relaxed">
               &gt; live ml triage &amp; mpi<br/>
               &gt; shadow block bundling<br/>
               &gt; 86.1% downtime saved

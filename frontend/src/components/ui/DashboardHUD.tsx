@@ -14,7 +14,13 @@ export const DashboardHUD = ({ time }: { time: string }) => {
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           LIVE • {time}
         </div>
-        <div className="text-gray-400 font-mono text-xs uppercase tracking-widest bg-[#111827]/90 px-4 py-2 rounded-md border border-gray-800 w-fit backdrop-blur-md shadow-xl flex flex-col justify-center">
+        <Link
+          href="/rbms"
+          className="pointer-events-auto text-amber-300 hover:text-amber-100 font-mono text-xs uppercase tracking-widest bg-amber-950/80 hover:bg-amber-900/90 px-3 py-2 rounded-md border border-amber-800/80 w-fit backdrop-blur-md shadow-xl flex items-center gap-1.5 transition-colors"
+        >
+          <span>📅</span> RBMS SUITE (SR)
+        </Link>
+        <div className="text-gray-400 font-mono text-xs uppercase tracking-widest bg-[#111827]/90 px-4 py-2 rounded-md border border-gray-800 w-fit backdrop-blur-md shadow-xl flex flex-col justify-center hidden sm:flex">
           SOUTHERN RAILWAY ZONE
         </div>
       </div>

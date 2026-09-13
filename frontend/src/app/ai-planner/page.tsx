@@ -190,6 +190,12 @@ export default function AIBlockPlannerPage() {
 
         <div className="flex items-center gap-3">
           <Link
+            href="/rbms"
+            className="text-xs font-mono px-3 py-2 rounded-lg bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-800/60 transition-colors flex items-center gap-1"
+          >
+            <span>📅</span> RBMS Suite (SR)
+          </Link>
+          <Link
             href="/map"
             className="text-xs font-mono px-3 py-2 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-700 transition-colors"
           >
