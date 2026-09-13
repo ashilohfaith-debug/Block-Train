@@ -5,19 +5,27 @@ import { STATION_SPACING, DEFAULT_SPEED_MULTIPLIER } from '../constants';
 import { useMaintenanceStore } from '../store';
 
 const generateTrains = (speedMultiplier: number): Train[] => {
-  // 1. Made every train the exact same type ("passenger")
-  // 2. Significantly reduced base speeds (0.8 to 1.1)
-  // 3. Spaced them out perfectly on their dedicated lanes to prevent spawn overlap
   return [
-    { id: 'T1', name: 'Local 101', x: 600, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.8, type: 'passenger' },
-    { id: 'T2', name: 'Local 202', x: 2800, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.7, type: 'passenger' },
-    { id: 'T3', name: 'Local 303', x: 5000, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.65, type: 'passenger' },
-    { id: 'T4', name: 'Local 404', x: 7200, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.75, type: 'passenger' },
-    
-    { id: 'T5', name: 'Local 505', x: 8000, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.8, type: 'passenger' },
-    { id: 'T6', name: 'Local 606', x: 5800, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.7, type: 'passenger' },
-    { id: 'T7', name: 'Local 707', x: 3600, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.65, type: 'passenger' },
-    { id: 'T8', name: 'Local 808', x: 1400, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.75, type: 'passenger' }
+    // Southbound Trains (Direction: 1, MSB -> CGL)
+    { id: 'T1', name: 'EMU 40001 (MSB-TBM)', x: 1200, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.8, type: 'passenger' },
+    { id: 'T2', name: 'EMU 40003 (MS-GDY)', x: 9000, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.75, type: 'passenger' },
+    { id: 'T3', name: 'EXP 12635 Vaigai SF', x: 14000, direction: 1, baseLane: 0, switchDirection: 0, speed: 1.05, type: 'express' },
+    { id: 'T4', name: 'EMU 40005 (STM-TBM)', x: 26000, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.8, type: 'passenger' },
+    { id: 'T5', name: 'FRT 90021 Auto Rake', x: 33000, direction: 1, baseLane: 0, switchDirection: 0, speed: 0.65, type: 'freight' },
+    { id: 'T6', name: 'EMU 40007 (TBM-GI)', x: 43000, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.75, type: 'passenger' },
+    { id: 'T7', name: 'EXP 12605 Pallavan SF', x: 49000, direction: 1, baseLane: 0, switchDirection: 0, speed: 1.1, type: 'express' },
+    { id: 'T8', name: 'EMU 40009 (MMNK-CGL)', x: 57000, direction: 1, baseLane: -1, switchDirection: 0, speed: 0.8, type: 'passenger' },
+
+    // Northbound Trains (Direction: -1, CGL -> MSB)
+    { id: 'T9', name: 'EMU 40012 (CGL-TBM)', x: 59500, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.8, type: 'passenger' },
+    { id: 'T10', name: 'EXP 12636 Pandian SF', x: 52000, direction: -1, baseLane: 0, switchDirection: 0, speed: 1.05, type: 'express' },
+    { id: 'T11', name: 'EMU 40010 (SKL-GI)', x: 45000, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.75, type: 'passenger' },
+    { id: 'T12', name: 'FRT 90022 BTPN Tanker', x: 36000, direction: -1, baseLane: 0, switchDirection: 0, speed: 0.65, type: 'freight' },
+    { id: 'T13', name: 'EMU 40008 (TBM-STM)', x: 38000, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.8, type: 'passenger' },
+    { id: 'T14', name: 'EMU 40006 (CMP-GDY)', x: 21000, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.75, type: 'passenger' },
+    { id: 'T15', name: 'EXP 16128 Guruvayur Exp', x: 15500, direction: -1, baseLane: 0, switchDirection: 0, speed: 1.0, type: 'express' },
+    { id: 'T16', name: 'EMU 40004 (GDY-MS)', x: 7500, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.8, type: 'passenger' },
+    { id: 'T17', name: 'EMU 40002 (MS-MSB)', x: 3000, direction: -1, baseLane: 1, switchDirection: 0, speed: 0.75, type: 'passenger' }
   ];
 };
 

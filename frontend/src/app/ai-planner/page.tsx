@@ -109,28 +109,36 @@ export default function AIBlockPlannerPage() {
         ? weeklyBlocks
         : [
             {
+              track_id: 'Chennai Beach - Mainline (Sec 1)',
+              departments_list: 'Civil Engineering (TMS), S&T, TRD'
+            },
+            {
+              track_id: 'Chennai Egmore - Mainline (Sec 1)',
+              departments_list: 'S&T Interlocking, Civil, TRD'
+            },
+            {
+              track_id: 'Guindy to St. Thomas Mount Main Line',
+              departments_list: 'Electrical TRD (OHE), Civil Track, S&T'
+            },
+            {
+              track_id: 'Pallavaram to Chromepet Main Line',
+              departments_list: 'Civil Engineering, S&T Track Circuits, TRD'
+            },
+            {
               track_id: 'Tambaram - Mainline (Sec 1)',
               departments_list: 'Civil Engineering (TMS), S&T, Electrical TRD'
             },
             {
-              track_id: 'Tambaram to Chromepet Main Line',
-              departments_list: 'Electrical TRD, Civil Track, S&T'
-            },
-            {
-              track_id: 'Chromepet - Mainline (Sec 1)',
+              track_id: 'Tambaram to Perungalathur Main Line',
               departments_list: 'Civil Engineering, S&T Signals, TRD'
             },
             {
-              track_id: 'Guindy - Mainline (Sec 1)',
-              departments_list: 'S&T Interlocking, Civil, TRD'
+              track_id: 'Maraimalai Nagar to Singaperumal Koil Main Line',
+              departments_list: 'Electrical TRD, Civil Track, S&T'
             },
             {
-              track_id: 'Pallavaram - Mainline (Sec 1)',
-              departments_list: 'Civil Engineering, S&T, TRD'
-            },
-            {
-              track_id: 'St. Thomas Mount - Mainline (Sec 1)',
-              departments_list: 'Electrical TRD, S&T, Civil Track'
+              track_id: 'Chengalpattu Junction - Mainline (Sec 1)',
+              departments_list: 'Civil Engineering, S&T, Electrical TRD'
             }
           ];
 
@@ -325,12 +333,32 @@ export default function AIBlockPlannerPage() {
                     onChange={(e) => setStationCode(e.target.value)}
                     className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-200 outline-none focus:border-cyan-500 font-mono"
                   >
-                    <option value="TBM">TBM — Tambaram Junction (km 29.14)</option>
                     <option value="MSB">MSB — Chennai Beach (km 0.00)</option>
+                    <option value="MSF">MSF — Chennai Fort (km 1.80)</option>
+                    <option value="MPK">MPK — Chennai Park (km 3.07)</option>
+                    <option value="MS">MS — Chennai Egmore (km 4.32)</option>
+                    <option value="MSC">MSC — Chetpet (km 6.56)</option>
+                    <option value="NBK">NBK — Nungambakkam (km 8.15)</option>
+                    <option value="MKK">MKK — Kodambakkam (km 9.68)</option>
+                    <option value="MBM">MBM — Mambalam (km 11.29)</option>
+                    <option value="SP">SP — Saidapet (km 12.90)</option>
+                    <option value="GDY">GDY — Guindy (km 15.01)</option>
+                    <option value="STM">STM — St. Thomas Mount (km 17.12)</option>
+                    <option value="PZA">PZA — Pazhavanthangal (km 18.75)</option>
+                    <option value="MN">MN — Meenambakkam (km 20.04)</option>
+                    <option value="TLM">TLM — Tirusulam (km 21.22)</option>
+                    <option value="PV">PV — Pallavaram (km 23.15)</option>
+                    <option value="CMP">CMP — Chromepet (km 25.35)</option>
+                    <option value="TBMS">TBMS — Tambaram Sanatorium (km 27.36)</option>
+                    <option value="TBM">TBM — Tambaram Junction (km 29.14)</option>
+                    <option value="PRGL">PRGL — Perungalathur (km 32.64)</option>
+                    <option value="VDR">VDR — Vandalur (km 34.44)</option>
+                    <option value="UPM">UPM — Urapakkam (km 37.50)</option>
+                    <option value="GI">GI — Guduvancheri (km 40.41)</option>
+                    <option value="POTI">POTI — Potheri (km 43.94)</option>
+                    <option value="MMNK">MMNK — Maraimalai Nagar (km 46.96)</option>
+                    <option value="SKL">SKL — Singaperumal Koil (km 51.48)</option>
                     <option value="CGL">CGL — Chengalpattu Junction (km 59.84)</option>
-                    <option value="GDY">GDY — Guindy Junction (km 13.91)</option>
-                    <option value="MBM">MBM — Mambalam Section (km 10.98)</option>
-                    <option value="MKK">MKK — Kodambakkam (km 8.89)</option>
                   </select>
                 </div>
 

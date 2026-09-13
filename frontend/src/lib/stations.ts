@@ -3,11 +3,32 @@ import { pseudoRandom, TESTING_MODE, CENTER_Y, TRACK_GAP, STATION_SPACING } from
 import { getStationMainY } from './utils/trackGeometry';
 
 const RAW_STATIONS = [
-  { id: 'TBM', name: 'Tambaram', p: 8, yOffset: 60 },
-  { id: 'CMP', name: 'Chromepet', p: 4, yOffset: -30 },
-  { id: 'PV', name: 'Pallavaram', p: 5, yOffset: 10 },
-  { id: 'STM', name: 'St. Thomas Mount', p: 5, yOffset: -40 },
-  { id: 'GDY', name: 'Guindy', p: 4, yOffset: 50 }
+  { id: 'MSB', name: 'Chennai Beach', p: 10, yOffset: 40 },
+  { id: 'MSF', name: 'Chennai Fort', p: 5, yOffset: -20 },
+  { id: 'MPK', name: 'Chennai Park', p: 4, yOffset: 20 },
+  { id: 'MS', name: 'Chennai Egmore', p: 11, yOffset: 50 },
+  { id: 'MSC', name: 'Chetpet', p: 4, yOffset: -30 },
+  { id: 'NBK', name: 'Nungambakkam', p: 4, yOffset: 20 },
+  { id: 'MKK', name: 'Kodambakkam', p: 4, yOffset: -40 },
+  { id: 'MBM', name: 'Mambalam', p: 5, yOffset: 30 },
+  { id: 'SP', name: 'Saidapet', p: 4, yOffset: -20 },
+  { id: 'GDY', name: 'Guindy', p: 4, yOffset: 40 },
+  { id: 'STM', name: 'St. Thomas Mount', p: 5, yOffset: -30 },
+  { id: 'PZA', name: 'Pazhavanthangal', p: 4, yOffset: 20 },
+  { id: 'MN', name: 'Meenambakkam', p: 4, yOffset: -20 },
+  { id: 'TLM', name: 'Tirusulam', p: 4, yOffset: 30 },
+  { id: 'PV', name: 'Pallavaram', p: 4, yOffset: -30 },
+  { id: 'CMP', name: 'Chromepet', p: 4, yOffset: 20 },
+  { id: 'TBMS', name: 'Tambaram Sanatorium', p: 4, yOffset: -40 },
+  { id: 'TBM', name: 'Tambaram', p: 10, yOffset: 50 },
+  { id: 'PRGL', name: 'Perungalathur', p: 3, yOffset: -20 },
+  { id: 'VDR', name: 'Vandalur', p: 4, yOffset: 30 },
+  { id: 'UPM', name: 'Urapakkam', p: 3, yOffset: -30 },
+  { id: 'GI', name: 'Guduvancheri', p: 5, yOffset: 40 },
+  { id: 'POTI', name: 'Potheri', p: 4, yOffset: -20 },
+  { id: 'MMNK', name: 'Maraimalai Nagar', p: 4, yOffset: 30 },
+  { id: 'SKL', name: 'Singaperumal Koil', p: 5, yOffset: -30 },
+  { id: 'CGL', name: 'Chengalpattu Junction', p: 8, yOffset: 40 }
 ];
 
 const VISIBLE_STATIONS = RAW_STATIONS;

@@ -30,26 +30,82 @@ const STATION_BLOCKS: Record<string, {
   MSB: {
     block_id: 'WEEKLY-SHADOW-MSB-01',
     station_name: 'Chennai Beach',
-    time_window: 'Sunday 00:45 - 03:30 (Midday Zero-Traffic Window)',
+    time_window: 'Sunday 00:30 - 03:15 (Zero-Traffic Window)',
     departments: 'Civil Engineering + S&T Points Inspection',
     allocated_hours: 2.75,
-    hours_saved: 12.50
+    hours_saved: 13.75
+  },
+  MS: {
+    block_id: 'WEEKLY-SHADOW-MS-01',
+    station_name: 'Chennai Egmore Junction',
+    time_window: 'Monday 01:00 - 03:45 (Midnight Shadow Window)',
+    departments: 'S&T Interlocking + Civil Engineering + TRD',
+    allocated_hours: 2.75,
+    hours_saved: 15.25
   },
   CGL: {
     block_id: 'WEEKLY-SHADOW-CGL-01',
     station_name: 'Chengalpattu Junction',
-    time_window: 'Friday 01:30 - 04:15 (Traction & Track Joint Block)',
-    departments: 'Electrical TRD (OHE) + Civil Engineering',
+    time_window: 'Sunday 01:30 - 04:15 (Traction & Track Joint Block)',
+    departments: 'Electrical TRD (OHE) + Civil Engineering + S&T',
     allocated_hours: 2.75,
-    hours_saved: 16.25
+    hours_saved: 14.25
   },
   GDY: {
-    block_id: 'WEEKLY-SHADOW-GDY-01',
+    block_id: 'WEEKLY-SHADOW-GDY-STM',
     station_name: 'Guindy Junction',
     time_window: 'Wednesday 01:15 - 03:45 (Midnight Shadow Window)',
-    departments: 'S&T (Signals) + Civil Engineering',
+    departments: 'S&T (Signals) + Civil Engineering + TRD',
     allocated_hours: 2.50,
-    hours_saved: 14.50
+    hours_saved: 12.50
+  },
+  STM: {
+    block_id: 'WEEKLY-SHADOW-GDY-STM',
+    station_name: 'St. Thomas Mount',
+    time_window: 'Wednesday 01:15 - 03:45 (OHE & Track Joint Window)',
+    departments: 'Electrical TRD + Civil Track + S&T',
+    allocated_hours: 2.50,
+    hours_saved: 12.50
+  },
+  PV: {
+    block_id: 'WEEKLY-SHADOW-PV-CMP',
+    station_name: 'Pallavaram Section',
+    time_window: 'Thursday 01:30 - 04:00 (Track Circuits Shadow Block)',
+    departments: 'Civil Engineering + S&T + TRD',
+    allocated_hours: 2.50,
+    hours_saved: 12.00
+  },
+  CMP: {
+    block_id: 'WEEKLY-SHADOW-PV-CMP',
+    station_name: 'Chromepet Section',
+    time_window: 'Thursday 01:30 - 04:00 (Track Maintenance Shadow Block)',
+    departments: 'Civil Engineering + S&T + TRD',
+    allocated_hours: 2.50,
+    hours_saved: 12.00
+  },
+  GI: {
+    block_id: 'WEEKLY-SHADOW-GI-01',
+    station_name: 'Guduvancheri Section',
+    time_window: 'Friday 01:00 - 03:30 (Suburban Night Window)',
+    departments: 'Civil Track + Electrical TRD',
+    allocated_hours: 2.50,
+    hours_saved: 11.50
+  },
+  MMNK: {
+    block_id: 'WEEKLY-SHADOW-MMNK-SKL',
+    station_name: 'Maraimalai Nagar Section',
+    time_window: 'Tuesday 01:00 - 03:30 (Auto Industrial Possession)',
+    departments: 'Electrical TRD + Civil Track + S&T',
+    allocated_hours: 2.50,
+    hours_saved: 11.50
+  },
+  SKL: {
+    block_id: 'WEEKLY-SHADOW-MMNK-SKL',
+    station_name: 'Singaperumal Koil Section',
+    time_window: 'Tuesday 01:00 - 03:30 (Auto Industrial Possession)',
+    departments: 'Electrical TRD + Civil Track + S&T',
+    allocated_hours: 2.50,
+    hours_saved: 11.50
   },
   MKK: {
     block_id: 'WEEKLY-SHADOW-MKK-01',

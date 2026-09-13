@@ -3,13 +3,17 @@ import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { StaticInfrastructure } from '../track/StaticInfrastructure';
 import { LiveTrains } from '../train/LiveTrains';
 import { useMaintenanceStore } from '../../lib/store';
-import { CANVAS_WIDTH, CANVAS_HEIGHT } from '../../lib/stations';
+import { CANVAS_WIDTH, CANVAS_HEIGHT, STATIONS } from '../../lib/stations';
+import { STATION_SPACING } from '../../lib/constants';
 
 export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = false, interactive = false, onTrackClick }: { speedMultiplier?: number, hideTrains?: boolean, interactive?: boolean, onTrackClick?: (id: string) => void }) => {
   const blocks = useMaintenanceStore((state) => state.activeBlocks);
   const fetchBlocks = useMaintenanceStore((state) => state.fetchBlocks);
   const activeBlocks = React.useMemo(() => blocks.map(b => b.id), [blocks]);
   
+  const transformRef = React.useRef<any>(null);
+  const [currentStationIdx, setCurrentStationIdx] = React.useState(0);
+
   React.useEffect(() => {
     useMaintenanceStore.getState().hydrate();
     fetchBlocks();
@@ -19,10 +23,23 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
     return () => clearInterval(interval);
   }, [fetchBlocks]);
 
-  // Focus perfectly on the first major station (Tambaram) on load
-  const startX = -600;
+  const jumpToStation = (stationIndex: number) => {
+    if (!transformRef.current) return;
+    const targetX = 600 + stationIndex * STATION_SPACING;
+    const st = STATIONS[stationIndex];
+    const targetY = 800 + (st ? st.yOffset : 0);
+    const windowW = typeof window !== 'undefined' ? window.innerWidth : 1400;
+    const windowH = typeof window !== 'undefined' ? window.innerHeight : 900;
+    const scale = 1.2;
+    const newX = (windowW / 2) - (targetX * scale);
+    const newY = (windowH / 2) - (targetY * scale);
+    transformRef.current.setTransform(newX, newY, scale, 450);
+  };
+
+  // Focus perfectly on the first terminal station (Chennai Beach) on load
+  const startX = -350;
   const startY = -600;
-  const initialScale = 1.3;
+  const initialScale = 1.2;
 
   return (
     <div className="w-full h-screen bg-[#070B12] overflow-hidden relative selection:bg-blue-500/30">
@@ -42,6 +59,7 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
         Do NOT lift train physics state above this wrapper, or panning will lag massively.
       */}
       <TransformWrapper
+        ref={transformRef}
         initialScale={initialScale}
         initialPositionX={startX}
         initialPositionY={startY}
@@ -111,6 +129,78 @@ export const DigitalTwinMap = React.memo(({ speedMultiplier = 1, hideTrains = fa
           </TransformComponent>
         </div>
       </TransformWrapper>
+
+      {/* Floating Station Quick-Jump Navigator */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-[#111827]/95 px-4 py-2.5 rounded-2xl border border-gray-800 shadow-[0_10px_30px_rgba(0,0,0,0.8)] backdrop-blur-md pointer-events-auto">
+        <div className="flex items-center gap-1.5 text-cyan-400 font-mono text-xs font-bold uppercase tracking-wider hidden md:flex">
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+          Station:
+        </div>
+        <select
+          value={currentStationIdx}
+          onChange={(e) => {
+            const idx = Number(e.target.value);
+            setCurrentStationIdx(idx);
+            jumpToStation(idx);
+          }}
+          className="bg-gray-900 text-gray-100 border border-gray-700 rounded-lg px-3 py-1.5 text-xs font-mono outline-none focus:border-cyan-500 cursor-pointer shadow-inner"
+        >
+          {STATIONS.map((st, i) => (
+            <option key={st.id} value={i}>
+              {i + 1}. {st.id} — {st.name} ({st.p} Tracks)
+            </option>
+          ))}
+        </select>
+        <div className="flex items-center gap-1 border-l border-gray-700 pl-2">
+          <button
+            onClick={() => {
+              const newIdx = Math.max(0, currentStationIdx - 1);
+              setCurrentStationIdx(newIdx);
+              jumpToStation(newIdx);
+            }}
+            disabled={currentStationIdx === 0}
+            className="px-2.5 py-1 text-xs font-mono rounded bg-gray-800 hover:bg-gray-700 disabled:opacity-40 disabled:hover:bg-gray-800 text-gray-200 transition-colors"
+            title="Previous Station"
+          >
+            &larr; Prev
+          </button>
+          <button
+            onClick={() => {
+              const newIdx = Math.min(STATIONS.length - 1, currentStationIdx + 1);
+              setCurrentStationIdx(newIdx);
+              jumpToStation(newIdx);
+            }}
+            disabled={currentStationIdx === STATIONS.length - 1}
+            className="px-2.5 py-1 text-xs font-mono rounded bg-gray-800 hover:bg-gray-700 disabled:opacity-40 disabled:hover:bg-gray-800 text-gray-200 transition-colors"
+            title="Next Station"
+          >
+            Next &rarr;
+          </button>
+        </div>
+        <div className="flex items-center gap-1 border-l border-gray-700 pl-2 hidden sm:flex">
+          <button
+            onClick={() => transformRef.current?.zoomIn()}
+            className="w-7 h-7 flex items-center justify-center text-xs font-mono font-bold rounded bg-gray-800 hover:bg-gray-700 text-gray-200 transition-colors"
+            title="Zoom In"
+          >
+            +
+          </button>
+          <button
+            onClick={() => transformRef.current?.zoomOut()}
+            className="w-7 h-7 flex items-center justify-center text-xs font-mono font-bold rounded bg-gray-800 hover:bg-gray-700 text-gray-200 transition-colors"
+            title="Zoom Out"
+          >
+            -
+          </button>
+          <button
+            onClick={() => jumpToStation(currentStationIdx)}
+            className="px-2 py-1 text-[10px] font-mono uppercase tracking-wider rounded bg-cyan-950 text-cyan-300 border border-cyan-800/60 hover:bg-cyan-900 transition-colors"
+            title="Recenter Station"
+          >
+            Center
+          </button>
+        </div>
+      </div>
     </div>
   );
 });
