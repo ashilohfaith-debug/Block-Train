@@ -55,15 +55,60 @@ interface TrainRegulation {
   status: 'DIVERTED' | 'REGULATED' | 'RESCHEDULED' | 'ON_TIME';
 }
 
+let memoCounter = 72;
+let blockCounter = 340;
+
+function generatePrivateNumbers(stationCode: string) {
+  const seq = ++blockCounter;
+  return {
+    pn: `CTRL/MAS-${7000 + (seq % 2000)}`,
+    smUp: `SM/${stationCode.split('-')[0] || 'TBM'}-${4000 + (seq % 3000)}`,
+    smDn: `SM/${stationCode.split('-')[1] || 'MAS'}-${5000 + (seq % 3000)}`,
+    tpc: `TPC/MAS-${8000 + (seq % 1500)}`
+  };
+}
+
+function generateNewBlockMemos() {
+  const memoSeq = ++memoCounter;
+  const blockSeq = ++blockCounter;
+  return {
+    memo: `SR/MAS/RBP/2026/W38/${memoSeq}`,
+    blockId: `RB-2026-${blockSeq}`
+  };
+}
+
 export default function RBMSPage() {
   const [activeTab, setActiveTab] = useState<'RBP' | 'DEMAND' | 'CONTROLLER' | 'TSR' | 'REGULATION' | 'MEMO'>('RBP');
   const [zoneFilter, setZoneFilter] = useState('ALL');
   const [statusFilter, setStatusFilter] = useState('ALL');
 
   // Maintenance store sync
-  const activeBlocks = useMaintenanceStore((state) => state.activeBlocks);
   const addBlock = useMaintenanceStore((state) => state.addBlock);
   const removeBlock = useMaintenanceStore((state) => state.removeBlock);
+  const applyAISchedule = useMaintenanceStore((state) => state.applyAISchedule);
+
+  const handleSyncAISchedule = async () => {
+    try {
+      const res = await fetch('/api/ai-plan');
+      const data = await res.json();
+      if (data.success && data.weekly_blocks) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const blocksToApply = data.weekly_blocks.map((b: { track_id: string; departments_list: string }) => ({
+          id: b.track_id,
+          department: `[AI SHADOW BLOCK] ${b.departments_list}`,
+          date: todayStr,
+          fromTime: '00:00',
+          toTime: '23:59',
+          urgency: 'Critical'
+        }));
+        applyAISchedule(blocksToApply);
+        setActionSuccessMessage(`✓ Synced ${blocksToApply.length} AI Coordinated Shadow Blocks! Live Digital Twin & 4-Aspect Signals updated.`);
+        setTimeout(() => setActionSuccessMessage(null), 6000);
+      }
+    } catch (e) {
+      console.error('Failed to sync AI schedule:', e);
+    }
+  };
 
   // 14-Day Rolling Schedule initial data
   const [rollingBlocks, setRollingBlocks] = useState<RollingBlockItem[]>([
@@ -364,10 +409,7 @@ export default function RBMSPage() {
       return;
     }
 
-    const pn = `CTRL/MAS-${Math.floor(1000 + Math.random() * 9000)}`;
-    const smUp = `SM/${block.stationCode.split('-')[0] || 'TBM'}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const smDn = `SM/${block.stationCode.split('-')[1] || 'MAS'}-${Math.floor(1000 + Math.random() * 9000)}`;
-    const tpc = `TPC/MAS-${Math.floor(1000 + Math.random() * 9000)}`;
+    const { pn, smUp, smDn, tpc } = generatePrivateNumbers(block.stationCode);
 
     setControllerPrivateNumber(pn);
     setSmUpPrivateNumber(smUp);
@@ -426,7 +468,7 @@ export default function RBMSPage() {
     const stFromName = STATIONS.find((s) => s.id === demandStFrom)?.name || demandStFrom;
     const stToName = STATIONS.find((s) => s.id === demandStTo)?.name || demandStTo;
     const isYard = demandStFrom === demandStTo;
-    const generatedMemo = `SR/MAS/RBP/2026/W38/${Math.floor(10 + Math.random() * 90)}`;
+    const { memo: generatedMemo, blockId: generatedBlockId } = generateNewBlockMemos();
     const trackString = isYard ? `${stFromName} - Mainline (Sec 1)` : `${stFromName} to ${stToName} Main Line`;
     const stationDisplayName = isYard ? `${stFromName} Yard` : `${stFromName} to ${stToName}`;
 
@@ -437,7 +479,7 @@ export default function RBMSPage() {
     const zoneNum = stIdx < 4 ? 1 : stIdx < 11 ? 2 : stIdx < 18 ? 3 : 4;
 
     const newBlock: RollingBlockItem = {
-      id: `RB-2026-${Math.floor(100 + Math.random() * 900)}`,
+      id: generatedBlockId,
       memoNo: generatedMemo,
       dayOffset: 3,
       dateStr: 'Day +3',
@@ -512,6 +554,13 @@ export default function RBMSPage() {
           >
             <span className="mr-1.5">⚡</span> AI Planner
           </Link>
+          <button
+            onClick={handleSyncAISchedule}
+            className="group flex items-center text-emerald-300 font-mono text-xs tracking-wider hover:text-emerald-100 transition-all bg-emerald-950/80 px-3.5 py-1.5 rounded-full border border-emerald-700/80 backdrop-blur-md shadow-[0_0_15px_rgba(16,185,129,0.25)] hover:border-emerald-400 cursor-pointer"
+            title="Sync 6 Coordinated AI Shadow Blocks directly to Digital Twin and 4-Aspect Signals"
+          >
+            <span className="mr-1.5 animate-pulse text-emerald-400">🤖</span> Sync AI Blocks
+          </button>
           <Link
             href="/maintenance"
             className="group flex items-center text-zinc-400 font-mono text-xs tracking-wider hover:text-white transition-colors bg-zinc-900/80 px-3.5 py-1.5 rounded-full border border-zinc-800 backdrop-blur-md"
