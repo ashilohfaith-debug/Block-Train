@@ -131,7 +131,30 @@ export async function POST(request: Request) {
 
     const department = body.department || 'Track Maintenance (Civil)';
     const defectCategory = body.defect_category || 'Rail Joint Gap / Fishplate Failure';
-    const stationCode = (body.station_code || 'TBM').toUpperCase();
+    const rawStation = (body.station_code || 'TBM').toUpperCase().trim();
+    const STATION_ALIAS_MAP: Record<string, string> = {
+      'TAMBARAM': 'TBM',
+      'CHENNAI BEACH': 'MSB',
+      'BEACH': 'MSB',
+      'CHENNAI EGMORE': 'MS',
+      'EGMORE': 'MS',
+      'CHENGALPATTU': 'CGL',
+      'GUINDY': 'GDY',
+      'ST. THOMAS MOUNT': 'STM',
+      'ST THOMAS MOUNT': 'STM',
+      'MOUNT': 'STM',
+      'PALLAVARAM': 'PV',
+      'CHROMEPET': 'CMP',
+      'GUDUVANCHERI': 'GI',
+      'MARAIMALAI NAGAR': 'MMNK',
+      'SINGAPERUMAL KOIL': 'SKL',
+      'KODAMBAKKAM': 'MKK',
+      'MAMBALAM': 'MBM',
+      'SAIDAPET': 'SP',
+      'NUNGAMBAKKAM': 'NBK',
+      'CHETPET': 'MSC'
+    };
+    const stationCode = STATION_ALIAS_MAP[rawStation] || rawStation;
     const safetyRisk = Number(body.safety_risk_score ?? 8);
     const overdueDays = Number(body.overdue_days ?? 20);
     const assetAge = Number(body.asset_age_years ?? 7.5);

@@ -211,7 +211,10 @@ export default function RBMSPage() {
 
   // Section Controller State
   const [selectedBlockForControl, setSelectedBlockForControl] = useState<RollingBlockItem>(rollingBlocks[0]);
-  const [controllerPrivateNumber, setControllerPrivateNumber] = useState('PN-MAS-8124');
+  const [controllerPrivateNumber, setControllerPrivateNumber] = useState('CTRL/MAS-8124');
+  const [smUpPrivateNumber, setSmUpPrivateNumber] = useState('SM/TBM-4392');
+  const [smDnPrivateNumber, setSmDnPrivateNumber] = useState('SM/PRGL-6218');
+  const [tpcPermitNumber, setTpcPermitNumber] = useState('TPC/MAS-0941');
   const [checklist, setChecklist] = useState({
     pointsClamped: true,
     powerIsolated: true,
@@ -220,6 +223,9 @@ export default function RBMSPage() {
   });
   const [isBurstSimulated, setIsBurstSimulated] = useState(false);
   const [actionSuccessMessage, setActionSuccessMessage] = useState<string | null>(null);
+
+  // Official Documents (Dossier) State
+  const [selectedMemoType, setSelectedMemoType] = useState<'SR_DOM' | 'T_B_1525' | 'FORM_E1_PTW' | 'ST_T351' | 'FORM_T409'>('SR_DOM');
 
   // Caution Orders (TSR) Register State
   const [tsrList, setTsrList] = useState<TSRItem[]>([
@@ -346,7 +352,23 @@ export default function RBMSPage() {
   }, []);
 
   const handleGrantBlock = (block: RollingBlockItem) => {
-    const pn = `PN-MAS-${Math.floor(1000 + Math.random() * 9000)}`;
+    const isSafetyChecklistComplete = checklist.pointsClamped && checklist.powerIsolated && checklist.earthingRodsPlaced && checklist.detonatorsDeployed;
+    if (!isSafetyChecklistComplete) {
+      setActionSuccessMessage("⚠️ SAFETY INTERLOCKING INCOMPLETE: All 4 Indian Railways safety verification checks must be verified before transmitting Form T/B 1525!");
+      setTimeout(() => setActionSuccessMessage(null), 6000);
+      return;
+    }
+
+    const pn = `CTRL/MAS-${Math.floor(1000 + Math.random() * 9000)}`;
+    const smUp = `SM/${block.stationCode.split('-')[0] || 'TBM'}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const smDn = `SM/${block.stationCode.split('-')[1] || 'MAS'}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const tpc = `TPC/MAS-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    setControllerPrivateNumber(pn);
+    setSmUpPrivateNumber(smUp);
+    setSmDnPrivateNumber(smDn);
+    setTpcPermitNumber(tpc);
+
     setRollingBlocks((prev) =>
       prev.map((b) => (b.id === block.id ? { ...b, status: 'ACTIVE', privateNumber: pn, remainingSeconds: Math.round(b.allocatedHours * 3600) } : b))
     );
@@ -362,7 +384,7 @@ export default function RBMSPage() {
       urgency: 'Critical'
     });
 
-    setActionSuccessMessage(`✓ POSSESSION GRANTED: ${block.memoNo} under Private Number ${pn}. Active on Digital Twin Map!`);
+    setActionSuccessMessage(`✓ POSSESSION GRANTED: ${block.memoNo} under Private Number ${pn}. Form T/B 1525 dispatched. Track active on Digital Twin Map!`);
     setTimeout(() => setActionSuccessMessage(null), 6000);
   };
 
@@ -373,7 +395,7 @@ export default function RBMSPage() {
     // Remove from digital twin map
     removeBlock(block.trackId);
 
-    setActionSuccessMessage(`✓ TRACK SAFE & CLEARED: ${block.memoNo} cancelled. Line reopened for train operations.`);
+    setActionSuccessMessage(`✓ TRACK SAFE & CLEARED: Form T/C 1525 executed for ${block.memoNo}. Line reopened for 100% timetable speed.`);
     setTimeout(() => setActionSuccessMessage(null), 6000);
   };
 
@@ -398,18 +420,26 @@ export default function RBMSPage() {
     e.preventDefault();
     const stFromName = STATIONS.find((s) => s.id === demandStFrom)?.name || demandStFrom;
     const stToName = STATIONS.find((s) => s.id === demandStTo)?.name || demandStTo;
+    const isYard = demandStFrom === demandStTo;
     const generatedMemo = `SR/MAS/RBP/2026/W38/${Math.floor(10 + Math.random() * 90)}`;
-    const trackString = `${stFromName} to ${stToName} Main Line`;
+    const trackString = isYard ? `${stFromName} - Mainline (Sec 1)` : `${stFromName} to ${stToName} Main Line`;
+    const stationDisplayName = isYard ? `${stFromName} Yard` : `${stFromName} to ${stToName}`;
+
+    // Approximate chainage from station index
+    const stIdx = STATIONS.findIndex(s => s.id === demandStFrom);
+    const chainageKmStart = (Math.max(0, stIdx) * 2.4).toFixed(1);
+    const chainageKmEnd = ((Math.max(0, stIdx) + (isYard ? 0.8 : 2.5)) * 2.4).toFixed(1);
+    const zoneNum = stIdx < 4 ? 1 : stIdx < 11 ? 2 : stIdx < 18 ? 3 : 4;
 
     const newBlock: RollingBlockItem = {
       id: `RB-2026-${Math.floor(100 + Math.random() * 900)}`,
       memoNo: generatedMemo,
       dayOffset: 3,
       dateStr: 'Day +3',
-      stationCode: `${demandStFrom}-${demandStTo}`,
-      stationName: `${stFromName} to ${stToName}`,
+      stationCode: isYard ? demandStFrom : `${demandStFrom}-${demandStTo}`,
+      stationName: stationDisplayName,
       trackId: trackString,
-      zone: 'Zone 3 (km 28.0 - 34.0)',
+      zone: `Zone ${zoneNum} (km ${chainageKmStart} - ${chainageKmEnd})`,
       status: 'SANCTIONED',
       departments: [demandDept, 'Electrical TRD (OHE Shadow)', 'S&T Points Inspection'],
       primaryDept: demandDept,
@@ -424,7 +454,7 @@ export default function RBMSPage() {
 
     setRollingBlocks([newBlock, ...rollingBlocks]);
     setActiveTab('RBP');
-    setActionSuccessMessage(`✓ DEMAND SUBMITTED & SHADOW-CLUSTERED: ${generatedMemo} automatically co-utilized with TRD & S&T!`);
+    setActionSuccessMessage(`✓ DEMAND REGISTERED & CLUSTERED: ${generatedMemo} slotted into Week 38 Rolling Block Programme!`);
     setTimeout(() => setActionSuccessMessage(null), 6000);
   };
 
@@ -1052,8 +1082,13 @@ export default function RBMSPage() {
                   </div>
 
                   {isBurstSimulated && (
-                    <div className="text-[11px] font-mono text-red-300 mt-2 bg-red-900/40 p-2 rounded">
-                      ⚠️ Operating Detention charged to: {selectedBlockForControl.primaryDept}. Section Controller has initiated train diversion to Mainline.
+                    <div className="text-[11px] font-mono text-red-300 mt-2 bg-red-900/40 p-2.5 rounded-lg border border-red-700/60 space-y-1">
+                      <div className="font-bold text-red-200 flex items-center gap-1.5">
+                        <span>🚨</span> BURST ESCALATION LOGGED IN COA (#MAS-INC-8912)
+                      </div>
+                      <div>• Defaulter Branch: <strong>{selectedBlockForControl.primaryDept}</strong></div>
+                      <div>• Penalty Charge: <strong className="text-amber-300">₹1,45,200</strong> (COA Operational Delay Debit)</div>
+                      <div>• Relief Action: <strong>Emergency Diesel Tower Wagon (TW-RU-112)</strong> alerted at Tambaram Loco Siding for emergency clearance.</div>
                     </div>
                   )}
                 </div>
@@ -1064,16 +1099,23 @@ export default function RBMSPage() {
                 {selectedBlockForControl.status !== 'ACTIVE' ? (
                   <button
                     onClick={() => handleGrantBlock(selectedBlockForControl)}
-                    className="flex-1 py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold font-mono text-xs uppercase tracking-wider transition-all shadow-lg cursor-pointer"
+                    disabled={!(checklist.pointsClamped && checklist.powerIsolated && checklist.earthingRodsPlaced && checklist.detonatorsDeployed)}
+                    className={`flex-1 py-3 px-4 rounded-xl font-bold font-mono text-xs uppercase tracking-wider transition-all shadow-lg cursor-pointer ${
+                      checklist.pointsClamped && checklist.powerIsolated && checklist.earthingRodsPlaced && checklist.detonatorsDeployed
+                        ? 'bg-emerald-500 hover:bg-emerald-400 text-black shadow-emerald-950'
+                        : 'bg-zinc-800 text-zinc-500 cursor-not-allowed border border-zinc-700'
+                    }`}
                   >
-                    ⚡ Grant Line Possession
+                    {checklist.pointsClamped && checklist.powerIsolated && checklist.earthingRodsPlaced && checklist.detonatorsDeployed
+                      ? '⚡ Grant Line Possession (Form T/B 1525)'
+                      : '⚠️ Verify 4 Safety Points First'}
                   </button>
                 ) : (
                   <button
                     onClick={() => handleClearBlock(selectedBlockForControl)}
                     className="flex-1 py-3 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono text-xs uppercase tracking-wider transition-all shadow-lg cursor-pointer"
                   >
-                    ✓ Track Safe & Clear (Cancel Block)
+                    ✓ Track Safe & Clear (Form T/C 1525)
                   </button>
                 )}
               </div>
@@ -1081,12 +1123,14 @@ export default function RBMSPage() {
 
             {/* Right Column: 4-Point Safety Interlocking Checklist */}
             <div className="lg:col-span-7 bg-[#0c1018] border border-zinc-800 rounded-2xl p-6 shadow-xl space-y-6">
-              <div className="border-b border-zinc-800 pb-3">
-                <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold">SAFETY PROTOCOL</span>
-                <h3 className="text-lg font-bold text-white">4-Point Section Interlocking Sign-off</h3>
-                <p className="text-xs text-zinc-400 font-mono mt-0.5">
-                  Possession cannot be sanctioned until all 4 mandatory Indian Railways safety conditions are verified.
-                </p>
+              <div className="border-b border-zinc-800 pb-3 flex justify-between items-center">
+                <div>
+                  <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold">SAFETY PROTOCOL</span>
+                  <h3 className="text-lg font-bold text-white">4-Point Section Interlocking Sign-off</h3>
+                </div>
+                <span className="text-[11px] font-mono text-zinc-400 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded">
+                  G&SR Rules 15.06 / 15.08
+                </span>
               </div>
 
               <div className="space-y-3">
@@ -1102,7 +1146,7 @@ export default function RBMSPage() {
                       1. Facing Points Clamped & Padlocked
                     </span>
                     <span className="text-[11px] text-zinc-400">
-                      All facing points leading to the isolated track section clamped, spiked, and padlocked away from the work zone.
+                      All facing points leading into the isolated block section clamped, spiked, and padlocked away from work zone.
                     </span>
                   </div>
                 </label>
@@ -1159,19 +1203,45 @@ export default function RBMSPage() {
                 </label>
               </div>
 
-              {/* Private Number Exchange Widget */}
-              <div className="p-4 bg-zinc-950 rounded-xl border border-zinc-800 flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] font-mono uppercase text-zinc-500 block">EXCHANGE PRIVATE NUMBER</span>
-                  <span className="text-xs font-mono text-zinc-300">Station Master & Controller Authentication</span>
+              {/* 4-Channel Private Number Exchange Console */}
+              <div className="p-4 bg-zinc-950 rounded-xl border border-zinc-800 space-y-3">
+                <div className="flex justify-between items-center border-b border-zinc-800/80 pb-2">
+                  <div>
+                    <span className="text-[10px] font-mono uppercase text-amber-400 font-bold block">4-CHANNEL PRIVATE NUMBER EXCHANGE CONSOLE</span>
+                    <span className="text-[11px] font-mono text-zinc-400">Interlocking authorization between Controller, Station Masters & TPC</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      const stA = selectedBlockForControl.stationCode.split('-')[0] || 'TBM';
+                      const stB = selectedBlockForControl.stationCode.split('-')[1] || 'MAS';
+                      setControllerPrivateNumber(`CTRL/MAS-${Math.floor(1000 + Math.random() * 9000)}`);
+                      setSmUpPrivateNumber(`SM/${stA}-${Math.floor(1000 + Math.random() * 9000)}`);
+                      setSmDnPrivateNumber(`SM/${stB}-${Math.floor(1000 + Math.random() * 9000)}`);
+                      setTpcPermitNumber(`TPC/MAS-${Math.floor(1000 + Math.random() * 9000)}`);
+                    }}
+                    className="text-[10px] font-mono text-amber-400 hover:text-amber-300 underline cursor-pointer"
+                  >
+                    ↻ Regenerate All
+                  </button>
                 </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={controllerPrivateNumber}
-                    onChange={(e) => setControllerPrivateNumber(e.target.value)}
-                    className="bg-zinc-900 border border-zinc-700 text-xs font-mono text-cyan-400 font-bold px-3 py-1.5 rounded-lg w-36 text-center"
-                  />
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                  <div className="bg-zinc-900/90 border border-zinc-800 p-2.5 rounded-lg">
+                    <span className="text-[9px] font-mono text-zinc-500 uppercase block">1. Section Controller</span>
+                    <span className="text-xs font-mono font-bold text-cyan-400 block mt-0.5">{controllerPrivateNumber}</span>
+                  </div>
+                  <div className="bg-zinc-900/90 border border-zinc-800 p-2.5 rounded-lg">
+                    <span className="text-[9px] font-mono text-zinc-500 uppercase block">2. SM Up-Station</span>
+                    <span className="text-xs font-mono font-bold text-emerald-400 block mt-0.5">{smUpPrivateNumber}</span>
+                  </div>
+                  <div className="bg-zinc-900/90 border border-zinc-800 p-2.5 rounded-lg">
+                    <span className="text-[9px] font-mono text-zinc-500 uppercase block">3. SM Down-Station</span>
+                    <span className="text-xs font-mono font-bold text-emerald-400 block mt-0.5">{smDnPrivateNumber}</span>
+                  </div>
+                  <div className="bg-zinc-900/90 border border-zinc-800 p-2.5 rounded-lg">
+                    <span className="text-[9px] font-mono text-zinc-500 uppercase block">4. TPC Power Permit</span>
+                    <span className="text-xs font-mono font-bold text-amber-400 block mt-0.5">{tpcPermitNumber}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1237,16 +1307,27 @@ export default function RBMSPage() {
                         <span className="block text-[10px] text-zinc-500">{t.status}</span>
                       </td>
                       <td className="py-3 px-4 text-right">
-                        {t.status !== 'NORMALIZED' ? (
+                        <div className="flex items-center justify-end gap-2">
                           <button
-                            onClick={() => handleRelaxTsr(t.id)}
-                            className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-black font-bold font-mono text-[11px] rounded-lg transition-colors cursor-pointer"
+                            onClick={() => {
+                              setSelectedMemoType('FORM_T409');
+                              setActiveTab('MEMO');
+                            }}
+                            className="px-2.5 py-1 bg-zinc-900 hover:bg-zinc-800 text-cyan-400 font-mono text-[11px] rounded-lg border border-zinc-700 transition-colors cursor-pointer"
                           >
-                            Relax Speed &uarr;
+                            T/409 Form
                           </button>
-                        ) : (
-                          <span className="text-emerald-400 font-bold text-xs">✓ Normal Speed Restored</span>
-                        )}
+                          {t.status !== 'NORMALIZED' ? (
+                            <button
+                              onClick={() => handleRelaxTsr(t.id)}
+                              className="px-3 py-1 bg-amber-500 hover:bg-amber-400 text-black font-bold font-mono text-[11px] rounded-lg transition-colors cursor-pointer"
+                            >
+                              Relax &uarr;
+                            </button>
+                          ) : (
+                            <span className="text-emerald-400 font-bold text-xs">✓ Normal</span>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -1326,110 +1407,434 @@ export default function RBMSPage() {
         )}
 
         {/* ==================================================================== */}
-        {/* TAB 6: OFFICIAL SOUTHERN RAILWAY BLOCK SANCTION MEMO                  */}
+        {/* TAB 6: OFFICIAL SOUTHERN RAILWAY BLOCK SANCTION MEMO & STATUTORY FORMS*/}
         {/* ==================================================================== */}
         {activeTab === 'MEMO' && (
           <div className="space-y-6">
-            <div className="flex justify-between items-center border-b border-zinc-800 pb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-800 pb-4">
               <div>
-                <span className="text-[10px] font-mono uppercase text-amber-400 font-bold">OFFICIAL DOCUMENT</span>
-                <h2 className="text-xl font-bold text-white">Southern Railway Joint Block Sanction Order</h2>
+                <span className="text-[10px] font-mono uppercase text-amber-400 font-bold">STATUTORY OPERATING RECORDS</span>
+                <h2 className="text-xl font-bold text-white">Southern Railway Official Block Dossier & Forms</h2>
                 <p className="text-xs text-zinc-400 font-mono mt-0.5">
-                  Official printable divisional record conforming to Indian Railways G&SR and Operating Rules.
+                  Conforming to Indian Railways General & Subsidiary Rules (G&SR), ACTM, and Operating Manuals.
                 </p>
               </div>
               <button
                 onClick={() => window.print()}
-                className="px-4 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-mono text-xs font-bold transition-colors flex items-center gap-2 cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-600 text-black font-mono text-xs font-bold transition-all shadow-lg hover:from-amber-400 hover:to-yellow-500 flex items-center gap-2 cursor-pointer"
               >
-                <span>🖨️</span> Print / Export Official Order
+                <span>🖨️</span> Print Selected Statutory Form
               </button>
             </div>
 
-            {/* Printable Memo Sheet */}
-            <div className="bg-white text-black p-8 rounded-2xl shadow-2xl font-serif space-y-6 max-w-4xl mx-auto border border-zinc-300">
-              {/* Header */}
-              <div className="text-center border-b-2 border-black pb-4 space-y-1">
-                <h2 className="text-2xl font-black uppercase tracking-wider">SOUTHERN RAILWAY</h2>
-                <h3 className="text-base font-bold uppercase">OFFICE OF THE SENIOR DIVISIONAL OPERATIONS MANAGER (SR. DOM)</h3>
-                <h4 className="text-xs font-mono uppercase tracking-widest text-zinc-700">CHENNAI DIVISION (MAS) — NGO ANNEXE, PARK TOWN, CHENNAI 600003</h4>
-                <div className="text-xs font-mono pt-2 font-bold flex justify-between border-t border-zinc-400 mt-2">
-                  <span>REF NO: SR/MAS/RBP/2026/W37/01</span>
-                  <span>DATE: 13-SEP-2026</span>
-                </div>
-              </div>
-
-              {/* Subject */}
-              <div>
-                <p className="text-sm font-bold uppercase tracking-tight">
-                  SUB: SANCTION OF INTEGRATED ROLLING CORRIDOR BLOCK (TRAFFIC & POWER) ON TAMBARAM SECTION.
-                </p>
-                <p className="text-xs text-zinc-700 mt-1 italic">
-                  Ref: Joint Demand Requisition No. SR/MAS/ENGG-ST-TRD/TBM-2026 submitted by SSE/P-Way/TBM, SSE/Sig/TBM, and SSE/TRD/TBM.
-                </p>
-              </div>
-
-              {/* Sanction Details Table */}
-              <table className="w-full text-xs border border-black border-collapse text-left font-sans">
-                <tbody>
-                  <tr className="border-b border-black">
-                    <td className="p-2 font-bold bg-zinc-100 w-1/3 border-r border-black">Section / Station Limits</td>
-                    <td className="p-2">Tambaram Junction (TBM) — km 28.00 to km 31.50</td>
-                  </tr>
-                  <tr className="border-b border-black">
-                    <td className="p-2 font-bold bg-zinc-100 border-r border-black">Line Nominated</td>
-                    <td className="p-2">Main Fast Down Line & Crossover Throat Points 118A/B</td>
-                  </tr>
-                  <tr className="border-b border-black">
-                    <td className="p-2 font-bold bg-zinc-100 border-r border-black">Possession Duration</td>
-                    <td className="p-2">02 Hours 40 Minutes (From 01:00 hrs to 03:40 hrs)</td>
-                  </tr>
-                  <tr className="border-b border-black">
-                    <td className="p-2 font-bold bg-zinc-100 border-r border-black">Coordinated Departments</td>
-                    <td className="p-2">1. Civil (P-Way Track Tamping) &bull; 2. S&T (Point 118 Overhaul) &bull; 3. TRD (25kV Catenary Wire Tuning)</td>
-                  </tr>
-                  <tr className="border-b border-black">
-                    <td className="p-2 font-bold bg-zinc-100 border-r border-black">Specialized Machinery Deployed</td>
-                    <td className="p-2">CSM 09-32 Tamper + 8-Wheeler DETC Tower Wagon</td>
-                  </tr>
-                  <tr className="border-b border-black">
-                    <td className="p-2 font-bold bg-zinc-100 border-r border-black">Traction Isolation (Power Block)</td>
-                    <td className="p-2">Permitted. Feeder Isolator TBM-SS-02 to be opened. Dual earthing discharge rods mandatory.</td>
-                  </tr>
-                  <tr>
-                    <td className="p-2 font-bold bg-zinc-100 border-r border-black">Speed Restriction Imposed</td>
-                    <td className="p-2">30 km/h Caution Order between km 29.14 and 29.80 upon track handover.</td>
-                  </tr>
-                </tbody>
-              </table>
-
-              {/* Instructions */}
-              <div className="text-xs space-y-1.5 text-zinc-800 leading-relaxed font-sans">
-                <p><strong>SPECIAL CONDITIONS:</strong></p>
-                <p>1. Section Controller / MAS shall verify 4-point safety check before communicating private number.</p>
-                <p>2. No block bursting will be permitted. Any detention exceeding sanctioned time will be debited to defaulting branch.</p>
-                <p>3. Passenger trains 40001 and 12635 to be regulated and diverted as per regulation schedule.</p>
-              </div>
-
-              {/* Signatures */}
-              <div className="pt-8 grid grid-cols-3 text-center text-xs font-sans font-bold border-t border-black">
-                <div>
-                  <div className="h-10 text-zinc-400 italic">[Signed digitally]</div>
-                  <div>Sr. Divisional Engineer (Co-ord)</div>
-                  <div className="text-[10px] text-zinc-600">Southern Railway / MAS</div>
-                </div>
-                <div>
-                  <div className="h-10 text-zinc-400 italic">[Signed digitally]</div>
-                  <div>Sr. Divl. Signal & Telecom Engr</div>
-                  <div className="text-[10px] text-zinc-600">Southern Railway / MAS</div>
-                </div>
-                <div>
-                  <div className="h-10 text-zinc-400 italic">[Signed digitally]</div>
-                  <div>Sr. Divisional Operations Manager</div>
-                  <div className="text-[10px] text-zinc-600">Southern Railway / MAS</div>
-                </div>
-              </div>
+            {/* Document Selector Sub-tabs */}
+            <div className="flex flex-wrap gap-2 p-1.5 bg-zinc-950/80 border border-zinc-800 rounded-xl">
+              <button
+                onClick={() => setSelectedMemoType('SR_DOM')}
+                className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  selectedMemoType === 'SR_DOM'
+                    ? 'bg-amber-500 text-black font-bold shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                📜 Sr. DOM Master Sanction Order
+              </button>
+              <button
+                onClick={() => setSelectedMemoType('T_B_1525')}
+                className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  selectedMemoType === 'T_B_1525'
+                    ? 'bg-amber-500 text-black font-bold shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                🚦 Form T/B 1525 (Line Block Authority)
+              </button>
+              <button
+                onClick={() => setSelectedMemoType('FORM_E1_PTW')}
+                className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  selectedMemoType === 'FORM_E1_PTW'
+                    ? 'bg-amber-500 text-black font-bold shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                ⚡ Form E-1 (PTW Traction Permit)
+              </button>
+              <button
+                onClick={() => setSelectedMemoType('ST_T351')}
+                className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  selectedMemoType === 'ST_T351'
+                    ? 'bg-amber-500 text-black font-bold shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                🔧 Form S&T (T/351 Disconnection Memo)
+              </button>
+              <button
+                onClick={() => setSelectedMemoType('FORM_T409')}
+                className={`px-3 py-1.5 rounded-lg font-mono text-xs transition-all cursor-pointer ${
+                  selectedMemoType === 'FORM_T409'
+                    ? 'bg-amber-500 text-black font-bold shadow'
+                    : 'text-zinc-400 hover:text-white'
+                }`}
+              >
+                ⚠️ Form T/409 (Caution Order)
+              </button>
             </div>
+
+            {/* DOCUMENT 1: SR. DOM MASTER SANCTION ORDER */}
+            {selectedMemoType === 'SR_DOM' && (
+              <div className="bg-white text-black p-8 rounded-2xl shadow-2xl font-serif space-y-6 max-w-4xl mx-auto border border-zinc-300">
+                <div className="text-center border-b-2 border-black pb-4 space-y-1">
+                  <h2 className="text-2xl font-black uppercase tracking-wider">SOUTHERN RAILWAY</h2>
+                  <h3 className="text-base font-bold uppercase">OFFICE OF THE SENIOR DIVISIONAL OPERATIONS MANAGER (SR. DOM)</h3>
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-zinc-700">CHENNAI DIVISION (MAS) — NGO ANNEXE, PARK TOWN, CHENNAI 600003</h4>
+                  <div className="text-xs font-mono pt-2 font-bold flex justify-between border-t border-zinc-400 mt-2">
+                    <span>REF NO: SR/MAS/RBP/2026/W37/01</span>
+                    <span>DATE: 13-SEP-2026</span>
+                  </div>
+                </div>
+
+                <div>
+                  <p className="text-sm font-bold uppercase tracking-tight">
+                    SUB: SANCTION OF INTEGRATED ROLLING CORRIDOR BLOCK (TRAFFIC & POWER) ON TAMBARAM SECTION.
+                  </p>
+                  <p className="text-xs text-zinc-700 mt-1 italic">
+                    Ref: Joint Demand Requisition No. SR/MAS/ENGG-ST-TRD/TBM-2026 submitted by SSE/P-Way/TBM, SSE/Sig/TBM, and SSE/TRD/TBM.
+                  </p>
+                </div>
+
+                <table className="w-full text-xs border border-black border-collapse text-left font-sans">
+                  <tbody>
+                    <tr className="border-b border-black">
+                      <td className="p-2 font-bold bg-zinc-100 w-1/3 border-r border-black">Section / Station Limits</td>
+                      <td className="p-2">Tambaram Junction (TBM) — km 28.00 to km 31.50</td>
+                    </tr>
+                    <tr className="border-b border-black">
+                      <td className="p-2 font-bold bg-zinc-100 border-r border-black">Line Nominated</td>
+                      <td className="p-2">Main Fast Down Line & Crossover Throat Points 118A/B</td>
+                    </tr>
+                    <tr className="border-b border-black">
+                      <td className="p-2 font-bold bg-zinc-100 border-r border-black">Possession Duration</td>
+                      <td className="p-2">02 Hours 40 Minutes (From 01:00 hrs to 03:40 hrs)</td>
+                    </tr>
+                    <tr className="border-b border-black">
+                      <td className="p-2 font-bold bg-zinc-100 border-r border-black">Coordinated Departments</td>
+                      <td className="p-2">1. Civil (P-Way Track Tamping) &bull; 2. S&T (Point 118 Overhaul) &bull; 3. TRD (25kV Catenary Wire Tuning)</td>
+                    </tr>
+                    <tr className="border-b border-black">
+                      <td className="p-2 font-bold bg-zinc-100 border-r border-black">Specialized Machinery Deployed</td>
+                      <td className="p-2">CSM 09-32 Tamper + 8-Wheeler DETC Tower Wagon</td>
+                    </tr>
+                    <tr className="border-b border-black">
+                      <td className="p-2 font-bold bg-zinc-100 border-r border-black">Traction Isolation (Power Block)</td>
+                      <td className="p-2">Permitted. Feeder Isolator TBM-SS-02 to be opened. Dual earthing discharge rods mandatory.</td>
+                    </tr>
+                    <tr>
+                      <td className="p-2 font-bold bg-zinc-100 border-r border-black">Speed Restriction Imposed</td>
+                      <td className="p-2">30 km/h Caution Order between km 29.14 and 29.80 upon track handover.</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div className="text-xs space-y-1.5 text-zinc-800 leading-relaxed font-sans">
+                  <p><strong>SPECIAL CONDITIONS:</strong></p>
+                  <p>1. Section Controller / MAS shall verify 4-point safety check before communicating private number.</p>
+                  <p>2. No block bursting will be permitted. Any detention exceeding sanctioned time will be debited to defaulting branch.</p>
+                  <p>3. Passenger trains 40001 and 12635 to be regulated and diverted as per regulation schedule.</p>
+                </div>
+
+                <div className="pt-8 grid grid-cols-3 text-center text-xs font-sans font-bold border-t border-black">
+                  <div>
+                    <div className="h-10 text-zinc-400 italic">[Signed digitally]</div>
+                    <div>Sr. Divisional Engineer (Co-ord)</div>
+                    <div className="text-[10px] text-zinc-600">Southern Railway / MAS</div>
+                  </div>
+                  <div>
+                    <div className="h-10 text-zinc-400 italic">[Signed digitally]</div>
+                    <div>Sr. Divl. Signal & Telecom Engr</div>
+                    <div className="text-[10px] text-zinc-600">Southern Railway / MAS</div>
+                  </div>
+                  <div>
+                    <div className="h-10 text-zinc-400 italic">[Signed digitally]</div>
+                    <div>Sr. Divisional Operations Manager</div>
+                    <div className="text-[10px] text-zinc-600">Southern Railway / MAS</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* DOCUMENT 2: STATUTORY FORM T/B 1525 (LINE BLOCK AUTHORITY) */}
+            {selectedMemoType === 'T_B_1525' && (
+              <div className="bg-white text-black p-8 rounded-2xl shadow-2xl font-serif space-y-6 max-w-4xl mx-auto border border-zinc-300">
+                <div className="text-center border-b-2 border-black pb-3 space-y-1">
+                  <h2 className="text-xl font-black uppercase tracking-wider">SOUTHERN RAILWAY — OPERATING DEPARTMENT</h2>
+                  <h3 className="text-sm font-bold uppercase tracking-wide bg-zinc-100 py-1 border border-black">
+                    FORM T/B 1525 // AUTHORITY TO IMPOSE BLOCK ON DOUBLE / MULTIPLE LINES
+                  </h3>
+                  <div className="text-xs font-mono pt-1 flex justify-between">
+                    <span>STATION: TAMBARAM (TBM)</span>
+                    <span>DATE: 13-SEP-2026</span>
+                    <span>TIME: 01:00 HRS</span>
+                  </div>
+                </div>
+
+                <div className="text-xs font-sans space-y-3 leading-relaxed">
+                  <p>
+                    <strong>TO:</strong> Station Master on Duty at <u>Tambaram (TBM)</u> and Station Master at <u>Perungalathur (PRGL)</u>.
+                  </p>
+                  <p>
+                    Line Block is hereby granted on <strong>Main Fast Down Line</strong> between Tambaram and Perungalathur from <strong>01:00 hrs</strong> to <strong>03:40 hrs</strong> for engineering works with <strong>CSM 09-32 Tamper & Tower Wagon</strong>.
+                  </p>
+
+                  <table className="w-full text-xs border border-black border-collapse text-left my-2 font-mono">
+                    <tbody>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold bg-zinc-100 w-1/2 border-r border-black">Section Controller Private Number</td>
+                        <td className="p-2 font-bold text-base">{controllerPrivateNumber}</td>
+                      </tr>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold bg-zinc-100 border-r border-black">Station Master (Up Station) Private Number</td>
+                        <td className="p-2 font-bold text-base">{smUpPrivateNumber}</td>
+                      </tr>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold bg-zinc-100 border-r border-black">Station Master (Down Station) Private Number</td>
+                        <td className="p-2 font-bold text-base">{smDnPrivateNumber}</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 font-bold bg-zinc-100 border-r border-black">Traction Power Permit to Work (PTW)</td>
+                        <td className="p-2 font-bold text-base">{tpcPermitNumber}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <p className="bg-yellow-50 p-2.5 border border-yellow-300 text-[11px]">
+                    <strong>INTERLOCKING COMPLIANCE CERTIFICATE:</strong> All facing points have been clamped, bolted, and padlocked against the blocked line. Signals governing entry into the section placed at &lsquo;ON&rsquo; (Danger) and reminder collars placed on lever frames / VDU console.
+                  </p>
+                </div>
+
+                <div className="pt-6 border-t-2 border-black">
+                  <h4 className="text-xs font-bold uppercase mb-2">FORM T/C 1525 (REOPENING MEMO / LINE CLEARANCE CERTIFICATE)</h4>
+                  <p className="text-xs font-sans text-zinc-700 italic mb-4">
+                    To be completed by SSE/P-Way upon work completion: &ldquo;Track between km 28.00 and 31.50 is certified safe for train movement at 30 km/h under Caution Order T/409. All men, machines, discharge rods, and banner flags removed.&rdquo;
+                  </p>
+                  <div className="grid grid-cols-2 text-center text-xs font-sans font-bold pt-4 border-t border-zinc-400">
+                    <div>
+                      <div className="h-8 italic text-zinc-400">[Signed]</div>
+                      <div>Site Supervisor (SSE/P-Way/TBM)</div>
+                    </div>
+                    <div>
+                      <div className="h-8 italic text-zinc-400">[Authenticated via PN]</div>
+                      <div>Chief Section Controller (MAS Control)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* DOCUMENT 3: FORM E-1 (PTW TRACTION POWER PERMIT) */}
+            {selectedMemoType === 'FORM_E1_PTW' && (
+              <div className="bg-white text-black p-8 rounded-2xl shadow-2xl font-serif space-y-6 max-w-4xl mx-auto border border-zinc-300">
+                <div className="text-center border-b-2 border-black pb-3 space-y-1">
+                  <h2 className="text-xl font-black uppercase tracking-wider">SOUTHERN RAILWAY — ELECTRICAL (TRD) BRANCH</h2>
+                  <h3 className="text-sm font-bold uppercase tracking-wide bg-zinc-100 py-1 border border-black">
+                    FORM E-1 // PERMIT TO WORK (PTW) ON 25 kV AC TRACTION OVERHEAD EQUIPMENT
+                  </h3>
+                  <div className="text-xs font-mono pt-1 flex justify-between">
+                    <span>PERMIT NO: {tpcPermitNumber}</span>
+                    <span>TSS: TAMBARAM SUB-STATION</span>
+                    <span>DATE: 13-SEP-2026</span>
+                  </div>
+                </div>
+
+                <div className="text-xs font-sans space-y-3 leading-relaxed">
+                  <p>
+                    <strong>ISSUED TO:</strong> <u>Senior Section Engineer (P-Way / Machine In-charge / TBM)</u>
+                  </p>
+                  <p>
+                    I hereby permit you and your authorized staff to work on or near the 25kV OHE catenary and contact wire in the section defined below:
+                  </p>
+
+                  <table className="w-full text-xs border border-black border-collapse text-left my-2">
+                    <tbody>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold bg-zinc-100 w-1/3 border-r border-black">Kilometerage Limits</td>
+                        <td className="p-2">From km 28.000 to km 31.500 (Tambaram Yard limits)</td>
+                      </tr>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold bg-zinc-100 border-r border-black">Substation Isolator Switch</td>
+                        <td className="p-2 font-bold text-emerald-800">ISOLATOR TBM-02 OPENED & LOCKED (Danger Notice Affixed)</td>
+                      </tr>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold bg-zinc-100 border-r border-black">Dual Earthing Rods Clamped</td>
+                        <td className="p-2">Discharge Rod #SR-ED-41 (North End) & #SR-ED-42 (South End) pinned to running rail</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 font-bold bg-zinc-100 border-r border-black">Permitted Time Window</td>
+                        <td className="p-2 font-bold">01:05 hrs to 03:35 hrs (150 minutes)</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <p className="bg-red-50 p-2.5 border border-red-300 text-red-900 text-[11px]">
+                    <strong>CRITICAL ELECTRICAL SAFETY WARNING:</strong> The electrical equipment specified above is dead and connected to earth. Under no circumstances must any worker or track machine jib approach within 2.0 meters of any neighboring energized track equipment (Suburban Up Line).
+                  </p>
+                </div>
+
+                <div className="pt-8 grid grid-cols-2 text-center text-xs font-sans font-bold border-t border-black">
+                  <div>
+                    <div className="h-10 text-zinc-400 italic">[Signed digitally]</div>
+                    <div>Traction Power Controller (TPC / MAS)</div>
+                    <div className="text-[10px] text-zinc-600">Southern Railway Electrical Control</div>
+                  </div>
+                  <div>
+                    <div className="h-10 text-zinc-400 italic">[Signed on Site]</div>
+                    <div>SSE / Overhead Equipment (OHE / TBM)</div>
+                    <div className="text-[10px] text-zinc-600">Authorized TRD Supervisor</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* DOCUMENT 4: FORM S&T (T/351 DISCONNECTION NOTICE) */}
+            {selectedMemoType === 'ST_T351' && (
+              <div className="bg-white text-black p-8 rounded-2xl shadow-2xl font-serif space-y-6 max-w-4xl mx-auto border border-zinc-300">
+                <div className="text-center border-b-2 border-black pb-3 space-y-1">
+                  <h2 className="text-xl font-black uppercase tracking-wider">SOUTHERN RAILWAY — SIGNAL & TELECOM DEPARTMENT</h2>
+                  <h3 className="text-sm font-bold uppercase tracking-wide bg-zinc-100 py-1 border border-black">
+                    FORM S&T (T/351) // NOTICE OF DISCONNECTION OF SIGNAL & INTERLOCKING GEARS
+                  </h3>
+                  <div className="text-xs font-mono pt-1 flex justify-between">
+                    <span>MEMO NO: SR/S&T/DISCON/2026/041</span>
+                    <span>STATION: TAMBARAM (TBM)</span>
+                    <span>DATE: 13-SEP-2026</span>
+                  </div>
+                </div>
+
+                <div className="text-xs font-sans space-y-3 leading-relaxed">
+                  <p>
+                    <strong>TO:</strong> <u>Station Master on Duty / Tambaram (TBM)</u>
+                  </p>
+                  <p>
+                    Please take notice that the undermentioned signaling and interlocking apparatus will be disconnected for overhaul and maintenance from <strong>01:00 hrs</strong> to <strong>03:30 hrs</strong>:
+                  </p>
+
+                  <table className="w-full text-xs border border-black border-collapse text-left my-2">
+                    <tbody>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold bg-zinc-100 w-1/3 border-r border-black">Gear Disconnected</td>
+                        <td className="p-2 font-bold">Electric Point Machine No. 118A/B (Tambaram South Throat)</td>
+                      </tr>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold bg-zinc-100 border-r border-black">Axle Counters / Track Circuits</td>
+                        <td className="p-2">Digital Axle Counter DAC-TBM-18 isolated for ballast screening</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 font-bold bg-zinc-100 border-r border-black">Interlocking Safeguards</td>
+                        <td className="p-2">Point No. 118 spiked in Normal position and padlocked. Key deposited with SM.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div className="border-t border-black pt-4 mt-4">
+                    <h4 className="font-bold uppercase text-xs mb-1">RECONNECTION CERTIFICATE (FORM S&T T/351 PART II)</h4>
+                    <p className="text-[11px] text-zinc-700 italic">
+                      &ldquo;The S&T gears above mentioned have been tested in both Normal and Reverse positions under load. Track circuit voltage verified at 2.20V DC. Interlocking restored to full service at 03:35 hrs.&rdquo;
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-6 grid grid-cols-2 text-center text-xs font-sans font-bold border-t border-black">
+                  <div>
+                    <div className="h-8 italic text-zinc-400">[Signed]</div>
+                    <div>Senior Section Engineer (Signals / TBM)</div>
+                  </div>
+                  <div>
+                    <div className="h-8 italic text-zinc-400">[Accepted & Reconnected]</div>
+                    <div>Station Master on Duty (Tambaram)</div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* DOCUMENT 5: FORM T/409 (CAUTION ORDER) */}
+            {selectedMemoType === 'FORM_T409' && (
+              <div className="bg-white text-black p-8 rounded-2xl shadow-2xl font-serif space-y-6 max-w-4xl mx-auto border border-zinc-300">
+                <div className="text-center border-b-2 border-black pb-3 space-y-1">
+                  <h2 className="text-xl font-black uppercase tracking-wider">SOUTHERN RAILWAY — OPERATING DEPARTMENT</h2>
+                  <h3 className="text-sm font-bold uppercase tracking-wide bg-zinc-100 py-1 border border-black">
+                    FORM T/409 // CAUTION ORDER (STATUTORY TRAIN OPERATION RECORD)
+                  </h3>
+                  <div className="text-xs font-mono pt-1 flex justify-between">
+                    <span>ORDER NO: SR/T409/MAS/2026/894</span>
+                    <span>ISSUED AT: TAMBARAM (TBM)</span>
+                    <span>DATE: 13-SEP-2026</span>
+                  </div>
+                </div>
+
+                <div className="text-xs font-sans space-y-3 leading-relaxed">
+                  <p>
+                    <strong>TO:</strong> <u>Loco Pilot & Train Manager (Guard) of Train No. 40001 / 12635 / ALL TRAINS</u>
+                  </p>
+                  <p>
+                    You are hereby instructed to observe the following Temporary Speed Restrictions (TSR) between stations as specified:
+                  </p>
+
+                  <table className="w-full text-xs border border-black border-collapse text-left my-2 font-mono">
+                    <thead className="bg-zinc-100 border-b border-black">
+                      <tr>
+                        <th className="p-2 border-r border-black">Station Between</th>
+                        <th className="p-2 border-r border-black">Kilometers</th>
+                        <th className="p-2 border-r border-black">Line</th>
+                        <th className="p-2 border-r border-black">Speed Restriction</th>
+                        <th className="p-2">Reason / Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold border-r border-black">Tambaram (TBM) - Perungalathur (PRGL)</td>
+                        <td className="p-2 border-r border-black">km 29.140 - 29.800</td>
+                        <td className="p-2 border-r border-black">Down Main Fast</td>
+                        <td className="p-2 font-black text-red-600 border-r border-black text-sm">30 km/h</td>
+                        <td className="p-2 text-[11px] font-sans">Ballast Consolidation post CSM Machine Tamping</td>
+                      </tr>
+                      <tr className="border-b border-black">
+                        <td className="p-2 font-bold border-r border-black">Guindy (GDY) - St. Thomas Mount (STM)</td>
+                        <td className="p-2 border-r border-black">km 16.200 - 17.000</td>
+                        <td className="p-2 border-r border-black">Up Suburban</td>
+                        <td className="p-2 font-black text-amber-600 border-r border-black text-sm">50 km/h</td>
+                        <td className="p-2 text-[11px] font-sans">Flash-butt rail weld settlement (Day 2 relaxation)</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 font-bold border-r border-black">Maraimalai Nagar (MMNK)</td>
+                        <td className="p-2 border-r border-black">km 46.800 - 47.600</td>
+                        <td className="p-2 border-r border-black">Up Main Fast</td>
+                        <td className="p-2 font-black text-red-600 border-r border-black text-sm">20 km/h</td>
+                        <td className="p-2 text-[11px] font-sans">BCM Deep screening cuttings formation</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <p className="bg-yellow-50 p-2.5 border border-yellow-300 text-[11px]">
+                    <strong>SPECIAL WHISTLING INSTRUCTIONS:</strong> Whistle board (W/L) erected 600m in advance of each engineering restriction zone. Loco Pilots must sound continuous intermittent horn and maintain strict vigilant lookout.
+                  </p>
+                </div>
+
+                <div className="pt-8 grid grid-cols-3 text-center text-xs font-sans font-bold border-t border-black">
+                  <div>
+                    <div className="h-8 italic text-zinc-400">[Acknowledged]</div>
+                    <div>Loco Pilot Signature</div>
+                  </div>
+                  <div>
+                    <div className="h-8 italic text-zinc-400">[Acknowledged]</div>
+                    <div>Train Manager (Guard)</div>
+                  </div>
+                  <div>
+                    <div className="h-8 italic text-zinc-400">[Dated Stamp]</div>
+                    <div>Station Master on Duty / TBM</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </main>
