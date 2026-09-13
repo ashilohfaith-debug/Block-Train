@@ -9,20 +9,29 @@ export const DashboardHUD = ({ time }: { time: string }) => {
           BLOCK<span className="text-blue-600 dark:text-blue-500">TRAIN</span> <span className="opacity-70 text-lg">DIGITAL TWIN</span>
         </h1>
       </Link>
-      <div className="flex gap-4">
-        <div className="text-gray-300 font-mono text-sm uppercase tracking-widest bg-[#111827]/90 px-4 py-2 rounded-md border border-gray-800 w-fit backdrop-blur-md shadow-xl flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2.5">
+        <div className="text-gray-300 font-mono text-xs uppercase tracking-widest bg-[#111827]/90 px-3.5 py-1.5 rounded-full border border-gray-800 w-fit backdrop-blur-md shadow-xl flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           LIVE • {time}
         </div>
         <Link
           href="/rbms"
-          className="pointer-events-auto text-amber-300 hover:text-amber-100 font-mono text-xs uppercase tracking-widest bg-amber-950/80 hover:bg-amber-900/90 px-3 py-2 rounded-md border border-amber-800/80 w-fit backdrop-blur-md shadow-xl flex items-center gap-1.5 transition-colors"
+          className="pointer-events-auto text-amber-300 hover:text-amber-100 font-mono text-xs uppercase tracking-widest bg-amber-950/80 hover:bg-amber-900/90 px-3.5 py-1.5 rounded-full border border-amber-800/80 w-fit backdrop-blur-md shadow-xl flex items-center gap-1.5 transition-colors"
         >
-          <span>📅</span> RBMS SUITE (SR)
+          <span>📅</span> RBMS SUITE
         </Link>
-        <div className="text-gray-400 font-mono text-xs uppercase tracking-widest bg-[#111827]/90 px-4 py-2 rounded-md border border-gray-800 w-fit backdrop-blur-md shadow-xl flex flex-col justify-center hidden sm:flex">
-          SOUTHERN RAILWAY ZONE
-        </div>
+        <Link
+          href="/ai-planner"
+          className="pointer-events-auto text-cyan-300 hover:text-cyan-100 font-mono text-xs uppercase tracking-widest bg-cyan-950/80 hover:bg-cyan-900/90 px-3.5 py-1.5 rounded-full border border-cyan-800/80 w-fit backdrop-blur-md shadow-xl flex items-center gap-1.5 transition-colors"
+        >
+          <span>⚡</span> AI PLANNER
+        </Link>
+        <Link
+          href="/maintenance"
+          className="pointer-events-auto text-zinc-300 hover:text-white font-mono text-xs uppercase tracking-widest bg-[#111827]/90 hover:bg-zinc-800 px-3.5 py-1.5 rounded-full border border-gray-800 w-fit backdrop-blur-md shadow-xl flex items-center gap-1.5 transition-colors"
+        >
+          DISPATCH
+        </Link>
       </div>
       
     </div>

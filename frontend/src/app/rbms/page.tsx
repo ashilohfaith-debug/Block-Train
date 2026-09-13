@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useMaintenanceStore } from '../../lib/store';
 import { STATIONS } from '../../lib/stations';
+import { Chatbot } from '../../components/chat/Chatbot';
+import { VoiceRecorder } from '../../components/audio/VoiceRecorder';
 
 interface RollingBlockItem {
   id: string;
@@ -336,8 +338,11 @@ export default function RBMSPage() {
   const [demandTSR, setDemandTSR] = useState(30);
   const [demandJustification, setDemandJustification] = useState('Continuous Welded Rail (CWR) De-stressing & LC 28 Gate Overhaul');
 
-  // Countdown timer simulation for active block
+  // Countdown timer & store hydration
   useEffect(() => {
+    useMaintenanceStore.getState().hydrate();
+    useMaintenanceStore.getState().fetchBlocks();
+
     const timer = setInterval(() => {
       setRollingBlocks((prev) =>
         prev.map((b) => {
@@ -465,44 +470,59 @@ export default function RBMSPage() {
   });
 
   return (
-    <div className="min-h-screen w-full bg-[#07090e] text-zinc-300 font-sans flex flex-col selection:bg-amber-500/30">
+    <div className="min-h-screen w-full bg-[#070B12] text-zinc-300 font-sans flex flex-col selection:bg-amber-500/30 relative">
+      {/* Background Subtle Noise/Light Glow matching website style */}
+      <div className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_60%_60%_at_50%_-10%,rgba(245,158,11,0.08),rgba(255,255,255,0))] pointer-events-none" />
+
       {/* Top Header */}
-      <header className="border-b border-zinc-800 bg-[#0a0d14]/90 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+      <header className="border-b border-zinc-800 bg-[#070B12]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-3.5 h-3.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_15px_#f59e0b]" />
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono tracking-widest text-amber-400 uppercase font-bold">
-                SOUTHERN RAILWAY // CHENNAI DIVISION (MAS)
-              </span>
-              <span className="text-[10px] bg-amber-950 text-amber-300 border border-amber-800/60 px-2 py-0.5 rounded-full font-mono font-bold">
-                RBMS / BDMS ENTERPRISE SUITE
-              </span>
+          <Link href="/" className="text-zinc-100 font-bold tracking-tight text-2xl hover:opacity-90 transition-opacity">
+            Block<span className="text-zinc-500 font-medium">Train</span>
+          </Link>
+          <div className="h-6 w-[1px] bg-zinc-800 hidden sm:block" />
+          <div className="flex items-center gap-3">
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_12px_#f59e0b]" />
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono tracking-widest text-amber-400 uppercase font-bold">
+                  SOUTHERN RAILWAY // CHENNAI DIVISION (MAS)
+                </span>
+                <span className="text-[9px] bg-amber-950/80 text-amber-300 border border-amber-800/60 px-2 py-0.5 rounded-full font-mono font-bold">
+                  RBMS / BDMS SUITE
+                </span>
+              </div>
+              <h1 className="text-lg md:text-xl font-black uppercase tracking-tight text-white leading-tight">
+                Rolling Block Management System
+              </h1>
             </div>
-            <h1 className="text-xl md:text-2xl font-black uppercase tracking-tight text-white">
-              Rolling Block Management System (RBP)
-            </h1>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <Link
             href="/map"
-            className="text-xs font-mono px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 transition-colors flex items-center gap-1.5"
+            className="group flex items-center text-zinc-300 font-mono text-xs tracking-wider hover:text-white transition-colors bg-zinc-900/80 px-3.5 py-1.5 rounded-full border border-zinc-700/80 backdrop-blur-md"
           >
-            <span>🗺️</span> Live Digital Twin (26 Stn)
+            <span className="mr-1.5">🗺️</span> Digital Twin (26 Stn)
           </Link>
           <Link
             href="/ai-planner"
-            className="text-xs font-mono px-3.5 py-2 rounded-xl bg-cyan-950/80 hover:bg-cyan-900 text-cyan-300 border border-cyan-800/60 transition-colors flex items-center gap-1.5"
+            className="group flex items-center text-cyan-400 font-mono text-xs tracking-wider hover:text-cyan-200 transition-colors bg-cyan-950/80 px-3.5 py-1.5 rounded-full border border-cyan-800/60 backdrop-blur-md shadow-[0_0_15px_rgba(34,211,238,0.15)]"
           >
-            <span>⚡</span> AI Planner (PS 26027)
+            <span className="mr-1.5">⚡</span> AI Planner
+          </Link>
+          <Link
+            href="/maintenance"
+            className="group flex items-center text-zinc-400 font-mono text-xs tracking-wider hover:text-white transition-colors bg-zinc-900/80 px-3.5 py-1.5 rounded-full border border-zinc-800 backdrop-blur-md"
+          >
+            Manual Dispatch
           </Link>
           <Link
             href="/"
-            className="text-xs font-mono px-3 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-800 transition-colors"
+            className="group flex items-center text-zinc-400 font-mono text-xs tracking-wider hover:text-white transition-colors bg-zinc-900/80 px-3.5 py-1.5 rounded-full border border-zinc-800 backdrop-blur-md"
           >
-            ✕ System Hub
+            ✕ Hub
           </Link>
         </div>
       </header>
@@ -937,6 +957,15 @@ export default function RBMSPage() {
                   <label htmlFor="pwrBlock" className="text-xs font-mono text-zinc-300">
                     Mandatory 25kV Traction Power Isolation required (Requires TRD Earthing Discharge Rods)
                   </label>
+                </div>
+
+                {/* Voice Dispatch Audio Attachment */}
+                <div className="flex items-center justify-between p-3.5 bg-zinc-950/90 rounded-xl border border-zinc-800">
+                  <div>
+                    <span className="text-xs font-mono font-bold text-white block">Voice Dispatch Recording (Cloudinary Audio)</span>
+                    <span className="text-[11px] text-zinc-400">Record voice directive to attach real-time audio note to this demand requisition.</span>
+                  </div>
+                  <VoiceRecorder />
                 </div>
 
                 <button
@@ -1838,6 +1867,11 @@ export default function RBMSPage() {
           </div>
         )}
       </main>
+
+      {/* Floating BlockTrain Central AI Dispatch Assistant */}
+      <div className="fixed bottom-6 right-6 z-50 pointer-events-auto">
+        <Chatbot />
+      </div>
     </div>
   );
 }
