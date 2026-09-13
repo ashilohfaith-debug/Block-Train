@@ -20,7 +20,8 @@ export const generateTrains = (): Train[] => {
       direction: 1, 
       baseLane: -1, 
       switchDirection: 0, 
-      speed: 0.8, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['MSB', 'MSF', 'MPK', 'MS', 'MSC', 'NBK', 'MKK', 'MBM', 'SP', 'GDY', 'STM', 'PZA', 'MN', 'TLM', 'PV', 'CMP', 'TBMS', 'TBM'],
       locoModel: 'SR EMU 12-Car (Medha AC Rake)',
@@ -34,7 +35,8 @@ export const generateTrains = (): Train[] => {
       direction: 1, 
       baseLane: -1, 
       switchDirection: 0, 
-      speed: 0.85, 
+      speed: 1.9, 
+      currentSpeed: 1.9,
       type: 'passenger',
       scheduledStops: ['MS', 'MBM', 'GDY'],
       locoModel: 'SR EMU 12-Car (BEML)',
@@ -48,7 +50,8 @@ export const generateTrains = (): Train[] => {
       direction: 1, 
       baseLane: 0, 
       switchDirection: 0, 
-      speed: 1.1, 
+      speed: 2.5, 
+      currentSpeed: 2.5,
       type: 'express',
       scheduledStops: ['MSB', 'MS', 'MBM', 'TBM', 'CGL'],
       locoModel: 'WAP-7 #30452 (Royapuram RPM Shed)',
@@ -62,7 +65,8 @@ export const generateTrains = (): Train[] => {
       direction: 1, 
       baseLane: -1, 
       switchDirection: 0, 
-      speed: 0.8, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['STM', 'PZA', 'MN', 'TLM', 'PV', 'CMP', 'TBMS', 'TBM'],
       locoModel: 'SR EMU 12-Car',
@@ -76,7 +80,8 @@ export const generateTrains = (): Train[] => {
       direction: 1, 
       baseLane: 0, 
       switchDirection: 0, 
-      speed: 0.65, 
+      speed: 1.4, 
+      currentSpeed: 1.4,
       type: 'freight',
       scheduledStops: [],
       locoModel: 'WAG-9 #31189 (Arakkonam AJJ Shed)',
@@ -90,7 +95,8 @@ export const generateTrains = (): Train[] => {
       direction: 1, 
       baseLane: -1, 
       switchDirection: 0, 
-      speed: 0.78, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['TBM', 'PRGL', 'VDR', 'UPM', 'GI'],
       locoModel: 'SR EMU 12-Car',
@@ -104,7 +110,8 @@ export const generateTrains = (): Train[] => {
       direction: 1, 
       baseLane: 0, 
       switchDirection: 0, 
-      speed: 1.12, 
+      speed: 2.6, 
+      currentSpeed: 2.6,
       type: 'express',
       scheduledStops: ['MSB', 'MS', 'MBM', 'TBM', 'CGL'],
       locoModel: 'WAP-7 #30488 (Erode ED Shed)',
@@ -118,7 +125,8 @@ export const generateTrains = (): Train[] => {
       direction: 1, 
       baseLane: -1, 
       switchDirection: 0, 
-      speed: 0.8, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['MMNK', 'SKL', 'CGL'],
       locoModel: 'SR EMU 12-Car',
@@ -134,7 +142,8 @@ export const generateTrains = (): Train[] => {
       direction: -1, 
       baseLane: 1, 
       switchDirection: 0, 
-      speed: 0.8, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['CGL', 'SKL', 'MMNK', 'POTI', 'GI', 'UPM', 'VDR', 'PRGL', 'TBM'],
       locoModel: 'SR EMU 12-Car',
@@ -146,9 +155,10 @@ export const generateTrains = (): Train[] => {
       name: 'EXP 12636 Pandian Superfast', 
       x: 52000, 
       direction: -1, 
-      baseLane: 1, 
+      baseLane: 0, 
       switchDirection: 0, 
-      speed: 1.1, 
+      speed: 2.5, 
+      currentSpeed: 2.5,
       type: 'express',
       scheduledStops: ['CGL', 'TBM', 'MBM', 'MS', 'MSB'],
       locoModel: 'WAP-7 #30221 (Royapuram RPM Shed)',
@@ -162,7 +172,8 @@ export const generateTrains = (): Train[] => {
       direction: -1, 
       baseLane: 1, 
       switchDirection: 0, 
-      speed: 0.78, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['SKL', 'MMNK', 'POTI', 'GI'],
       locoModel: 'SR EMU 12-Car',
@@ -174,9 +185,10 @@ export const generateTrains = (): Train[] => {
       name: 'FRT 90022 BTPN Petroleum Tanker', 
       x: 36000, 
       direction: -1, 
-      baseLane: 1, 
+      baseLane: 0, 
       switchDirection: 0, 
-      speed: 0.65, 
+      speed: 1.4, 
+      currentSpeed: 1.4,
       type: 'freight',
       scheduledStops: [],
       locoModel: 'WAG-9 #31245 (Tughlakabad TKD Shed)',
@@ -190,7 +202,8 @@ export const generateTrains = (): Train[] => {
       direction: -1, 
       baseLane: 1, 
       switchDirection: 0, 
-      speed: 0.8, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['TBM', 'TBMS', 'CMP', 'PV', 'TLM', 'MN', 'PZA', 'STM'],
       locoModel: 'SR EMU 12-Car',
@@ -204,7 +217,8 @@ export const generateTrains = (): Train[] => {
       direction: -1, 
       baseLane: 1, 
       switchDirection: 0, 
-      speed: 0.85, 
+      speed: 1.9, 
+      currentSpeed: 1.9,
       type: 'passenger',
       scheduledStops: ['CMP', 'PV', 'GDY'],
       locoModel: 'SR EMU 12-Car',
@@ -216,9 +230,10 @@ export const generateTrains = (): Train[] => {
       name: 'EXP 16128 Guruvayur Express', 
       x: 16000, 
       direction: -1, 
-      baseLane: 1, 
+      baseLane: 0, 
       switchDirection: 0, 
-      speed: 1.05, 
+      speed: 2.5, 
+      currentSpeed: 2.5,
       type: 'express',
       scheduledStops: ['CGL', 'TBM', 'MS'],
       locoModel: 'WAP-4 #22510 (Arakkonam AJJ Shed)',
@@ -232,7 +247,8 @@ export const generateTrains = (): Train[] => {
       direction: -1, 
       baseLane: 1, 
       switchDirection: 0, 
-      speed: 0.8, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['GDY', 'SP', 'MBM', 'MKK', 'NBK', 'MSC', 'MS'],
       locoModel: 'SR EMU 12-Car',
@@ -246,7 +262,8 @@ export const generateTrains = (): Train[] => {
       direction: -1, 
       baseLane: 1, 
       switchDirection: 0, 
-      speed: 0.75, 
+      speed: 1.8, 
+      currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['MS', 'MPK', 'MSF', 'MSB'],
       locoModel: 'SR EMU 12-Car',
@@ -338,7 +355,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
             };
           }
           
-          let newStopUntil = undefined;
+          let newStopUntil: number | undefined = undefined;
           let appliedSpeed = t.speed;
           let currentBaseLane = t.baseLane;
           let newTargetLane = t.targetLane;
@@ -358,8 +375,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
           }
 
           const LOOKAHEAD = 5500;
-          const lookaheadMin = t.direction === 1 ? t.x : t.x - LOOKAHEAD;
-          const lookaheadMax = t.direction === 1 ? t.x + LOOKAHEAD : t.x;
+          const lookaheadMin = t.direction === 1 ? t.x : Math.max(0, t.x - LOOKAHEAD);
+          const lookaheadMax = t.direction === 1 ? Math.min(CANVAS_WIDTH, t.x + LOOKAHEAD) : t.x;
 
           // 2. Find nearest physical crossover in front of train for emergency detour
           const validSwitches: number[] = [];
@@ -379,16 +396,22 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
           let distToSwitch = Infinity;
           for (const sx of validSwitches) {
               const dist = t.direction === 1 ? (sx - t.x) : (t.x - sx);
-              if (dist > -50 && dist < distToSwitch) {
+              if (dist > 50 && dist < distToSwitch) {
                   distToSwitch = dist;
                   targetSwitchX = sx;
               }
           }
 
-          // 3. Evaluate if an escape crossover lane is safe
+          // 3. Hazards on current active lane
+          const hazardsAhead = hazardZones.filter(z => 
+             z.laneId === activeLane &&
+             (Math.max(lookaheadMin, z.minX) <= Math.min(lookaheadMax, z.maxX))
+          );
+
+          // 4. Evaluate if an escape crossover lane is safe (only needed if hazard directly ahead)
           let escapeIsSafe = false;
           let proposedTargetLane = activeLane;
-          if (targetSwitchX !== -1 && newTargetLane === undefined) {
+          if (hazardsAhead.length > 0 && targetSwitchX !== -1 && newTargetLane === undefined) {
               proposedTargetLane = activeLane === 0 ? (t.direction === 1 ? -1 : 1) : 0;
               
               const targetLaneHazards = hazardZones.filter(z => 
@@ -411,12 +434,11 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
               }
           }
 
-          // 4. Threats on current active lane
           let threatLookaheadMin = lookaheadMin;
           let threatLookaheadMax = lookaheadMax;
-          if (escapeIsSafe) {
-              if (t.direction === 1) threatLookaheadMax = targetSwitchX;
-              else threatLookaheadMin = targetSwitchX;
+          if (escapeIsSafe && targetSwitchX !== -1) {
+              if (t.direction === 1) threatLookaheadMax = Math.max(t.x, Math.min(lookaheadMax, targetSwitchX));
+              else threatLookaheadMin = Math.min(t.x, Math.max(lookaheadMin, targetSwitchX));
           }
 
           const trainsAhead = curr.filter(other => {
@@ -431,14 +453,9 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
              return Math.max(threatLookaheadMin, otherMin) <= Math.min(threatLookaheadMax, otherMax);
           });
 
-          const hazardsAhead = hazardZones.filter(z => 
-             z.laneId === activeLane &&
-             (Math.max(threatLookaheadMin, z.minX) <= Math.min(threatLookaheadMax, z.maxX))
-          );
-
           // Turnout speed restriction (PSR 30 km/h) if currently switching
           if (newTargetLane !== undefined) {
-             appliedSpeed = Math.min(appliedSpeed, 0.45);
+             appliedSpeed = Math.min(appliedSpeed, 0.9);
           }
 
           // 5. Calculate Distance to Threat & 4-Aspect Signal State
@@ -464,11 +481,11 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
               const oLen = other.length || getTrainLength(other.type);
               let dist = 0;
               if (t.direction === 1) {
-                  const otherTail = other.direction === 1 ? other.x - oLen : other.x - oLen;
-                  dist = otherTail - t.x;
+                  const otherRear = other.direction === 1 ? (other.x - oLen) : other.x;
+                  dist = otherRear - t.x;
               } else {
-                  const otherTail = other.direction === -1 ? other.x + oLen : other.x + oLen;
-                  dist = t.x - otherTail;
+                  const otherRear = other.direction === -1 ? (other.x + oLen) : other.x;
+                  dist = t.x - otherRear;
               }
               if (dist > 0 && dist < minDistanceToThreat) {
                   minDistanceToThreat = dist;
@@ -481,14 +498,12 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
               activeSignalAspect = 'red';
               statusText = 'Danger Aspect (RED) • Stop at Fouling Mark';
           } else if (minDistanceToThreat < 1200) {
-              // Yellow: Caution 30 km/h
-              const factor = Math.max(0.08, (minDistanceToThreat - 350) / 850);
-              appliedSpeed *= (factor * 0.4);
+              const factor = Math.max(0.15, (minDistanceToThreat - 350) / 850);
+              appliedSpeed *= (factor * 0.45);
               activeSignalAspect = 'yellow';
               statusText = 'Caution Aspect (YELLOW) • Speed Restricted to 30 km/h';
           } else if (minDistanceToThreat < 2800) {
-              // Double Yellow: Attention 60 km/h
-              const factor = 0.4 + 0.3 * ((minDistanceToThreat - 1200) / 1600);
+              const factor = 0.45 + 0.35 * ((minDistanceToThreat - 1200) / 1600);
               appliedSpeed *= factor;
               activeSignalAspect = 'double_yellow';
               statusText = 'Attention Aspect (DOUBLE YELLOW) • Approach Caution';
@@ -512,13 +527,14 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
 
           // 7. Authentic Station Stoppages & Dwell Scheduling
           let nearestStationName = 'Open Section';
-          if (!newStopUntil && targetSpeed > 0 && t.scheduledStops && t.scheduledStops.length > 0) {
+          if (!t.stopUntil && targetSpeed > 0 && t.scheduledStops && t.scheduledStops.length > 0) {
               let distToNextScheduledStop = LOOKAHEAD;
               let targetStation = null;
 
               for (let i = 0; i < STATIONS.length; i++) {
                   const st = STATIONS[i];
                   if (!t.scheduledStops.includes(st.id)) continue;
+                  if (t.lastStopStationId === st.id) continue;
 
                   const sX = 600 + i * STATION_SPACING;
                   const tx = sX + (95 * t.direction);
@@ -533,7 +549,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
               if (targetStation) {
                   nearestStationName = targetStation.name;
                   if (distToNextScheduledStop < 900) {
-                      const brakeFactor = Math.max(0.12, Math.pow(distToNextScheduledStop / 900, 1.4));
+                      const brakeFactor = Math.max(0.18, Math.pow(distToNextScheduledStop / 900, 1.2));
                       targetSpeed *= brakeFactor;
                       statusText = `Approaching ${targetStation.name} • Decelerating for Halt`;
                   }
@@ -541,16 +557,16 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
           }
 
           // 8. Authentic Physics Engine: Inertia, Acceleration & Smooth Braking
-          let cur = t.currentSpeed !== undefined ? t.currentSpeed : 0;
+          let cur = t.currentSpeed !== undefined ? t.currentSpeed : t.speed;
           
-          let accelRate = 0.0025;
-          let decelRate = 0.012;
+          let accelRate = 0.03;
+          let decelRate = 0.05;
           if (t.type === 'express') {
-              accelRate = 0.0018;
-              decelRate = 0.008;
+              accelRate = 0.025;
+              decelRate = 0.04;
           } else if (t.type === 'freight') {
-              accelRate = 0.0008;
-              decelRate = 0.005;
+              accelRate = 0.015;
+              decelRate = 0.03;
           }
 
           if (cur < targetSpeed) {
@@ -560,7 +576,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
               cur -= decelRate * physicsFactor;
               if (cur < targetSpeed) cur = targetSpeed;
           }
-          if (cur < 0.005) cur = 0;
+          // Dead stop clamp only when train is commanded to halt
+          if (targetSpeed === 0 && cur < 0.02) cur = 0;
 
           // 9. Absolute Anti-Collision Bounding Box Shield
           curr.forEach(other => {
@@ -572,7 +589,14 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
               if (inMyLane) {
                   const myFront = t.x;
                   const otherFront = other.x;
-                  const separation = t.direction === 1 ? (otherFront - oLen) - myFront : myFront - (otherFront + oLen);
+                  let separation = Infinity;
+                  if (t.direction === 1) {
+                      const otherRear = other.direction === 1 ? (otherFront - oLen) : otherFront;
+                      separation = otherRear - myFront;
+                  } else {
+                      const otherRear = other.direction === -1 ? (otherFront + oLen) : otherFront;
+                      separation = myFront - otherRear;
+                  }
                   
                   if (separation > 0 && separation < 180) {
                       cur = 0;
@@ -584,10 +608,12 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
           let newX = t.x + t.direction * actualApplied;
 
           // 10. Platform Arrival Detection & Dwell Trigger
-          if (!newStopUntil && actualApplied > 0 && t.scheduledStops && t.scheduledStops.length > 0) {
+          let newLastStopStationId = t.lastStopStationId;
+          if (!t.stopUntil && actualApplied > 0 && t.scheduledStops && t.scheduledStops.length > 0) {
               for (let i = 0; i < STATIONS.length; i++) {
                   const st = STATIONS[i];
                   if (!t.scheduledStops.includes(st.id)) continue;
+                  if (t.lastStopStationId === st.id) continue;
 
                   const sX = 600 + i * STATION_SPACING;
                   const targetX = sX + (95 * t.direction);
@@ -596,12 +622,26 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                       (t.direction === -1 && t.x > targetX && newX <= targetX)) {
                       newX = targetX;
                       cur = 0;
-                      const dwellTimeMs = t.type === 'express' ? 14000 : 8000;
+                      const dwellTimeMs = t.type === 'express' ? 12000 : 8000;
                       const scaledDwell = dwellTimeMs / Math.max(1, userSpeedMultiplier);
                       newStopUntil = now + scaledDwell;
+                      newLastStopStationId = st.id;
                       activeSignalAspect = 'red';
                       statusText = `Platform Dwell at ${st.name} • Passenger Interchange`;
                       break;
+                  }
+              }
+          }
+
+          // Clear lastStopStationId once train has cleared the station yard
+          if (newLastStopStationId) {
+              const prevStation = STATIONS.find(s => s.id === newLastStopStationId);
+              if (prevStation) {
+                  const prevIdx = STATIONS.indexOf(prevStation);
+                  const prevSX = 600 + prevIdx * STATION_SPACING;
+                  const distFromPrev = Math.abs(newX - prevSX);
+                  if (distFromPrev > 350) {
+                      newLastStopStationId = undefined;
                   }
               }
           }
@@ -622,7 +662,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                  currentSpeed: 0,
                  speedKmh: 0,
                  signalAspect: 'red' as const,
-                 statusText: 'Chengalpattu Terminal • Reversing Direction'
+                 statusText: 'Chengalpattu Terminal • Reversing Direction',
+                 lastStopStationId: 'CGL'
               };
           }
           if (newX < MIN_TERMINAL_X) {
@@ -637,7 +678,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                  currentSpeed: 0,
                  speedKmh: 0,
                  signalAspect: 'red' as const,
-                 statusText: 'Chennai Beach Terminal • Reversing Direction'
+                 statusText: 'Chennai Beach Terminal • Reversing Direction',
+                 lastStopStationId: 'MSB'
               };
           }
 
@@ -660,11 +702,14 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
             signalAspect: activeSignalAspect,
             statusText,
             currentStation: nearestStationName,
-            length: tLen
+            length: tLen,
+            lastStopStationId: newLastStopStationId
           };
         });
         
-        useMaintenanceStore.getState().setTrains(nextTrains);
+        queueMicrotask(() => {
+          useMaintenanceStore.getState().setTrains(nextTrains);
+        });
         return nextTrains;
       });
     }, 16); 

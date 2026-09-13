@@ -21,6 +21,7 @@ export interface Train {
   locoModel?: string; // e.g. "WAP-7 #30452 (Royapuram Shed)"
   consist?: string; // e.g. "6 LHB Air-Conditioned Coaches"
   length?: number; // Physical train length in pixels
+  lastStopStationId?: string; // ID of station where train recently dwelled
 }
 
 export interface Platform {
