@@ -22,6 +22,11 @@ export interface Train {
   consist?: string; // e.g. "6 LHB Air-Conditioned Coaches"
   length?: number; // Physical train length in pixels
   lastStopStationId?: string; // ID of station where train recently dwelled
+  trainNumber?: string; // Official Indian Railways train number (e.g. "12635", "40524")
+  scheduledArrival?: string; // Timetable scheduled arrival at next/current station (e.g. "19:08")
+  scheduledDeparture?: string; // Timetable scheduled departure (e.g. "19:10")
+  nextStop?: string; // Name of upcoming stop
+  timetableActive?: boolean; // Whether train is currently operating per official schedule
 }
 
 export interface Platform {

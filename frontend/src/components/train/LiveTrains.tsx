@@ -257,9 +257,9 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
                 {/* Popover Window Card */}
                 <rect 
                   x={-130} 
-                  y={-50} 
+                  y={-55} 
                   width={260} 
-                  height={115} 
+                  height={132} 
                   rx={8} 
                   fill="#0b1120" 
                   stroke="#38bdf8" 
@@ -268,17 +268,17 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
                 />
 
                 {/* Header Bar */}
-                <rect x={-130} y={-50} width={260} height={24} rx={8} fill="#1e293b" />
-                <rect x={-130} y={-34} width={260} height={8} fill="#1e293b" />
-                <circle cx={-118} cy={-38} r={3} fill={aspectColor} />
-                <text x={-108} y={-35} fill="#38bdf8" fontSize={10} fontWeight="bold" fontFamily="monospace">
-                  IR RBMS DIGITAL TELEMETRY
+                <rect x={-130} y={-55} width={260} height={24} rx={8} fill="#1e293b" />
+                <rect x={-130} y={-39} width={260} height={8} fill="#1e293b" />
+                <circle cx={-118} cy={-43} r={3} fill={aspectColor} />
+                <text x={-108} y={-40} fill="#38bdf8" fontSize={10} fontWeight="bold" fontFamily="monospace">
+                  IR RBMS TIMETABLE TELEMETRY
                 </text>
                 
                 {/* Close Button */}
                 <text 
                   x={116} 
-                  y={-34} 
+                  y={-39} 
                   fill="#94a3b8" 
                   fontSize={11} 
                   fontWeight="bold" 
@@ -288,25 +288,30 @@ export const LiveTrains = ({ speedMultiplier }: { speedMultiplier: number }) => 
                   ✕
                 </text>
 
-                {/* Train Name & Type */}
-                <text x={-118} y={-18} fill="#ffffff" fontSize={10} fontWeight="bold" fontFamily="sans-serif">
+                {/* Train Name & Official Train Number */}
+                <text x={-118} y={-23} fill="#ffffff" fontSize={10} fontWeight="bold" fontFamily="sans-serif">
                   {train.name}
                 </text>
-                <text x={-118} y={-6} fill="#94a3b8" fontSize={8} fontFamily="monospace">
+                <text x={-118} y={-11} fill="#94a3b8" fontSize={8} fontFamily="monospace">
                   Loco: <tspan fill="#e2e8f0">{train.locoModel || 'WAP-7 RPM Electric'}</tspan>
                 </text>
 
                 {/* Consist & Track Section */}
-                <text x={-118} y={6} fill="#94a3b8" fontSize={8} fontFamily="monospace">
+                <text x={-118} y={1} fill="#94a3b8" fontSize={8} fontFamily="monospace">
                   Rake: <tspan fill="#cbd5e1">{train.consist || `${numCoaches} Coaches`}</tspan>
                 </text>
-                <text x={-118} y={18} fill="#94a3b8" fontSize={8} fontFamily="monospace">
+                <text x={-118} y={13} fill="#94a3b8" fontSize={8} fontFamily="monospace">
                   Track: <tspan fill="#facc15">{train.baseLane === -1 ? 'Down Suburban' : train.baseLane === 0 ? 'Main Corridor' : 'Up Suburban'}</tspan> • <tspan fill="#38bdf8">{speedDisplay}</tspan>
                 </text>
 
+                {/* Timetable Schedule Info */}
+                <text x={-118} y={25} fill="#94a3b8" fontSize={8} fontFamily="monospace">
+                  Schedule: <tspan fill="#34d399">Arr {train.scheduledArrival || '--'} • Dep {train.scheduledDeparture || '--'}</tspan> • <tspan fill="#a7f3d0">Right Time</tspan>
+                </text>
+
                 {/* Operational Status Banner */}
-                <rect x={-122} y={26} width={244} height={18} rx={4} fill="#111827" stroke="#374151" strokeWidth={0.8} />
-                <text x={-116} y={38} fill="#a5f3fc" fontSize={7.5} fontWeight="bold" fontFamily="monospace">
+                <rect x={-122} y={35} width={244} height={18} rx={4} fill="#111827" stroke="#374151" strokeWidth={0.8} />
+                <text x={-116} y={47} fill="#a5f3fc" fontSize={7.5} fontWeight="bold" fontFamily="monospace">
                   {train.statusText || 'Normal MPS Operation'}
                 </text>
               </g>

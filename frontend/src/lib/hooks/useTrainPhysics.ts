@@ -15,6 +15,7 @@ export const generateTrains = (): Train[] => {
     // Southbound Fleet (Direction: 1, MSB -> CGL)
     { 
       id: 'T1', 
+      trainNumber: '40001',
       name: 'EMU 40001 (MSB-TBM)', 
       x: 1500, 
       direction: 1, 
@@ -24,12 +25,17 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['MSB', 'MSF', 'MPK', 'MS', 'MSC', 'NBK', 'MKK', 'MBM', 'SP', 'GDY', 'STM', 'PZA', 'MN', 'TLM', 'PV', 'CMP', 'TBMS', 'TBM'],
+      scheduledArrival: '04:20',
+      scheduledDeparture: '04:20',
+      nextStop: 'Chennai Fort',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car (Medha AC Rake)',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T2', 
+      trainNumber: '40003',
       name: 'EMU 40003 (MS-GDY Fast)', 
       x: 9000, 
       direction: 1, 
@@ -39,12 +45,17 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.9,
       type: 'passenger',
       scheduledStops: ['MS', 'MBM', 'GDY'],
+      scheduledArrival: '06:05',
+      scheduledDeparture: '06:06',
+      nextStop: 'Mambalam',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car (BEML)',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T3', 
+      trainNumber: '12635',
       name: 'EXP 12635 Vaigai Superfast', 
       x: 14000, 
       direction: 1, 
@@ -54,12 +65,17 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 2.5,
       type: 'express',
       scheduledStops: ['MSB', 'MS', 'MBM', 'TBM', 'CGL'],
+      scheduledArrival: '12:45',
+      scheduledDeparture: '12:45',
+      nextStop: 'Tambaram',
+      timetableActive: true,
       locoModel: 'WAP-7 #30452 (Royapuram RPM Shed)',
-      consist: '6 LHB AC Coaches (Crimson/Silver)',
+      consist: '22 LHB AC Coaches (Crimson/Silver)',
       length: 279
     },
     { 
       id: 'T4', 
+      trainNumber: '40005',
       name: 'EMU 40005 (STM-TBM)', 
       x: 26000, 
       direction: 1, 
@@ -69,13 +85,18 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['STM', 'PZA', 'MN', 'TLM', 'PV', 'CMP', 'TBMS', 'TBM'],
+      scheduledArrival: '06:30',
+      scheduledDeparture: '06:31',
+      nextStop: 'Pazhavanthangal',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T5', 
-      name: 'FRT 90021 Auto Rake', 
+      trainNumber: 'FRT90021',
+      name: 'FRT 90021 Auto Logistics Rake', 
       x: 33000, 
       direction: 1, 
       baseLane: 0, 
@@ -84,13 +105,18 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.4,
       type: 'freight',
       scheduledStops: [],
+      scheduledArrival: '--',
+      scheduledDeparture: '--',
+      nextStop: 'Singaperumal Koil Siding',
+      timetableActive: false,
       locoModel: 'WAG-9 #31189 (Arakkonam AJJ Shed)',
       consist: '12 Double-Decker Auto Wagons',
       length: 405
     },
     { 
       id: 'T6', 
-      name: 'EMU 40007 (TBM-GI)', 
+      trainNumber: '40505',
+      name: 'EMU 40505 (TBM-GI)', 
       x: 43000, 
       direction: 1, 
       baseLane: -1, 
@@ -99,12 +125,17 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['TBM', 'PRGL', 'VDR', 'UPM', 'GI'],
+      scheduledArrival: '05:00',
+      scheduledDeparture: '05:01',
+      nextStop: 'Perungalathur',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T7', 
+      trainNumber: '12605',
       name: 'EXP 12605 Pallavan Superfast', 
       x: 49000, 
       direction: 1, 
@@ -114,13 +145,18 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 2.6,
       type: 'express',
       scheduledStops: ['MSB', 'MS', 'MBM', 'TBM', 'CGL'],
+      scheduledArrival: '15:45',
+      scheduledDeparture: '15:45',
+      nextStop: 'Tambaram',
+      timetableActive: true,
       locoModel: 'WAP-7 #30488 (Erode ED Shed)',
-      consist: '6 LHB Coaches',
+      consist: '22 LHB Coaches (Pallavan)',
       length: 279
     },
     { 
       id: 'T8', 
-      name: 'EMU 40009 (MMNK-CGL)', 
+      trainNumber: '40517',
+      name: 'EMU 40517 (MMNK-CGL)', 
       x: 56500, 
       direction: 1, 
       baseLane: -1, 
@@ -129,6 +165,10 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['MMNK', 'SKL', 'CGL'],
+      scheduledArrival: '06:55',
+      scheduledDeparture: '06:56',
+      nextStop: 'Singaperumal Koil',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
@@ -137,7 +177,8 @@ export const generateTrains = (): Train[] => {
     // Northbound Fleet (Direction: -1, CGL -> MSB)
     { 
       id: 'T9', 
-      name: 'EMU 40012 (CGL-TBM)', 
+      trainNumber: '40524',
+      name: 'EMU 40524 (CGL-TBM)', 
       x: 59000, 
       direction: -1, 
       baseLane: 1, 
@@ -146,12 +187,17 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['CGL', 'SKL', 'MMNK', 'POTI', 'GI', 'UPM', 'VDR', 'PRGL', 'TBM'],
+      scheduledArrival: '08:35',
+      scheduledDeparture: '08:35',
+      nextStop: 'Singaperumal Koil',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T10', 
+      trainNumber: '12636',
       name: 'EXP 12636 Pandian Superfast', 
       x: 52000, 
       direction: -1, 
@@ -161,13 +207,18 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 2.5,
       type: 'express',
       scheduledStops: ['CGL', 'TBM', 'MBM', 'MS', 'MSB'],
+      scheduledArrival: '13:08',
+      scheduledDeparture: '13:10',
+      nextStop: 'Tambaram',
+      timetableActive: true,
       locoModel: 'WAP-7 #30221 (Royapuram RPM Shed)',
-      consist: '6 LHB Coaches',
+      consist: '22 LHB Coaches',
       length: 279
     },
     { 
       id: 'T11', 
-      name: 'EMU 40010 (SKL-GI)', 
+      trainNumber: '40522',
+      name: 'EMU 40522 (SKL-GI Semi Fast)', 
       x: 45000, 
       direction: -1, 
       baseLane: 1, 
@@ -176,12 +227,17 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['SKL', 'MMNK', 'POTI', 'GI'],
+      scheduledArrival: '08:25',
+      scheduledDeparture: '08:25',
+      nextStop: 'Guduvancheri',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T12', 
+      trainNumber: 'FRT90022',
       name: 'FRT 90022 BTPN Petroleum Tanker', 
       x: 36000, 
       direction: -1, 
@@ -191,13 +247,18 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.4,
       type: 'freight',
       scheduledStops: [],
+      scheduledArrival: '--',
+      scheduledDeparture: '--',
+      nextStop: 'Chengalpattu Yard',
+      timetableActive: false,
       locoModel: 'WAG-9 #31245 (Tughlakabad TKD Shed)',
       consist: '12 BTPN Petroleum Tankers',
       length: 405
     },
     { 
       id: 'T13', 
-      name: 'EMU 40008 (TBM-STM)', 
+      trainNumber: '40107',
+      name: 'EMU 40107 (TBM-STM)', 
       x: 39000, 
       direction: -1, 
       baseLane: 1, 
@@ -206,13 +267,18 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['TBM', 'TBMS', 'CMP', 'PV', 'TLM', 'MN', 'PZA', 'STM'],
+      scheduledArrival: '17:20',
+      scheduledDeparture: '17:21',
+      nextStop: 'Tambaram Sanatorium',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T14', 
-      name: 'EMU 40006 (CMP-GDY Fast)', 
+      trainNumber: '40025',
+      name: 'EMU 40025 (CMP-GDY Fast)', 
       x: 21500, 
       direction: -1, 
       baseLane: 1, 
@@ -221,12 +287,17 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.9,
       type: 'passenger',
       scheduledStops: ['CMP', 'PV', 'GDY'],
+      scheduledArrival: '08:37',
+      scheduledDeparture: '08:38',
+      nextStop: 'Pallavaram',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T15', 
+      trainNumber: '16128',
       name: 'EXP 16128 Guruvayur Express', 
       x: 16000, 
       direction: -1, 
@@ -236,13 +307,18 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 2.5,
       type: 'express',
       scheduledStops: ['CGL', 'TBM', 'MS'],
+      scheduledArrival: '19:03',
+      scheduledDeparture: '19:05',
+      nextStop: 'Tambaram',
+      timetableActive: true,
       locoModel: 'WAP-4 #22510 (Arakkonam AJJ Shed)',
-      consist: '6 LHB Coaches',
+      consist: '22 LHB Coaches',
       length: 279
     },
     { 
       id: 'T16', 
-      name: 'EMU 40004 (GDY-MS)', 
+      trainNumber: '40031',
+      name: 'EMU 40031 (GDY-MS)', 
       x: 7500, 
       direction: -1, 
       baseLane: 1, 
@@ -251,13 +327,18 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['GDY', 'SP', 'MBM', 'MKK', 'NBK', 'MSC', 'MS'],
+      scheduledArrival: '09:07',
+      scheduledDeparture: '09:08',
+      nextStop: 'Saidapet',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
     },
     { 
       id: 'T17', 
-      name: 'EMU 40002 (MS-MSB)', 
+      trainNumber: '40037',
+      name: 'EMU 40037 (MS-MSB)', 
       x: 3200, 
       direction: -1, 
       baseLane: 1, 
@@ -266,6 +347,10 @@ export const generateTrains = (): Train[] => {
       currentSpeed: 1.8,
       type: 'passenger',
       scheduledStops: ['MS', 'MPK', 'MSF', 'MSB'],
+      scheduledArrival: '09:26',
+      scheduledDeparture: '09:27',
+      nextStop: 'Chennai Fort',
+      timetableActive: true,
       locoModel: 'SR EMU 12-Car',
       consist: '12 Suburban Coaches',
       length: 187
@@ -551,7 +636,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                   if (distToNextScheduledStop < 900) {
                       const brakeFactor = Math.max(0.18, Math.pow(distToNextScheduledStop / 900, 1.2));
                       targetSpeed *= brakeFactor;
-                      statusText = `Approaching ${targetStation.name} • Decelerating for Halt`;
+                      statusText = `Approaching ${targetStation.name} • Sched Arr: ${t.scheduledArrival || '--'} • Right Time`;
                   }
               }
           }
@@ -627,7 +712,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                       newStopUntil = now + scaledDwell;
                       newLastStopStationId = st.id;
                       activeSignalAspect = 'red';
-                      statusText = `Platform Dwell at ${st.name} • Passenger Interchange`;
+                      statusText = `Platform Dwell at ${st.name} • Sched Dep: ${t.scheduledDeparture || '--'} • Right Time`;
                       break;
                   }
               }
@@ -687,7 +772,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
           const speedKmh = Math.round((cur / t.speed) * maxKmh);
 
           if (cur > 0 && statusText === 'Line Clear • Speed MPS') {
-              statusText = `Cruising • ${speedKmh} km/h • Speed MPS`;
+              const targetName = t.nextStop || nearestStationName;
+              statusText = `Cruising to ${targetName} • ${speedKmh} km/h • Right Time`;
           }
           
           return { 
@@ -703,7 +789,12 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
             statusText,
             currentStation: nearestStationName,
             length: tLen,
-            lastStopStationId: newLastStopStationId
+            lastStopStationId: newLastStopStationId,
+            trainNumber: t.trainNumber,
+            scheduledArrival: t.scheduledArrival,
+            scheduledDeparture: t.scheduledDeparture,
+            nextStop: t.nextStop,
+            timetableActive: t.timetableActive
           };
         });
         

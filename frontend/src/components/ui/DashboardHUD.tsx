@@ -14,6 +14,10 @@ export const DashboardHUD = ({ time }: { time: string }) => {
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           LIVE • {time}
         </div>
+        <div className="text-emerald-400 font-mono text-xs uppercase tracking-widest bg-emerald-950/80 px-3 py-1.5 rounded-full border border-emerald-800/70 w-fit backdrop-blur-md shadow-xl flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+          <span>SR TIMETABLE SYNC • 68 RAILS</span>
+        </div>
         <Link
           href="/rbms"
           className="pointer-events-auto text-amber-300 hover:text-amber-100 font-mono text-xs uppercase tracking-widest bg-amber-950/80 hover:bg-amber-900/90 px-3.5 py-1.5 rounded-full border border-amber-800/80 w-fit backdrop-blur-md shadow-xl flex items-center gap-1.5 transition-colors"
