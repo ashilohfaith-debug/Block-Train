@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
 
-const Segment = ({ x1, y1, x2, y2, opacity, interactive, onClick, isBlocked }: any) => {
+interface SegmentProps {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  opacity: number;
+  interactive?: boolean;
+  onClick?: () => void;
+  isBlocked?: boolean;
+}
+
+const Segment = ({ x1, y1, x2, y2, opacity, interactive, onClick, isBlocked }: SegmentProps) => {
   const [isHovered, setIsHovered] = useState(false);
   
   return (

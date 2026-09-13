@@ -5,11 +5,11 @@ interface LocomotiveProps {
   x: number;
   length: number;
   width: number;
-  gradient: string;
+  gradient?: string;
   type?: TrainType;
 }
 
-export const Locomotive = memo(({ x, length, width, gradient, type = 'passenger' }: LocomotiveProps) => {
+export const Locomotive = memo(({ x, length, width, type = 'passenger' }: LocomotiveProps) => {
   const frontX = x + length;
   const isExpress = type === 'express';
   const isFreight = type === 'freight';

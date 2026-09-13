@@ -7,7 +7,7 @@ import { Locomotive } from './Locomotive';
 import { Coach } from './Coach';
 import { BrakeGlow } from './BrakeGlow';
 import { Headlight } from './Headlight';
-import { useTrainPhysics, getTrainLength } from '../../lib/hooks/useTrainPhysics';
+import { useTrainPhysics } from '../../lib/hooks/useTrainPhysics';
 
 const getTrainYForLane = (train: Train, x: number, mainLane: number) => {
   for (let i = 0; i < STATIONS.length; i++) {

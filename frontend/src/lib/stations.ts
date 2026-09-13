@@ -1,5 +1,5 @@
 import { Station } from './types';
-import { pseudoRandom, TESTING_MODE, CENTER_Y, TRACK_GAP, STATION_SPACING } from './constants';
+import { pseudoRandom, CENTER_Y, TRACK_GAP, STATION_SPACING } from './constants';
 import { getStationMainY } from './utils/trackGeometry';
 
 const RAW_STATIONS = [
@@ -78,7 +78,7 @@ export const STATIONS: Station[] = VISIBLE_STATIONS.map(st => {
   }
 
   let yardStartOffset = Math.min(...platforms.map(p => p.divergeStartOffset)) - 50;
-  let yardEndOffset = Math.max(...platforms.map(p => p.convergeEndOffset)) + 50;
+  const yardEndOffset = Math.max(...platforms.map(p => p.convergeEndOffset)) + 50;
 
   if (st.id === 'MMNK') yardStartOffset -= 200; 
 

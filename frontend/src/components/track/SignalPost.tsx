@@ -7,10 +7,10 @@ interface SignalPostProps {
   y: number;
   aspect: SignalAspect;
   name: string;
-  direction?: number; // 1 for down (facing left toward approaching train), -1 for up
+  direction?: number;
 }
 
-export const SignalPost = memo(({ x, y, aspect, name, direction = 1 }: SignalPostProps) => {
+export const SignalPost = memo(({ x, y, aspect, name }: SignalPostProps) => {
   // 4-Aspect Color Light Signal in Indian Railways:
   // Top-to-bottom: Yellow 1, Green, Red, Yellow 2
   // Red: Danger (Halt)

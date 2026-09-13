@@ -8,3 +8,5 @@ export const TelemetryTag = memo(({ id, angle }: { id: string, angle: number }) 
     </text>
   </g>
 ));
+
+TelemetryTag.displayName = 'TelemetryTag';

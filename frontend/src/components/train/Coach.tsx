@@ -5,7 +5,7 @@ interface CoachProps {
   x: number;
   length: number;
   width: number;
-  gradient: string;
+  gradient?: string;
   isFreight: boolean;
   type?: TrainType;
   gap: number;
@@ -16,7 +16,6 @@ export const Coach = memo(({
   x, 
   length, 
   width, 
-  gradient, 
   isFreight, 
   type = 'passenger', 
   gap, 

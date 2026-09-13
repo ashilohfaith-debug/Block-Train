@@ -23,14 +23,13 @@ export const SignalLayer = React.memo(() => {
     if (isBlocked) return 'red';
 
     // 2. Check trains ahead in the block section
-    const LOOKAHEAD = 4500;
     let nearestDist = Infinity;
 
     for (const t of trains) {
       const inLane = t.baseLane === laneId || t.targetLane === laneId;
       if (!inLane) continue;
 
-      let dist = direction === 1 ? t.x - x : x - t.x;
+      const dist = direction === 1 ? t.x - x : x - t.x;
       if (dist > -50 && dist < nearestDist) {
         nearestDist = dist;
       }

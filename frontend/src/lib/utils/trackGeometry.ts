@@ -1,4 +1,3 @@
-import { Station } from '../types';
 import { CENTER_Y, TRACK_GAP } from '../constants';
 
 export const getStationMainY = (station: { p: number, yOffset: number }, effectiveLane: number) => {

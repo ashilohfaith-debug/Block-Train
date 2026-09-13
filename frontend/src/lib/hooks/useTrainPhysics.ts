@@ -10,7 +10,7 @@ export const getTrainLength = (type: Train['type']): number => {
   return 187; // passenger: 26 + 5 + 4*(34+5)
 };
 
-export const generateTrains = (speedMultiplier: number): Train[] => {
+export const generateTrains = (): Train[] => {
   return [
     // Southbound Fleet (Direction: 1, MSB -> CGL)
     { 
@@ -256,7 +256,7 @@ export const generateTrains = (speedMultiplier: number): Train[] => {
   ];
 };
 
-const getHazardZones = (activeBlocks: any[]) => {
+const getHazardZones = (activeBlocks: Array<{ id: string; urgency?: string }>) => {
   const zones: { minX: number, maxX: number, laneId: number, urgency: string }[] = [];
   
   for (const block of activeBlocks) {
@@ -312,11 +312,7 @@ const getHazardZones = (activeBlocks: any[]) => {
 };
 
 export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULTIPLIER) => {
-  const [trains, setTrains] = useState<Train[]>([]);
-  
-  useEffect(() => {
-    setTrains(generateTrains(userSpeedMultiplier));
-  }, []);
+  const [trains, setTrains] = useState<Train[]>(() => generateTrains());
 
   useEffect(() => {
     const physicsFactor = Math.min(10, Math.max(0.1, userSpeedMultiplier)); 
@@ -362,8 +358,8 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
           }
 
           const LOOKAHEAD = 5500;
-          let lookaheadMin = t.direction === 1 ? t.x : t.x - LOOKAHEAD;
-          let lookaheadMax = t.direction === 1 ? t.x + LOOKAHEAD : t.x;
+          const lookaheadMin = t.direction === 1 ? t.x : t.x - LOOKAHEAD;
+          const lookaheadMax = t.direction === 1 ? t.x + LOOKAHEAD : t.x;
 
           // 2. Find nearest physical crossover in front of train for emergency detour
           const validSwitches: number[] = [];
@@ -459,7 +455,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
               if (Math.max(myMin, z.minX) <= Math.min(myMax, z.maxX)) {
                   minDistanceToThreat = 0;
               } else {
-                  let dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
+                  const dist = t.direction === 1 ? (z.minX - t.x) : (t.x - z.maxX);
                   if (dist > 0 && dist < minDistanceToThreat) minDistanceToThreat = dist;
               }
           });
@@ -519,7 +515,6 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
           if (!newStopUntil && targetSpeed > 0 && t.scheduledStops && t.scheduledStops.length > 0) {
               let distToNextScheduledStop = LOOKAHEAD;
               let targetStation = null;
-              let stopTargetX = 0;
 
               for (let i = 0; i < STATIONS.length; i++) {
                   const st = STATIONS[i];
@@ -532,7 +527,6 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
                   if (dist > 0 && dist < distToNextScheduledStop) {
                       distToNextScheduledStop = dist;
                       targetStation = st;
-                      stopTargetX = tx;
                   }
               }
 
@@ -586,7 +580,7 @@ export const useTrainPhysics = (userSpeedMultiplier: number = DEFAULT_SPEED_MULT
               }
           });
 
-          let actualApplied = cur * physicsFactor;
+          const actualApplied = cur * physicsFactor;
           let newX = t.x + t.direction * actualApplied;
 
           // 10. Platform Arrival Detection & Dwell Trigger

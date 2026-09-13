@@ -6,3 +6,5 @@ export const BrakeGlow = memo(({ totalLen, bodyWidth }: { totalLen: number, body
     <rect x={-totalLen/2 - 1} y={-bodyWidth/2 - 2} width={totalLen + 2} height={bodyWidth + 4} fill="#ef4444" opacity="0.2" rx="3" />
   </g>
 ));
+
+BrakeGlow.displayName = 'BrakeGlow';
